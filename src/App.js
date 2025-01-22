@@ -1,12 +1,18 @@
 import React from "react";
-import Login from "./components/Login"; // Import the Login component
-import "./App.css"; // Keep this if you're using the default styles
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
+import Home from "./components/Home"; // This should be the default page component
 
 function App() {
   return (
-    <div className="App">
-      <Login /> {/* Render the Login component */}
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} /> {/* Root route */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+      </Routes>
+    </Router>
   );
 }
 

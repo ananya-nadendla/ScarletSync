@@ -1,21 +1,23 @@
 import React, { useState } from "react";
-import { auth } from "../firebase"; // Adjust the path as needed
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { Link } from "react-router-dom"; // Import Link for navigation
+import { auth } from "../firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [user, setUser] = useState(null);
+  const navigate = useNavigate(); // For navigation
 
-  const handleLogin = async (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       setUser(userCredential.user);
+      navigate("/login"); // Navigate to login page after successful signup
     } catch (err) {
       setError(err.message);
     }
@@ -29,8 +31,8 @@ const Login = () => {
           <button onClick={() => auth.signOut()}>Log Out</button>
         </div>
       ) : (
-        <form onSubmit={handleLogin}>
-          <h1>Login</h1>
+        <form onSubmit={handleSignup}>
+          <h1>Sign Up</h1>
           {error && <p style={{ color: "red" }}>{error}</p>}
           <div>
             <label>Email:</label>
@@ -50,17 +52,11 @@ const Login = () => {
               required
             />
           </div>
-          <button type="submit">Login</button>
-
-          {/* Sign up link */}
-          <p>
-            Don't have an account?{" "}
-            <Link to="/signup">Sign up!</Link> {/* Link to the sign-up page */}
-          </p>
+          <button type="submit">Sign Up</button>
         </form>
       )}
     </div>
   );
 };
 
-export default Login;
+export default Signup;
