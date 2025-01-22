@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { auth } from "../firebase"; // Adjust the path as needed
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { Link } from "react-router-dom"; // Import Link for navigation
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate for redirection
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [user, setUser] = useState(null);
+
+  const navigate = useNavigate(); // useNavigate hook
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -21,12 +23,21 @@ const Login = () => {
     }
   };
 
+  const handleLogout = () => {
+    signOut(auth).then(() => {
+      setUser(null); // Clear the user state
+      navigate("/login"); // Redirect to the login page after logging out
+    }).catch((err) => {
+      console.error("Error logging out:", err.message);
+    });
+  };
+
   return (
     <div>
       {user ? (
         <div>
           <h1>Welcome, {user.email}!</h1>
-          <button onClick={() => auth.signOut()}>Log Out</button>
+          <button onClick={handleLogout}>Log Out</button>
         </div>
       ) : (
         <form onSubmit={handleLogin}>
