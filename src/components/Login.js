@@ -8,7 +8,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [user, setUser] = useState(null);
-
   const navigate = useNavigate(); // useNavigate hook
 
   const handleLogin = async (e) => {
@@ -62,6 +61,12 @@ const Login = () => {
             />
           </div>
           <button type="submit">Login</button>
+
+          {/* Forgot password link */}
+          <p>
+            Forgot your password?{" "}
+            <Link to="/reset-password">Click here to reset it.</Link>
+          </p>
 
           {/* Sign up link */}
           <p>
