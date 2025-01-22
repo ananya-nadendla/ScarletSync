@@ -63,6 +63,11 @@ const Signup = () => {
             />
           </div>
           <button type="submit">Sign Up</button>
+
+          <p>
+            Already have an account?{" "}
+            <a href="/login">Login</a>
+          </p>
         </form>
       )}
     </div>
