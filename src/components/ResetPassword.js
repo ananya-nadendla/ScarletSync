@@ -19,7 +19,7 @@ const ResetPassword = () => {
       setSuccessMessage("Password reset email sent. Please check your inbox.");
       setTimeout(() => {
         navigate("/login"); // Redirect back to login after success
-      }, 2000);
+      }, 5000);
     } catch (err) {
       setError(err.message);
     }
