@@ -11,8 +11,8 @@ const SettingsPage = () => {
     username: "",
     bio: "",
     schoolYear: "",
-    major: "",
-    minor: "",
+    major: [],  // Ensure this is an array
+    minor: [],  // Ensure this is an array
     campusLocation: "",
     selectedSubInterests: [],
   });
@@ -26,8 +26,10 @@ const SettingsPage = () => {
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedSubInterests, setSelectedSubInterests] = useState([]);
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [selectedMajor, setSelectedMajor] = useState(""); // Track selected major
+  const [selectedMinor, setSelectedMinor] = useState(""); // Track selected minor
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const user = auth.currentUser;
@@ -40,7 +42,11 @@ const SettingsPage = () => {
           const userProfileDoc = await getDoc(doc(db, "profiles", user.uid));
           if (userProfileDoc.exists()) {
             const data = userProfileDoc.data();
-            setProfileData(data);
+            setProfileData({
+              ...data,
+              major: Array.isArray(data.major) ? data.major : [],  // Ensure it's an array
+              minor: Array.isArray(data.minor) ? data.minor : [],  // Ensure it's an array
+            });
             setSelectedSubInterests(data.selectedSubInterests || []);
           }
         } else {
@@ -103,15 +109,48 @@ const SettingsPage = () => {
     }
   };
 
-  const handleCheckboxChange = (subInterest) => {
+  const handleAddMajor = () => {
+    if (selectedMajor && !profileData.major.includes(selectedMajor)) {
+      setProfileData((prevState) => ({
+        ...prevState,
+        major: [...prevState.major, selectedMajor],
+      }));
+      setSelectedMajor(""); // Reset selected major after adding
+    }
+  };
+
+  const handleRemoveMajor = (majorToRemove) => {
+    setProfileData((prevState) => ({
+      ...prevState,
+      major: prevState.major.filter((major) => major !== majorToRemove),
+    }));
+  };
+
+  const handleAddMinor = () => {
+    if (selectedMinor && !profileData.minor.includes(selectedMinor)) {
+      setProfileData((prevState) => ({
+        ...prevState,
+        minor: [...prevState.minor, selectedMinor],
+      }));
+      setSelectedMinor(""); // Reset selected minor after adding
+    }
+  };
+
+  const handleRemoveMinor = (minorToRemove) => {
+    setProfileData((prevState) => ({
+      ...prevState,
+      minor: prevState.minor.filter((minor) => minor !== minorToRemove),
+    }));
+  };
+
+  const handleChipClick = (subInterest) => {
     setSelectedSubInterests((prev) =>
       prev.includes(subInterest)
-        ? prev.filter((item) => item !== subInterest)
-        : [...prev, subInterest]
+        ? prev.filter(item => item !== subInterest)  // Remove if already selected
+        : [...prev, subInterest]  // Add if not selected
     );
   };
 
-  const togglePopup = () => setIsPopupOpen((prev) => !prev);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -119,13 +158,9 @@ const SettingsPage = () => {
 
   return (
     <div className="settings-container">
-      <h1>Settings</h1>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <div className="error-message">{error}</div>} {/* Display error if exists */}
 
-      <div>
-        <label>Email:</label>
-        <p>{user.email}</p> {/* Display email, not editable */}
-      </div>
+      <h1>Settings</h1>
 
       <div>
         <label>First Name:</label>
@@ -158,6 +193,7 @@ const SettingsPage = () => {
           onChange={(e) => setProfileData({ ...profileData, bio: e.target.value })}
         />
       </div>
+
       <div>
         <label>School Year:</label>
         <select
@@ -172,34 +208,61 @@ const SettingsPage = () => {
           ))}
         </select>
       </div>
+
+      {/* Major Selection */}
       <div>
-        <label>Major:</label>
-        <select
-          value={profileData.major}
-          onChange={(e) => setProfileData({ ...profileData, major: e.target.value })}
-        >
-          <option value="">Select Major</option>
-          {options.majors.map((major) => (
-            <option key={major} value={major}>
-              {major}
-            </option>
-          ))}
-        </select>
+        <label>Majors:</label>
+        <div>
+          <select
+            value={selectedMajor}
+            onChange={(e) => setSelectedMajor(e.target.value)}
+          >
+            <option value="">Select Major</option>
+            {options.majors.map((major, index) => (
+              <option key={index} value={major}>
+                {major}
+              </option>
+            ))}
+          </select>
+          <button onClick={handleAddMajor}>Add Major</button>
+          <ul>
+            {Array.isArray(profileData.major) && profileData.major.map((major, index) => (
+              <li key={index}>
+                {major}{" "}
+                <button onClick={() => handleRemoveMajor(major)}>Remove</button>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
+
+      {/* Minor Selection */}
       <div>
-        <label>Minor:</label>
-        <select
-          value={profileData.minor}
-          onChange={(e) => setProfileData({ ...profileData, minor: e.target.value })}
-        >
-          <option value="">Select Minor</option>
-          {options.minors.map((minor) => (
-            <option key={minor} value={minor}>
-              {minor}
-            </option>
-          ))}
-        </select>
+        <label>Minors:</label>
+        <div>
+          <select
+            value={selectedMinor}
+            onChange={(e) => setSelectedMinor(e.target.value)}
+          >
+            <option value="">Select Minor</option>
+            {options.minors.map((minor, index) => (
+              <option key={index} value={minor}>
+                {minor}
+              </option>
+            ))}
+          </select>
+          <button onClick={handleAddMinor}>Add Minor</button>
+          <ul>
+            {Array.isArray(profileData.minor) && profileData.minor.map((minor, index) => (
+              <li key={index}>
+                {minor}{" "}
+                <button onClick={() => handleRemoveMinor(minor)}>Remove</button>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
+
       <div>
         <label>Campus Location:</label>
         <select
@@ -214,9 +277,10 @@ const SettingsPage = () => {
           ))}
         </select>
       </div>
+
       <div>
         <label>Interests:</label>
-        <button onClick={togglePopup}>Choose Interests</button>
+        <button onClick={() => setIsPopupOpen(true)}>Choose Interests</button>
         {selectedSubInterests.length > 0 ? (
           <ul>
             {selectedSubInterests.map((interest, index) => (
@@ -231,26 +295,27 @@ const SettingsPage = () => {
       {isPopupOpen && (
         <div className="popup">
           <h2>Choose Your Interests</h2>
-          {options.interests.map((interest, index) => (
-            <div key={index}>
-              <h3>{interest.name}</h3>
-              {interest.subInterests.map((subInterest, subIndex) => (
-                <div key={subIndex}>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={selectedSubInterests.includes(subInterest)}
-                      onChange={() => handleCheckboxChange(subInterest)}
-                    />
+          <div className="interests-container">
+            {options.interests.map((interest, index) => (
+              <div key={index} className="interest-group">
+                <h3>{interest.name}</h3>
+                {interest.subInterests.map((subInterest, subIndex) => (
+                  <div
+                    key={subIndex}
+                    className={`interest-chip ${selectedSubInterests.includes(subInterest) ? 'selected' : ''}`}
+                    onClick={() => handleChipClick(subInterest)}
+                  >
                     {subInterest}
-                  </label>
-                </div>
-              ))}
-            </div>
-          ))}
-          <button onClick={togglePopup}>Close</button>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+          <button onClick={() => setIsPopupOpen(false)} className="close-btn">Close</button>
+          <button onClick={handleSave} className="save-btn">Save Changes</button>
         </div>
       )}
+
 
       <button onClick={handleSave}>Save Changes</button>
     </div>

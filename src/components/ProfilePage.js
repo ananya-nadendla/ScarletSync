@@ -11,8 +11,8 @@ const ProfilePage = () => {
     username: "",
     bio: "",
     schoolYear: "",
-    major: "",
-    minor: "",
+    major: [], // Changed from string to array
+    minor: [],
     campusLocation: "",
     selectedSubInterests: [],
   });
@@ -76,12 +76,30 @@ const ProfilePage = () => {
         </div>
         <div className="profile-item">
           <label>Major:</label>
-          <p>{profileData.major || "No major set"}</p>
+          {profileData.major.length > 0 ? (
+            <div className="chips-container">
+              {profileData.major.map((major, index) => (
+                <span key={index} className="chip">{major}</span>
+              ))}
+            </div>
+          ) : (
+            <p>No major set</p>
+          )}
         </div>
+
         <div className="profile-item">
           <label>Minor:</label>
-          <p>{profileData.minor || "No minor set"}</p>
+          {profileData.minor.length > 0 ? (
+            <div className="chips-container">
+              {profileData.minor.map((minor, index) => (
+                <span key={index} className="chip">{minor}</span>
+              ))}
+            </div>
+          ) : (
+            <p>No minor set</p>
+          )}
         </div>
+
         <div className="profile-item">
           <label>Campus Location:</label>
           <p>{profileData.campusLocation || "No campus location set"}</p>
@@ -89,11 +107,11 @@ const ProfilePage = () => {
         <div className="profile-item">
           <label>Interests:</label>
           {profileData.selectedSubInterests.length > 0 ? (
-            <ul>
+            <div className="chips-container">
               {profileData.selectedSubInterests.map((subInterest, index) => (
-                <li key={index}>{subInterest}</li>
+                <span key={index} className="chip">{subInterest}</span>
               ))}
-            </ul>
+            </div>
           ) : (
             <p>No interests selected</p>
           )}
