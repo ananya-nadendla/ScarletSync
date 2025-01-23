@@ -1,13 +1,16 @@
 import React, { useState } from "react";
-import { auth } from "../config/firebase";
-import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { auth, db } from "../config/firebase";
+import { createUserWithEmailAndPassword, sendEmailVerification, signOut } from "firebase/auth";
+import { collection, query, where, getDocs, setDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState(""); // New state for first name
+  const [lastName, setLastName] = useState("");   // New state for last name
+  const [username, setUsername] = useState("");   // New state for username
   const [error, setError] = useState("");
-  const [user, setUser] = useState(null);
   const navigate = useNavigate(); // For navigation
 
   const handleSignup = async (e) => {
@@ -15,10 +18,27 @@ const Signup = () => {
     setError("");
 
     try {
+      // Check if the username already exists
+      const q = query(collection(db, "profiles"), where("username", "==", username));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        // Username already exists
+        setError("Username is already taken. Please choose another one.");
+        return;
+      }
+
       // Create the user with email and password
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      setUser(user);
+
+      // Save additional user information to Firestore
+      await setDoc(doc(db, "profiles", user.uid), {
+        firstName,
+        lastName,
+        username,
+        email,
+      });
 
       // Send the email verification
       await sendEmailVerification(user);
@@ -26,8 +46,12 @@ const Signup = () => {
       // Inform the user to check their email
       alert("Verification email sent! Please check your inbox to verify your email.");
 
-      // Navigate to login page after successful signup
-      navigate("/login");
+      // Log out the user
+      await signOut(auth);
+
+      // Navigate to the login page after logging out
+      navigate("/login"); // Redirect to login page
+
     } catch (err) {
       setError(err.message);
     }
@@ -35,41 +59,61 @@ const Signup = () => {
 
   return (
     <div>
-      {user ? (
+      <form onSubmit={handleSignup}>
+        <h1>Sign Up</h1>
+        {error && <p style={{ color: "red" }}>{error}</p>}
         <div>
-          <h1>Welcome, {user.email}!</h1>
-          <button onClick={() => auth.signOut()}>Log Out</button>
+          <label>First Name:</label>
+          <input
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            required
+          />
         </div>
-      ) : (
-        <form onSubmit={handleSignup}>
-          <h1>Sign Up</h1>
-          {error && <p style={{ color: "red" }}>{error}</p>}
-          <div>
-            <label>Email:</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label>Password:</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit">Sign Up</button>
+        <div>
+          <label>Last Name:</label>
+          <input
+            type="text"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Username:</label>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit">Sign Up</button>
 
-          <p>
-            Already have an account?{" "}
-            <a href="/login">Login</a>
-          </p>
-        </form>
-      )}
+        <p>
+          Already have an account?{" "}
+          <a href="/login">Login</a>
+        </p>
+      </form>
     </div>
   );
 };

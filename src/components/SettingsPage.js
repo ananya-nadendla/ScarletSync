@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { db, auth } from "../config/firebase";
-import { doc, getDoc, setDoc, collection, getDocs } from "firebase/firestore";
+import { doc, getDoc, setDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import '../styles/SettingsPage.css'; // Add your custom CSS file for styling
 
@@ -33,6 +33,7 @@ const SettingsPage = () => {
   const navigate = useNavigate();
 
   const user = auth.currentUser;
+  const [originalUsername, setOriginalUsername] = useState(""); // Store the original username
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,6 +49,7 @@ const SettingsPage = () => {
               minor: Array.isArray(data.minor) ? data.minor : [],  // Ensure it's an array
             });
             setSelectedSubInterests(data.selectedSubInterests || []);
+            setOriginalUsername(data.username); // Store the original username
           }
         } else {
           navigate("/login");
@@ -87,9 +89,25 @@ const SettingsPage = () => {
     fetchData();
   }, [user, navigate]);
 
+  const checkUsernameAvailability = async (newUsername) => {
+    // Check if the username already exists in the database
+    const usersQuery = query(collection(db, "profiles"), where("username", "==", newUsername));
+    const querySnapshot = await getDocs(usersQuery);
+    return querySnapshot.empty;  // If empty, username is available
+  };
+
   const handleSave = async () => {
     if (user) {
       try {
+        // Only check if the username has changed
+        if (profileData.username !== originalUsername) {
+          const isUsernameAvailable = await checkUsernameAvailability(profileData.username);
+          if (!isUsernameAvailable) {
+            setError(`Username ${profileData.username} is already taken. Please choose another one.`);
+            return;
+          }
+        }
+
         // Save the profile data to Firestore
         await setDoc(
           doc(db, "profiles", user.uid),
@@ -151,15 +169,12 @@ const SettingsPage = () => {
     );
   };
 
-
   if (loading) {
     return <p>Loading...</p>;
   }
 
   return (
     <div className="settings-container">
-      {error && <div className="error-message">{error}</div>} {/* Display error if exists */}
-
       <h1>Settings</h1>
 
       <div>
@@ -185,6 +200,9 @@ const SettingsPage = () => {
           value={profileData.username}
           onChange={(e) => setProfileData({ ...profileData, username: e.target.value })}
         />
+        {error && error.includes(profileData.username) && (
+          <div className="error-message">{error}</div>
+        )}
       </div>
       <div>
         <label>Bio:</label>
@@ -312,10 +330,8 @@ const SettingsPage = () => {
             ))}
           </div>
           <button onClick={() => setIsPopupOpen(false)} className="close-btn">Close</button>
-          <button onClick={handleSave} className="save-btn">Save Changes</button>
         </div>
       )}
-
 
       <button onClick={handleSave}>Save Changes</button>
     </div>

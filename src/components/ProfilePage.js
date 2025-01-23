@@ -14,7 +14,7 @@ const ProfilePage = () => {
     major: [], // Changed from string to array
     minor: [],
     campusLocation: "",
-    selectedSubInterests: [],
+    selectedSubInterests: [], // Ensure it's always an array
   });
 
   const [error, setError] = useState("");
@@ -29,9 +29,17 @@ const ProfilePage = () => {
         if (user) {
           const userProfileDoc = await getDoc(doc(db, "profiles", user.uid));
           if (userProfileDoc.exists()) {
+            const data = userProfileDoc.data();
             setProfileData({
-              ...userProfileDoc.data(),
-              selectedSubInterests: userProfileDoc.data().selectedSubInterests || [],
+              firstName: data.firstName || "",
+              lastName: data.lastName || "",
+              username: data.username || "",
+              bio: data.bio || "",
+              schoolYear: data.schoolYear || "",
+              major: Array.isArray(data.major) ? data.major : [], // Ensure it's an array
+              minor: Array.isArray(data.minor) ? data.minor : [], // Ensure it's an array
+              campusLocation: data.campusLocation || "",
+              selectedSubInterests: Array.isArray(data.selectedSubInterests) ? data.selectedSubInterests : [], // Ensure it's an array
             });
           } else {
             setError("Profile not found.");
