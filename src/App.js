@@ -7,6 +7,7 @@ import Signup from "./components/Signup";
 import ResetPassword from "./components/ResetPassword";
 import Home from "./components/Home";
 import ProfilePage from "./components/ProfilePage";
+import Dashboard from "./components/Dashboard";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -28,6 +29,7 @@ const App = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/profile" element={user ? <ProfilePage /> : <Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
   );

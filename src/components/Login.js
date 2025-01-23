@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { auth } from "../config/firebase"; // Adjust the path as needed
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom"; // Import useNavigate for redirection
 
 const Login = () => {
@@ -10,35 +10,33 @@ const Login = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate(); // useNavigate hook
 
+  useEffect(() => {
+    // Check if the user is already authenticated (if you want to keep them logged in)
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      setUser(currentUser);
+      if (currentUser) {
+        navigate("/dashboard"); // Redirect to dashboard if already logged in
+      }
+    });
+    return unsubscribe;
+  }, [navigate]);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      setUser(userCredential.user);
+      setUser(userCredential.user); // Set the user state before navigating
+      navigate("/dashboard"); // Navigate to dashboard after successful login
     } catch (err) {
       setError(err.message);
     }
   };
 
-  const handleLogout = () => {
-    signOut(auth).then(() => {
-      setUser(null); // Clear the user state
-      navigate("/login"); // Redirect to the login page after logging out
-    }).catch((err) => {
-      console.error("Error logging out:", err.message);
-    });
-  };
-
   return (
     <div>
-      {user ? (
-        <div>
-          <h1>Welcome, {user.email}!</h1>
-          <button onClick={handleLogout}>Log Out</button>
-        </div>
-      ) : (
+      {!user ? (
         <form onSubmit={handleLogin}>
           <h1>Login</h1>
           {error && <p style={{ color: "red" }}>{error}</p>}
@@ -74,6 +72,10 @@ const Login = () => {
             <Link to="/signup">Sign up!</Link> {/* Link to the sign-up page */}
           </p>
         </form>
+      ) : (
+        <div>
+          <h1>Logging in...</h1> {/* Optional: display a loading state */}
+        </div>
       )}
     </div>
   );
