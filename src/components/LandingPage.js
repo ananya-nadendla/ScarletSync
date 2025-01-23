@@ -1,12 +1,12 @@
-// src/components/Home.js
+// src/components/LandingPage.js
 import React from "react";
 import { Link } from "react-router-dom"; // Import Link component from react-router-dom
 
-const Home = () => {
+const LandingPage = () => {
   return (
     <div>
       <h1>Welcome to ScarletSync</h1>
-      <p>This is the home page!</p>
+      <p>This is the landing page. [Slogan] Build a strong community at Rutgers!</p>
 
       {/* Navigation links to login and sign-up pages */}
       <div>
@@ -21,4 +21,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default LandingPage;

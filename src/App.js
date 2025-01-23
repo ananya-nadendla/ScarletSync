@@ -5,7 +5,7 @@ import { onAuthStateChanged } from "firebase/auth"; // Import this method
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import ResetPassword from "./components/ResetPassword";
-import Home from "./components/Home";
+import LandingPage from "./components/LandingPage";
 import ProfilePage from "./components/ProfilePage";
 import Dashboard from "./components/Dashboard";
 
@@ -24,7 +24,7 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/reset-password" element={<ResetPassword />} />
