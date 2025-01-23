@@ -20,4 +20,4 @@ DONE
 
 TODO
   - If user is not signed in, /dashboard should redirect to /login
-  - ISSUE(1): Let new user take username of a deleted account  
+  - ISSUE(1): Let new user take username of a deleted account when (1) signing up (2)choosing new username in settings  
