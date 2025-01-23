@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { db, auth } from "../config/firebase";
 import { doc, getDoc, setDoc, collection, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import '../styles/SettingsPage.css'; // Add your custom CSS file for styling
 
 const SettingsPage = () => {
   const [profileData, setProfileData] = useState({
@@ -102,7 +103,6 @@ const SettingsPage = () => {
     }
   };
 
-
   const handleCheckboxChange = (subInterest) => {
     setSelectedSubInterests((prev) =>
       prev.includes(subInterest)
@@ -118,9 +118,14 @@ const SettingsPage = () => {
   }
 
   return (
-    <div>
+    <div className="settings-container">
       <h1>Settings</h1>
       {error && <p style={{ color: "red" }}>{error}</p>}
+
+      <div>
+        <label>Email:</label>
+        <p>{user.email}</p> {/* Display email, not editable */}
+      </div>
 
       <div>
         <label>First Name:</label>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { auth, db } from "../config/firebase"; // Import Firestore and Auth
 import { doc, getDoc } from "firebase/firestore"; // Firestore functions
 import { useNavigate } from "react-router-dom";
+import '../styles/ProfilePage.css'; // Add your custom CSS file for styling
 
 const ProfilePage = () => {
   const [profileData, setProfileData] = useState({
@@ -13,7 +14,7 @@ const ProfilePage = () => {
     major: "",
     minor: "",
     campusLocation: "",
-    selectedSubInterests: [], // Initialize as an empty array
+    selectedSubInterests: [],
   });
 
   const [error, setError] = useState("");
@@ -30,8 +31,10 @@ const ProfilePage = () => {
           if (userProfileDoc.exists()) {
             setProfileData({
               ...userProfileDoc.data(),
-              selectedSubInterests: userProfileDoc.data().selectedSubInterests || [], // Default to an empty array
+              selectedSubInterests: userProfileDoc.data().selectedSubInterests || [],
             });
+          } else {
+            setError("Profile not found.");
           }
         } else {
           navigate("/login");
@@ -51,56 +54,55 @@ const ProfilePage = () => {
   }
 
   return (
-    <div>
-      <h1>User Profile</h1>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+    <div className="profile-container">
+      {error && <div className="error-message">{error}</div>} {/* Display error if exists */}
 
-      <div>
-        <label>First Name:</label>
-        <p>{profileData.firstName || "No first name set"}</p>
-      </div>
-      <div>
-        <label>Last Name:</label>
-        <p>{profileData.lastName || "No last name set"}</p>
-      </div>
-      <div>
-        <label>Username:</label>
-        <p>{profileData.username || "No username set"}</p>
-      </div>
-      <div>
-        <label>Bio:</label>
-        <p>{profileData.bio || "No bio set"}</p>
-      </div>
-      <div>
-        <label>School Year:</label>
-        <p>{profileData.schoolYear || "No school year set"}</p>
-      </div>
-      <div>
-        <label>Major:</label>
-        <p>{profileData.major || "No major set"}</p>
-      </div>
-      <div>
-        <label>Minor:</label>
-        <p>{profileData.minor || "No minor set"}</p>
-      </div>
-      <div>
-        <label>Campus Location:</label>
-        <p>{profileData.campusLocation || "No campus location set"}</p>
-      </div>
-      <div>
-        <label>Interests:</label>
-        {profileData.selectedSubInterests.length > 0 ? (
-          <ul>
-            {profileData.selectedSubInterests.map((subInterest, index) => (
-              <li key={index}>{subInterest}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>No interests selected</p>
-        )}
+      <div className="profile-header">
+        <div className="profile-picture">
+          {/* Add a profile picture or placeholder */}
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpPPrc8VMEPWqvFtOIxFZLDCN4JITg01d-KA&s" alt="Profile" />
+        </div>
+        <div className="profile-info">
+          <h1>{profileData.firstName} {profileData.lastName}</h1>
+          <h3>@{profileData.username}</h3>
+          <p>{profileData.bio || "No bio set"}</p>
+        </div>
       </div>
 
-      <button onClick={() => navigate("/settings")}>Edit Profile</button>
+      <div className="profile-details">
+        <div className="profile-item">
+          <label>School Year:</label>
+          <p>{profileData.schoolYear || "No school year set"}</p>
+        </div>
+        <div className="profile-item">
+          <label>Major:</label>
+          <p>{profileData.major || "No major set"}</p>
+        </div>
+        <div className="profile-item">
+          <label>Minor:</label>
+          <p>{profileData.minor || "No minor set"}</p>
+        </div>
+        <div className="profile-item">
+          <label>Campus Location:</label>
+          <p>{profileData.campusLocation || "No campus location set"}</p>
+        </div>
+        <div className="profile-item">
+          <label>Interests:</label>
+          {profileData.selectedSubInterests.length > 0 ? (
+            <ul>
+              {profileData.selectedSubInterests.map((subInterest, index) => (
+                <li key={index}>{subInterest}</li>
+              ))}
+            </ul>
+          ) : (
+            <p>No interests selected</p>
+          )}
+        </div>
+      </div>
+
+      <div className="edit-profile-btn">
+        <button onClick={() => navigate("/settings")}>Edit Profile</button>
+      </div>
     </div>
   );
 };

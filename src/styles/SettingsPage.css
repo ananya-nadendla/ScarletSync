@@ -1,0 +1,36 @@
+.settings-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.settings-container label {
+  font-weight: bold;
+}
+
+.settings-container input, .settings-container select, .settings-container textarea {
+  width: 100%;
+  padding: 8px;
+  margin: 5px 0 15px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.settings-container p {
+  margin: 5px 0;
+  color: #555;
+}
+
+.settings-container button {
+  padding: 10px 20px;
+  background-color: #1da1f2; /* Twitter blue */
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.settings-container button:hover {
+  background-color: #0d95e8;
+}
