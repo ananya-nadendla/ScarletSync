@@ -39,13 +39,14 @@ OtherUserProfile.js
 
 Misc
 - DONE => Let new user take username of a deleted account when (1) signing up (2)choosing new username in settings
-
+- ISSUE FIXED
+  - /profile/wise.girly doesnt work when wise.girly is made as fresh account, no info edited (when logged into ananya.nadendla2)
+  - It DOES work when wise.girly's info is edited via settings
+  - Reason: "some of the fields in the profileData object are being accessed before they are defined"
+  
 TODO
   - Create a Delete Account page when user deletes account in Settings
     - (i.e We're sorry to see you go! Please confirm your account deletion)
   - Console.log the user's loggedin/loggedout status for testing purposes
-  - ISSUE (2)
-    - /profile/wise.girly doesnt work for some reason (when logged into ananya.nadendla2)
-    - But /profile/ananya.nadendla2 works when logged into wise.girly ??
-    - Note: /profile/wise.girly worked when i entered more info into the profile (via settings)
   - Username check for special characters (can't have /, etc)
+  - Create Page Not Found page (if user tries going to nonexisting page, ie localhost:3000/skjdfksdfjd)
