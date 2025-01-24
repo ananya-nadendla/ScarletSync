@@ -47,3 +47,6 @@ TODO
   - ISSUE(2)(OtherUserProfile): profile/myprofile throws error (myprofile being the currently logged in profile)
     - /profile/myprofile needs to redirect to /profile
   - Console.log the user's loggedin/loggedout status for testing purposes
+  - ISSUE
+    - /profile/wise.girly doesnt work for some reason (when logged into ananya.nadendla2)
+    - But /profile/ananya.nadendla2 works when logged into wise.girly ??
