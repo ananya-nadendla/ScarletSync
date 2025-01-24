@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { db, auth } from "../config/firebase";
-import { doc, getDoc, setDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { doc, getDoc, setDoc, collection, getDocs, query, where, deleteDoc } from "firebase/firestore";
+import { deleteUser } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import '../styles/SettingsPage.css'; // Add your custom CSS file for styling
 
@@ -169,6 +170,25 @@ const SettingsPage = () => {
     );
   };
 
+  const handleDeleteAccount = async () => {
+      const confirmDelete = window.confirm("Are you sure you want to delete your account? This action cannot be undone.");
+
+      if (confirmDelete && user) {
+        try {
+          // Delete the user's profile from Firestore
+          await deleteDoc(doc(db, "profiles", user.uid));
+          // Delete the user's authentication record
+          await deleteUser(user);
+          alert("Your account has been deleted.");
+          // Redirect to the login page
+          navigate("/login");
+        } catch (err) {
+          console.error("Error deleting account: ", err);
+          alert("An error occurred while deleting your account.");
+        }
+      }
+    };
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -334,6 +354,11 @@ const SettingsPage = () => {
       )}
 
       <button onClick={handleSave}>Save Changes</button>
+
+     {/* Delete Account Button */}
+      <button className="delete-account-btn" onClick={handleDeleteAccount}>
+        Delete Account
+      </button>
     </div>
   );
 };

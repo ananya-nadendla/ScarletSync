@@ -1,12 +1,12 @@
 /* Container for the entire layout */
-.layout-container {
+.sidebar-layout-container {
   display: flex;
   height: 100vh;
   font-family: Arial, sans-serif;
 }
 
 /* Side panel styles */
-.side-panel {
+.sidebar-side-panel {
   background-color: #1e293b;
   color: #ffffff;
   width: 250px;
@@ -18,20 +18,20 @@
 }
 
 /* Logo in the side panel */
-.side-panel-logo {
+.sidebar-side-panel-logo {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 30px;
 }
 
 /* Menu options */
-.menu-options {
+.sidebar-menu-options {
   list-style: none;
   padding: 0;
   width: 100%;
 }
 
-.menu-link {
+.sidebar-menu-link {
   display: block;
   padding: 10px 15px;
   color: #ffffff;
@@ -40,16 +40,40 @@
   transition: background-color 0.3s ease;
 }
 
-.menu-link:hover {
+.sidebar-menu-link:hover {
   background-color: #334155;
 }
 
-.active-link {
+.sidebar-active-link {
   background-color: #0ea5e9;
 }
 
+/* Styling for the Log Out button */
+.sidebar-logout-btn {
+  background-color: #ff4d4d; /* Red color for the log out button */
+  color: #ffffff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  width: 100%; /* Make it take the full width of the sidebar */
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.sidebar-logout-btn:hover {
+  background-color: #e43f3f; /* Darker red on hover */
+  transform: scale(1.05); /* Slightly increase size on hover */
+}
+
+.sidebar-logout-btn:focus {
+  outline: none;
+}
+
 /* Main content area */
-.main-content {
+.sidebar-main-content {
   flex-grow: 1;
   background-color: #f3f4f6;
   padding: 20px;
