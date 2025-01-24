@@ -17,6 +17,9 @@ DONE
 - CSS Styling
   - ProfilePage
   - SettingsPage
+  - Signup 
+  - Login
+  - Dashboard
 
 TODO
   - If user is not signed in, /dashboard should redirect to /login

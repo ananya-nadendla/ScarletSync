@@ -3,6 +3,7 @@ import { auth, db } from "../config/firebase";
 import { createUserWithEmailAndPassword, sendEmailVerification, signOut } from "firebase/auth";
 import { collection, query, where, getDocs, setDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import "../styles/LoginAndSignup.css"; // Shared CSS file for Login and Signup
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -51,67 +52,70 @@ const Signup = () => {
 
       // Navigate to the login page after logging out
       navigate("/login"); // Redirect to login page
-
     } catch (err) {
       setError(err.message);
     }
   };
 
   return (
-    <div>
-      <form onSubmit={handleSignup}>
-        <h1>Sign Up</h1>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        <div>
-          <label>First Name:</label>
+    <div className="login-container">
+      <form onSubmit={handleSignup} className="login-form">
+        <h1 className="login-heading">Sign Up</h1>
+        {error && <p className="login-error">{error}</p>}
+        <div className="login-input-group">
+          <label className="login-label">First Name:</label>
           <input
             type="text"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
+            className="login-input"
             required
           />
         </div>
-        <div>
-          <label>Last Name:</label>
+        <div className="login-input-group">
+          <label className="login-label">Last Name:</label>
           <input
             type="text"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
+            className="login-input"
             required
           />
         </div>
-        <div>
-          <label>Username:</label>
+        <div className="login-input-group">
+          <label className="login-label">Username:</label>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            className="login-input"
             required
           />
         </div>
-        <div>
-          <label>Email:</label>
+        <div className="login-input-group">
+          <label className="login-label">Email:</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            className="login-input"
             required
           />
         </div>
-        <div>
-          <label>Password:</label>
+        <div className="login-input-group">
+          <label className="login-label">Password:</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            className="login-input"
             required
           />
         </div>
-        <button type="submit">Sign Up</button>
-
-        <p>
+        <button type="submit" className="login-button">Sign Up</button>
+        <p className="login-text">
           Already have an account?{" "}
-          <a href="/login">Login</a>
+          <a href="/login" className="login-link">Login</a>
         </p>
       </form>
     </div>

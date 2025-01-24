@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { auth } from "../config/firebase"; // Adjust the path as needed
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom"; // Import useNavigate for redirection
+import "../styles/LoginAndSignup.css"; // Import the CSS file
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -11,7 +12,7 @@ const Login = () => {
   const navigate = useNavigate(); // useNavigate hook
 
   useEffect(() => {
-    // Check if the user is already authenticated (if you want to keep them logged in)
+    // Check if the user is already authenticated
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       setUser(currentUser);
       if (currentUser) {
@@ -35,46 +36,44 @@ const Login = () => {
   };
 
   return (
-    <div>
+    <div className="login-container">
       {!user ? (
-        <form onSubmit={handleLogin}>
-          <h1>Login</h1>
-          {error && <p style={{ color: "red" }}>{error}</p>}
-          <div>
-            <label>Email:</label>
+        <form onSubmit={handleLogin} className="login-form">
+          <h1 className="login-heading">Login</h1>
+          {error && <p className="login-error">{error}</p>}
+          <div className="login-input-group">
+            <label className="login-label">Email:</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className="login-input"
               required
             />
           </div>
-          <div>
-            <label>Password:</label>
+          <div className="login-input-group">
+            <label className="login-label">Password:</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              className="login-input"
               required
             />
           </div>
-          <button type="submit">Login</button>
-
-          {/* Forgot password link */}
-          <p>
+          <button type="submit" className="login-button">Login</button>
+          <p className="login-text">
             Forgot your password?{" "}
-            <Link to="/reset-password">Click here to reset it.</Link>
+            <Link to="/reset-password" className="login-link">Click here to reset it.</Link>
           </p>
-
-          {/* Sign up link */}
-          <p>
+          <p className="login-text">
             Don't have an account?{" "}
-            <Link to="/signup">Sign up!</Link> {/* Link to the sign-up page */}
+            <Link to="/signup" className="login-link">Sign up!</Link>
           </p>
         </form>
       ) : (
         <div>
-          <h1>Logging in...</h1> {/* Optional: display a loading state */}
+          <h1>Logging in...</h1>
         </div>
       )}
     </div>
