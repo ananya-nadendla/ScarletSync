@@ -9,6 +9,7 @@ import LandingPage from "./components/LandingPage";
 import ProfilePage from "./components/ProfilePage";
 import Dashboard from "./components/Dashboard";
 import SettingsPage from "./components/SettingsPage";
+import Sidebar from "./components/Sidebar";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -25,13 +26,29 @@ const App = () => {
   return (
     <Router>
       <Routes>
+        {/* Public routes */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/profile" element={user ? <ProfilePage /> : <Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/settings" element={<SettingsPage />} />
+
+        {/* Protected routes with sidebar so user can't access these unless logged in*/}
+        {user && (
+          <Route element={<Sidebar />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+          </Route>
+        )}
+
+        {/* Fallback to login if user is not authenticated */}
+        {!user && (
+          <>
+            <Route path="/dashboard" element={<Login />} />
+            <Route path="/profile" element={<Login />} />
+            <Route path="/settings" element={<Login />} />
+          </>
+        )}
       </Routes>
     </Router>
   );
