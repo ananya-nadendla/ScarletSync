@@ -1,4 +1,17 @@
-1/23/2025
+```1/24/2025 ```
+DONE
+MISC
+- Console.log the user's loggedin/loggedout status for testing purposes
+
+TODO
+- Create a Delete Account page when user deletes account in Settings
+  - (i.e We're sorry to see you go! Please confirm your account deletion)
+
+- Username check for special characters (can't have /, etc)
+- Create Page Not Found page (if user tries going to nonexisting page, ie localhost:3000/skjdfksdfjd)
+
+
+```1/23/2025```
 DONE
 - Settings 
   - Change username: Username taken check
@@ -43,10 +56,3 @@ Misc
   - /profile/wise.girly doesnt work when wise.girly is made as fresh account, no info edited (when logged into ananya.nadendla2)
   - It DOES work when wise.girly's info is edited via settings
   - Reason: "some of the fields in the profileData object are being accessed before they are defined"
-  
-TODO
-  - Create a Delete Account page when user deletes account in Settings
-    - (i.e We're sorry to see you go! Please confirm your account deletion)
-  - Console.log the user's loggedin/loggedout status for testing purposes
-  - Username check for special characters (can't have /, etc)
-  - Create Page Not Found page (if user tries going to nonexisting page, ie localhost:3000/skjdfksdfjd)
