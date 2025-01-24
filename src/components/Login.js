@@ -16,7 +16,13 @@ const Login = () => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        navigate("/dashboard"); // Redirect to dashboard if already logged in
+        // If the user is authenticated, check if the email is verified
+        if (currentUser.emailVerified) {
+          navigate("/dashboard"); // Redirect to dashboard if email is verified
+        } else {
+          setError("Please verify your email before logging in.");
+          auth.signOut(); // Log out the user if their email is not verified
+        }
       }
     });
     return unsubscribe;
@@ -28,8 +34,14 @@ const Login = () => {
 
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      setUser(userCredential.user); // Set the user state before navigating
-      navigate("/dashboard"); // Navigate to dashboard after successful login
+      const currentUser = userCredential.user;
+      if (currentUser.emailVerified) {
+        setUser(currentUser); // Set the user state before navigating
+        navigate("/dashboard"); // Navigate to dashboard after successful login
+      } else {
+        setError("Please verify your email before logging in.");
+        auth.signOut(); // Log out the user if their email is not verified
+      }
     } catch (err) {
       setError(err.message);
     }

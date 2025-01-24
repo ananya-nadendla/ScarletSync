@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { auth } from "../config/firebase"; // Adjust path if needed
 import { sendPasswordResetEmail } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import '../styles/LoginAndSignup.css';
 
 const ResetPassword = () => {
   const [email, setEmail] = useState("");
@@ -26,27 +27,30 @@ const ResetPassword = () => {
   };
 
   return (
-    <div>
-      <h1>Reset Password</h1>
-      <form onSubmit={handleResetPassword}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Reset Password</button>
-      </form>
+    <div className="login-container">
+      <div className="login-form">
+        <h1 className="login-heading">Reset Password</h1>
+        <form onSubmit={handleResetPassword}>
+          <div className="login-input-group">
+            <label className="login-label">Email:</label>
+            <input
+              className="login-input"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit" className="login-button">Reset Password</button>
+        </form>
 
-      {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+        {successMessage && <p className="login-success">{successMessage}</p>}
+        {error && <p className="login-error">{error}</p>}
 
-      <p>
-        Remember your password? <a href="/login">Login</a>
-      </p>
+        <p className="login-text">
+          Remember your password? <a className="login-link" href="/login">Login</a>
+        </p>
+      </div>
     </div>
   );
 };

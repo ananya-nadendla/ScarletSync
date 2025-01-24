@@ -19,6 +19,9 @@ DONE
   - Will be the menu
   - Contains: Dashboard, Profile ,Settings, Log out
 
+- Login
+  - Must verify email after signup to login 
+  
 - CSS Styling
   - ProfilePage
   - SettingsPage
@@ -26,6 +29,7 @@ DONE
   - Login
   - Dashboard
   - Sidebar
+  - Reset Password (uses LoginAndSignup.css)
 
 App.js
   - If user is not signed in, dashboard/profile/settings should redirect to /login
