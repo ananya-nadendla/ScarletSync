@@ -10,6 +10,7 @@ import ProfilePage from "./components/ProfilePage";
 import Dashboard from "./components/Dashboard";
 import SettingsPage from "./components/SettingsPage";
 import Sidebar from "./components/Sidebar";
+import OtherUserProfile from "./components/OtherUserProfile"; // Import the new component
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -32,12 +33,15 @@ const App = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/reset-password" element={<ResetPassword />} />
 
-        {/* Protected routes with sidebar so user can't access these unless logged in*/}
+        {/* Protected routes with sidebar so user can't access these unless logged in */}
         {user && (
           <Route element={<Sidebar />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/settings" element={<SettingsPage />} />
+
+            {/* Dynamic route for viewing other users' profiles based on username */}
+            <Route path="/profile/:username" element={<OtherUserProfile />} />
           </Route>
         )}
 
