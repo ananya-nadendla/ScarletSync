@@ -35,18 +35,17 @@ App.js
 
 OtherUserProfile.js
   - shows another user's profile
-  - localhost:3000/profile/usernameOfAnotherProfile
-  - ISSUE(2): profile/myprofile throws error (myprofile being the currently logged in profile)
+  - localhost:3000/profile/username
 
 Misc
-- DONE => ISSUE(1): Let new user take username of a deleted account when (1) signing up (2)choosing new username in settings
+- DONE => Let new user take username of a deleted account when (1) signing up (2)choosing new username in settings
 
 TODO
   - Create a Delete Account page when user deletes account in Settings
     - (i.e We're sorry to see you go! Please confirm your account deletion)
-  - ISSUE(2)(OtherUserProfile): profile/myprofile throws error (myprofile being the currently logged in profile)
-    - /profile/myprofile needs to redirect to /profile
   - Console.log the user's loggedin/loggedout status for testing purposes
-  - ISSUE
+  - ISSUE (2)
     - /profile/wise.girly doesnt work for some reason (when logged into ananya.nadendla2)
     - But /profile/ananya.nadendla2 works when logged into wise.girly ??
+    - Note: /profile/wise.girly worked when i entered more info into the profile (via settings)
+  - Username check for special characters (can't have /, etc)
