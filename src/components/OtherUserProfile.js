@@ -2,44 +2,37 @@ import React, { useState, useEffect } from "react";
 import { db } from "../config/firebase"; // Import Firestore
 import { collection, query, where, getDocs } from "firebase/firestore"; // Firestore query functions
 import { useParams, useNavigate } from "react-router-dom"; // To access the username from the URL and navigate
-import { auth } from "../config/firebase"; // Import Firebase auth
 
 const OtherUserProfile = () => {
   const { username } = useParams(); // Get the username from the URL
   const [profileData, setProfileData] = useState(null);
   const [error, setError] = useState("");
   const navigate = useNavigate(); // Hook to navigate programmatically
-  const currentUser = auth.currentUser; // Get the current logged-in user
 
   useEffect(() => {
-    // If the user tries to visit their own profile, redirect to /profile
-    if (currentUser && username === currentUser.displayName) {
-      navigate("/profile"); // Redirect to the logged-in user's profile
-    } else {
-      // Otherwise, fetch the other user's profile
-      const fetchProfile = async () => {
-        try {
-          // Query the profiles collection to find a document where username matches
-          const profilesRef = collection(db, "profiles");
-          const q = query(profilesRef, where("username", "==", username));
-          const querySnapshot = await getDocs(q);
+    // Fetch the other user's profile
+    const fetchProfile = async () => {
+      try {
+        // Query the profiles collection to find a document where username matches
+        const profilesRef = collection(db, "profiles");
+        const q = query(profilesRef, where("username", "==", username));
+        const querySnapshot = await getDocs(q);
 
-          if (querySnapshot.empty) {
-            setError("Profile not found.");
-          } else {
-            // Assuming there will only be one document with the matching username
-            querySnapshot.forEach((doc) => {
-              setProfileData(doc.data()); // Set the profile data from the query result
-            });
-          }
-        } catch (err) {
-          setError("Error fetching profile data.");
+        if (querySnapshot.empty) {
+          setError("Profile not found.");
+        } else {
+          // Assuming there will only be one document with the matching username
+          querySnapshot.forEach((doc) => {
+            setProfileData(doc.data()); // Set the profile data from the query result
+          });
         }
-      };
+      } catch (err) {
+        setError("Error fetching profile data.");
+      }
+    };
 
-      fetchProfile();
-    }
-  }, [username, currentUser, navigate]); // Re-run when username or currentUser changes
+    fetchProfile();
+  }, [username]); // Re-run when username changes
 
   if (error) {
     return <div className="error-message">{error}</div>;
