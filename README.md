@@ -1,15 +1,14 @@
 youtube video = https://www.youtube.com/watch?v=2hR-uWjBAgw
 
-//Setup project
+//Setup project (everyone - only need to do this once)
 npm install react-router-dom
-
+    (actually install react [after downloading it from browser])
 npm install firebase
-
 npm install -g firebase-tools
-
 npm install web-vitals  
+    (install tools that project needs)
 
-//Run project
+//Run project (everyone - need to do this everytime you want to run project)
 git fetch
     (get updates from github)
 git reset --hard origin/main
@@ -19,7 +18,7 @@ npm start
 ^C 
     (to stop program)
 
-//Push updates to github (for developers only)
+//Push updates to github (developers only)
 git add .
 git status
 git commit -m "message"
