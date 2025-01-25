@@ -3,6 +3,9 @@ DONE
 OtherUserProfile
 - Add loading state so that page doesnt flicker to "page not found" before showing someone's profile
 
+Settings
+  - Major/Minor dropdown, type to filter search results
+
 Loading.js / css
 - Make the loading screen look nicer
 - Used in 
@@ -11,7 +14,6 @@ Loading.js / css
   - SettingsPage
 
 TODO
-- Make major/minor typable/lookup faster
 - Make "Verification email sent!" alert a popup instead (like Interests in Settings)
 - Popup.js: Make Popups a seperate JS file for reuse (Interest[Settings], DeleteAccount[Settings], EmailSent[Signup, Todo], LoggedOut[Todo])
 - Util.js: Make UTIL Js file for reusing code (settings/signup username check)

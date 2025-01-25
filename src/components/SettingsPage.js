@@ -3,8 +3,9 @@ import { db, auth } from "../config/firebase";
 import { doc, getDoc, setDoc, collection, getDocs, query, where, deleteDoc } from "firebase/firestore";
 import { deleteUser } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import Select from 'react-select';
 import '../styles/SettingsPage.css'; // Add your custom CSS file for styling
-import Loading from './Loading'
+import Loading from './Loading';
 
 const SettingsPage = () => {
   const [profileData, setProfileData] = useState({
@@ -92,14 +93,12 @@ const SettingsPage = () => {
     fetchData();
   }, [user, navigate]);
 
-// Regular expression to check if the username contains only allowed characters (letters, numbers, period, underscore)
-const isValidUsername = (username) => {
-  const allowedChars = /^[a-zA-Z0-9._]+$/; // Only letters, numbers, period (.), and underscore (_)
-  return allowedChars.test(username);
-};
+  const isValidUsername = (username) => {
+    const allowedChars = /^[a-zA-Z0-9._]+$/; // Only letters, numbers, period (.), and underscore (_)
+    return allowedChars.test(username);
+  };
 
   const checkUsernameAvailability = async (newUsername) => {
-    // Check if the username already exists in the database
     const usersQuery = query(collection(db, "profiles"), where("username", "==", newUsername));
     const querySnapshot = await getDocs(usersQuery);
     return querySnapshot.empty;  // If empty, username is available
@@ -108,12 +107,11 @@ const isValidUsername = (username) => {
   const handleSave = async () => {
     if (user) {
       try {
-
-       // Check if the username contains only valid characters
-       if (!isValidUsername(profileData.username)) {
+        // Check if the username contains only valid characters
+        if (!isValidUsername(profileData.username)) {
           setError("Username can only contain letters, numbers, periods (.), and underscores (_).");
           return;
-       }
+        }
 
         // Only check if the username has changed
         if (profileData.username !== originalUsername) {
@@ -124,7 +122,7 @@ const isValidUsername = (username) => {
           }
         }
 
-        setError(""); // This will remove the error message set by two conditions above
+        setError(""); // Remove any existing error
 
         // Save the profile data to Firestore
         await setDoc(
@@ -138,16 +136,13 @@ const isValidUsername = (username) => {
 
         alert("Profile updated!");
 
-
         // Redirect to the profile page after saving
-        navigate("/profile");  // Adjust this path if your profile page route is different
+        navigate("/profile");
       } catch (err) {
         setError("Error saving profile data.");
       }
     }
   };
-
-
 
   const handleAddMajor = () => {
     if (selectedMajor && !profileData.major.includes(selectedMajor)) {
@@ -192,24 +187,23 @@ const isValidUsername = (username) => {
   };
 
   const handleDeleteAccount = async () => {
-
-      if (user) {
-        try {
-          // Delete the user's profile from Firestore
-          await deleteDoc(doc(db, "profiles", user.uid));
-          // Delete the user's authentication record
-          await deleteUser(user);
-          alert("Your account has been deleted.");
-          // Redirect to the login page
-          navigate("/login");
-        } catch (err) {
-          console.error("Error deleting account: ", err);
-          alert("An error occurred while deleting your account.");
-        }
+    if (user) {
+      try {
+        // Delete the user's profile from Firestore
+        await deleteDoc(doc(db, "profiles", user.uid));
+        // Delete the user's authentication record
+        await deleteUser(user);
+        alert("Your account has been deleted.");
+        // Redirect to the login page
+        navigate("/login");
+      } catch (err) {
+        console.error("Error deleting account: ", err);
+        alert("An error occurred while deleting your account.");
       }
-    };
+    }
+  };
 
-const confirmDeleteAccount = async () => {
+  const confirmDeleteAccount = async () => {
     setIsDeletePopupOpen(false); // Close the delete popup
     await handleDeleteAccount();
   };
@@ -259,148 +253,115 @@ const confirmDeleteAccount = async () => {
 
       <div>
         <label>School Year:</label>
-        <select
-          value={profileData.schoolYear}
-          onChange={(e) => setProfileData({ ...profileData, schoolYear: e.target.value })}
-        >
-          <option value="">Select School Year</option>
-          {["Freshman", "Sophomore", "Junior", "Senior", "Graduate"].map((year) => (
-            <option key={year} value={year}>
-              {year}
-            </option>
-          ))}
-        </select>
+        <Select
+          options={["Freshman", "Sophomore", "Junior", "Senior", "Graduate"].map((year) => ({ value: year, label: year }))}
+          value={profileData.schoolYear ? { value: profileData.schoolYear, label: profileData.schoolYear } : null}
+          onChange={(selectedOption) => setProfileData({ ...profileData, schoolYear: selectedOption ? selectedOption.value : "" })}
+          placeholder="Select School Year"
+        />
       </div>
 
       {/* Major Selection */}
       <div>
         <label>Majors:</label>
-        <div>
-          <select
-            value={selectedMajor}
-            onChange={(e) => setSelectedMajor(e.target.value)}
-          >
-            <option value="">Select Major</option>
-            {options.majors.map((major, index) => (
-              <option key={index} value={major}>
-                {major}
-              </option>
-            ))}
-          </select>
-          <button onClick={handleAddMajor}>Add Major</button>
-          <ul>
-            {Array.isArray(profileData.major) && profileData.major.map((major, index) => (
-              <li key={index}>
-                {major}{" "}
-                <button onClick={() => handleRemoveMajor(major)}>Remove</button>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <Select
+          options={options.majors.map((major) => ({ value: major, label: major }))}
+          onChange={(selectedOption) => setSelectedMajor(selectedOption ? selectedOption.value : "")}
+          value={selectedMajor ? { value: selectedMajor, label: selectedMajor } : null}
+          placeholder="Select a Major"
+        />
+        <button onClick={handleAddMajor}>Add Major</button>
+        <ul>
+          {Array.isArray(profileData.major) && profileData.major.map((major, index) => (
+            <li key={index}>
+              {major}
+              <button onClick={() => handleRemoveMajor(major)}>Remove</button>
+            </li>
+          ))}
+        </ul>
       </div>
 
       {/* Minor Selection */}
       <div>
         <label>Minors:</label>
-        <div>
-          <select
-            value={selectedMinor}
-            onChange={(e) => setSelectedMinor(e.target.value)}
-          >
-            <option value="">Select Minor</option>
-            {options.minors.map((minor, index) => (
-              <option key={index} value={minor}>
-                {minor}
-              </option>
-            ))}
-          </select>
-          <button onClick={handleAddMinor}>Add Minor</button>
-          <ul>
-            {Array.isArray(profileData.minor) && profileData.minor.map((minor, index) => (
-              <li key={index}>
-                {minor}{" "}
-                <button onClick={() => handleRemoveMinor(minor)}>Remove</button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      <div>
-        <label>Campus Location:</label>
-        <select
-          value={profileData.campusLocation}
-          onChange={(e) => setProfileData({ ...profileData, campusLocation: e.target.value })}
-        >
-          <option value="">Select Campus Location</option>
-          {options.campusLocations.map((location) => (
-            <option key={location} value={location}>
-              {location}
-            </option>
+        <Select
+          options={options.minors.map((minor) => ({ value: minor, label: minor }))}
+          onChange={(selectedOption) => setSelectedMinor(selectedOption ? selectedOption.value : "")}
+          value={selectedMinor ? { value: selectedMinor, label: selectedMinor } : null}
+          placeholder="Select a Minor"
+        />
+        <button onClick={handleAddMinor}>Add Minor</button>
+        <ul>
+          {Array.isArray(profileData.minor) && profileData.minor.map((minor, index) => (
+            <li key={index}>
+              {minor}
+              <button onClick={() => handleRemoveMinor(minor)}>Remove</button>
+            </li>
           ))}
-        </select>
+        </ul>
       </div>
 
+      {/* Interests */}
       <div>
-        <label>Interests:</label>
-        <button onClick={() => setIsPopupOpen(true)}>Choose Interests</button>
-        {selectedSubInterests.length > 0 ? (
-          <ul>
-            {selectedSubInterests.map((interest, index) => (
-              <li key={index}>{interest}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>No interests selected</p>
-        )}
-      </div>
-
-      {isPopupOpen && (
-        <>
-          <div className="popup-overlay" onClick={() => setIsPopupOpen(false)}></div>
-          <div className="popup">
-            <h2>Choose Your Interests</h2>
-            <div className="interests-container">
-              {options.interests.map((interest, index) => (
-                <div key={index} className="interest-group">
-                  <h3>{interest.name}</h3>
-                  {interest.subInterests.map((subInterest, subIndex) => (
-                    <div
-                      key={subIndex}
-                      className={`interest-chip ${selectedSubInterests.includes(subInterest) ? 'selected' : ''}`}
-                      onClick={() => handleChipClick(subInterest)}
-                    >
-                      {subInterest}
-                    </div>
+              <label>Interests:</label>
+              <button onClick={() => setIsPopupOpen(true)}>Choose Interests</button>
+              {selectedSubInterests.length > 0 ? (
+                <ul>
+                  {selectedSubInterests.map((interest, index) => (
+                    <li key={index}>{interest}</li>
                   ))}
-                </div>
-              ))}
+                </ul>
+              ) : (
+                <p>No interests selected</p>
+              )}
             </div>
-            <button onClick={() => setIsPopupOpen(false)} className="close-btn">Close</button>
-          </div>
-        </>
-      )}
+
+            {isPopupOpen && (
+              <>
+                <div className="popup-overlay" onClick={() => setIsPopupOpen(false)}></div>
+                <div className="popup">
+                  <h2>Choose Your Interests</h2>
+                  <div className="interests-container">
+                    {options.interests.map((interest, index) => (
+                      <div key={index} className="interest-group">
+                        <h3>{interest.name}</h3>
+                        {interest.subInterests.map((subInterest, subIndex) => (
+                          <div
+                            key={subIndex}
+                            className={`interest-chip ${selectedSubInterests.includes(subInterest) ? 'selected' : ''}`}
+                            onClick={() => handleChipClick(subInterest)}
+                          >
+                            {subInterest}
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                  <button onClick={() => setIsPopupOpen(false)} className="close-btn">Close</button>
+                </div>
+              </>
+            )}
 
 
       <button onClick={handleSave}>Save Changes</button>
 
-     {/* Delete Account Button */}
-           <button className="delete-account-btn" onClick={() => setIsDeletePopupOpen(true)}>
-             Delete Account
-           </button>
+      {/* Delete Account Button */}
+        <button className="delete-account-btn" onClick={() => setIsDeletePopupOpen(true)}>
+          Delete Account
+          </button>
 
-           {/* Delete Account Confirmation Popup */}
-           {isDeletePopupOpen && (
-             <>
-               <div className="popup-overlay" onClick={() => setIsDeletePopupOpen(false)}></div>
-               <div className="popup">
-                 <h2>Are you sure you want to delete your account?</h2>
-                 <p>This action cannot be undone.</p>
-                 <button onClick={confirmDeleteAccount}>Yes, Delete</button>
-                 <button onClick={() => setIsDeletePopupOpen(false)} className="close-btn">Cancel</button>
-               </div>
-             </>
-           )}
+          {/* Delete Account Confirmation Popup */}
+          {isDeletePopupOpen && (
+              <>
+                <div className="popup-overlay" onClick={() => setIsDeletePopupOpen(false)}></div>
+                <div className="popup">
+                    <h2>Are you sure you want to delete your account?</h2>
+                    <p>This action cannot be undone.</p>
+                    <button onClick={confirmDeleteAccount}>Yes, Delete</button>
+                    <button onClick={() => setIsDeletePopupOpen(false)} className="close-btn">Cancel</button>
+                </div>
+              </>
+          )}
     </div>
   );
 };

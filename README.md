@@ -7,6 +7,8 @@ npm install firebase
 npm install -g firebase-tools
 npm install web-vitals  
     (install tools that project needs)
+npm install react-select
+    (NEW TOOL - 1/25)
 
 //Run project (everyone - need to do this everytime you want to run project)
 git fetch
