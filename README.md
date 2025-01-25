@@ -18,3 +18,9 @@ npm start
     (run program in browser)
 ^C 
     (to stop program)
+
+//Push updates to github (for developers only)
+git add .
+git status
+git commit -m "message"
+git push origin main
