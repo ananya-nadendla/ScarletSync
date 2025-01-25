@@ -91,6 +91,12 @@ const SettingsPage = () => {
     fetchData();
   }, [user, navigate]);
 
+// Regular expression to check if the username contains only allowed characters (letters, numbers, period, underscore)
+const isValidUsername = (username) => {
+  const allowedChars = /^[a-zA-Z0-9._]+$/; // Only letters, numbers, period (.), and underscore (_)
+  return allowedChars.test(username);
+};
+
   const checkUsernameAvailability = async (newUsername) => {
     // Check if the username already exists in the database
     const usersQuery = query(collection(db, "profiles"), where("username", "==", newUsername));
@@ -101,14 +107,23 @@ const SettingsPage = () => {
   const handleSave = async () => {
     if (user) {
       try {
+
+       // Check if the username contains only valid characters
+       if (!isValidUsername(profileData.username)) {
+          setError("Username can only contain letters, numbers, periods (.), and underscores (_).");
+          return;
+       }
+
         // Only check if the username has changed
         if (profileData.username !== originalUsername) {
           const isUsernameAvailable = await checkUsernameAvailability(profileData.username);
           if (!isUsernameAvailable) {
-            setError(`Username ${profileData.username} is already taken. Please choose another one.`);
+            setError(`Username "${profileData.username}" is already taken. Please choose another one.`);
             return;
           }
         }
+
+        setError(""); // This will remove the error message set by two conditions above
 
         // Save the profile data to Firestore
         await setDoc(
@@ -119,7 +134,9 @@ const SettingsPage = () => {
           },
           { merge: true }
         );
+
         alert("Profile updated!");
+
 
         // Redirect to the profile page after saving
         navigate("/profile");  // Adjust this path if your profile page route is different
@@ -128,6 +145,8 @@ const SettingsPage = () => {
       }
     }
   };
+
+
 
   const handleAddMajor = () => {
     if (selectedMajor && !profileData.major.includes(selectedMajor)) {
@@ -225,7 +244,7 @@ const confirmDeleteAccount = async () => {
           value={profileData.username}
           onChange={(e) => setProfileData({ ...profileData, username: e.target.value })}
         />
-        {error && error.includes(profileData.username) && (
+        {error && (
           <div className="error-message">{error}</div>
         )}
       </div>

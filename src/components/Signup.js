@@ -14,9 +14,24 @@ const Signup = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate(); // For navigation
 
+  // Regular expression to check if the username contains invalid characters
+  // Regular expression to check if the username contains invalid characters
+  const isValidUsername = (username) => {
+    const allowedChars = /^[a-zA-Z0-9._]+$/; // Only letters, numbers, period (.), and underscore (_)
+    return allowedChars.test(username);
+  };
+
+
+
   const handleSignup = async (e) => {
     e.preventDefault();
     setError("");
+
+    // Check if the username contains only allowed characters
+    if (!isValidUsername(username)) {
+      setError("Username can only contain letters, numbers, periods (.), and underscores (_).");
+      return;
+    }
 
     try {
       // Check if the username already exists

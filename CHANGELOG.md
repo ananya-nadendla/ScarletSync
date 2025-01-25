@@ -4,11 +4,15 @@ MISC
 - Console.log the user's loggedin/loggedout status for testing purposes
 - Create a Delete Account page when user deletes account in Settings
   - (i.e We're sorry to see you go! Please confirm your account deletion)
+- Username check for special characters (can't have /, etc) (IN SETTINGS & SIGNUP)
 
 TODO
 - Username check for special characters (can't have /, etc)
 - Create Page Not Found page (if user tries going to nonexisting page, ie localhost:3000/skjdfksdfjd)
 - Prevent logged out user from accessing /profile/someonesprofile
+- Make "Verification email sent!" alert a popup instead (like Interests in Settings)
+- Popup.js: Make Popups a seperate JS file for reuse (Interest[Settings], DeleteAccount[Settings], EmailSent[Signup, Todo], LoggedOut[Todo])
+- Util.js: Make UTIL Js file for reusing code (settings/signup username check)
 
 
 ```1/23/2025```
