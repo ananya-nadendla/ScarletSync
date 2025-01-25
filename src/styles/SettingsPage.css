@@ -33,84 +33,94 @@
 
 .settings-container button:hover {
   background-color: #0d95e8;
-}
-.popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  max-width: 500px;
-  width: 100%;
-  z-index: 1000;
-  overflow-y: auto;
-}
+}.popup {
+   position: fixed;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   background-color: white;
+   padding: 20px;
+   border-radius: 8px;
+   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+   max-width: 500px;
+   width: 100%;
+   z-index: 1000;
+   overflow-y: auto;
+ }
 
-.popup h2 {
-  margin-bottom: 20px;
-  font-size: 24px;
-  font-weight: 600;
-  color: #333;
-}
+ /*Translucent gray background behind popup*/
+ .popup-overlay {
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   background-color: rgba(0, 0, 0, 0.5); /* Translucent gray background */
+   z-index: 999; /* Make sure it's behind the popup */
+ }
 
-.popup h3 {
-  font-size: 18px;
-  margin-top: 10px;
-  color: #555;
-}
+ .popup h2 {
+   margin-bottom: 20px;
+   font-size: 24px;
+   font-weight: 600;
+   color: #333;
+ }
 
-.popup .interest-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 20px;
-}
+ .popup h3 {
+   font-size: 18px;
+   margin-top: 10px;
+   color: #555;
+ }
 
-.popup .interest-chip {
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 16px;
-  background-color: #e0e0e0;
-  border-radius: 20px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
+ .popup .interest-group {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 10px;
+   margin-bottom: 20px;
+ }
 
-.popup .interest-chip.selected {
-  background-color: #007bff;
-  color: white;
-}
+ .popup .interest-chip {
+   display: inline-flex;
+   align-items: center;
+   padding: 8px 16px;
+   background-color: #e0e0e0;
+   border-radius: 20px;
+   font-size: 14px;
+   cursor: pointer;
+   transition: background-color 0.3s;
+ }
 
-.popup button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  margin-top: 20px;
-}
+ .popup .interest-chip.selected {
+   background-color: #007bff;
+   color: white;
+ }
 
-.popup button:hover {
-  background-color: #0056b3;
-}
+ .popup button {
+   background-color: #007bff;
+   color: white;
+   border: none;
+   padding: 10px 20px;
+   border-radius: 4px;
+   cursor: pointer;
+   font-size: 16px;
+   margin-top: 20px;
+ }
 
-.popup .close-btn {
-  background-color: #f44336;
-  margin-top: 10px;
-}
+ .popup button:hover {
+   background-color: #0056b3;
+ }
 
-.popup .close-btn:hover {
-  background-color: #d32f2f;
-}
+ .popup .close-btn {
+   background-color: #f44336;
+   margin-top: 10px;
+ }
 
-.error-message {
-  color: red;
-  font-size: 14px;
-  margin-bottom: 10px;
-}
+ .popup .close-btn:hover {
+   background-color: #d32f2f;
+ }
+
+ .error-message {
+   color: red;
+   font-size: 14px;
+   margin-bottom: 10px;
+ }

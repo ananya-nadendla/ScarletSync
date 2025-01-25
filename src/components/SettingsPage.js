@@ -26,6 +26,7 @@ const SettingsPage = () => {
   });
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
   const [selectedSubInterests, setSelectedSubInterests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedMajor, setSelectedMajor] = useState(""); // Track selected major
@@ -171,9 +172,8 @@ const SettingsPage = () => {
   };
 
   const handleDeleteAccount = async () => {
-      const confirmDelete = window.confirm("Are you sure you want to delete your account? This action cannot be undone.");
 
-      if (confirmDelete && user) {
+      if (user) {
         try {
           // Delete the user's profile from Firestore
           await deleteDoc(doc(db, "profiles", user.uid));
@@ -188,6 +188,11 @@ const SettingsPage = () => {
         }
       }
     };
+
+const confirmDeleteAccount = async () => {
+    setIsDeletePopupOpen(false); // Close the delete popup
+    await handleDeleteAccount();
+  };
 
   if (loading) {
     return <p>Loading...</p>;
@@ -331,34 +336,51 @@ const SettingsPage = () => {
       </div>
 
       {isPopupOpen && (
-        <div className="popup">
-          <h2>Choose Your Interests</h2>
-          <div className="interests-container">
-            {options.interests.map((interest, index) => (
-              <div key={index} className="interest-group">
-                <h3>{interest.name}</h3>
-                {interest.subInterests.map((subInterest, subIndex) => (
-                  <div
-                    key={subIndex}
-                    className={`interest-chip ${selectedSubInterests.includes(subInterest) ? 'selected' : ''}`}
-                    onClick={() => handleChipClick(subInterest)}
-                  >
-                    {subInterest}
-                  </div>
-                ))}
-              </div>
-            ))}
+        <>
+          <div className="popup-overlay" onClick={() => setIsPopupOpen(false)}></div>
+          <div className="popup">
+            <h2>Choose Your Interests</h2>
+            <div className="interests-container">
+              {options.interests.map((interest, index) => (
+                <div key={index} className="interest-group">
+                  <h3>{interest.name}</h3>
+                  {interest.subInterests.map((subInterest, subIndex) => (
+                    <div
+                      key={subIndex}
+                      className={`interest-chip ${selectedSubInterests.includes(subInterest) ? 'selected' : ''}`}
+                      onClick={() => handleChipClick(subInterest)}
+                    >
+                      {subInterest}
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+            <button onClick={() => setIsPopupOpen(false)} className="close-btn">Close</button>
           </div>
-          <button onClick={() => setIsPopupOpen(false)} className="close-btn">Close</button>
-        </div>
+        </>
       )}
+
 
       <button onClick={handleSave}>Save Changes</button>
 
      {/* Delete Account Button */}
-      <button className="delete-account-btn" onClick={handleDeleteAccount}>
-        Delete Account
-      </button>
+           <button className="delete-account-btn" onClick={() => setIsDeletePopupOpen(true)}>
+             Delete Account
+           </button>
+
+           {/* Delete Account Confirmation Popup */}
+           {isDeletePopupOpen && (
+             <>
+               <div className="popup-overlay" onClick={() => setIsDeletePopupOpen(false)}></div>
+               <div className="popup">
+                 <h2>Are you sure you want to delete your account?</h2>
+                 <p>This action cannot be undone.</p>
+                 <button onClick={confirmDeleteAccount}>Yes, Delete</button>
+                 <button onClick={() => setIsDeletePopupOpen(false)} className="close-btn">Cancel</button>
+               </div>
+             </>
+           )}
     </div>
   );
 };
