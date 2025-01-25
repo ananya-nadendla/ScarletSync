@@ -4,6 +4,7 @@ import { doc, getDoc, setDoc, collection, getDocs, query, where, deleteDoc } fro
 import { deleteUser } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import '../styles/SettingsPage.css'; // Add your custom CSS file for styling
+import Loading from './Loading'
 
 const SettingsPage = () => {
   const [profileData, setProfileData] = useState({
@@ -214,7 +215,7 @@ const confirmDeleteAccount = async () => {
   };
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Loading message="Loading..." />;
   }
 
   return (

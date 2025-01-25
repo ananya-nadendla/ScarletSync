@@ -2,16 +2,19 @@ import React, { useState, useEffect } from "react";
 import { db } from "../config/firebase"; // Import Firestore
 import { collection, query, where, getDocs } from "firebase/firestore"; // Firestore query functions
 import { useParams, useNavigate } from "react-router-dom"; // To access the username from the URL and navigate
+import Loading from "./Loading"
 
 const OtherUserProfile = () => {
   const { username } = useParams(); // Get the username from the URL
   const [profileData, setProfileData] = useState(null);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true); // Add a loading state
   const navigate = useNavigate(); // Hook to navigate programmatically
 
   useEffect(() => {
     // Fetch the other user's profile
     const fetchProfile = async () => {
+      setLoading(true); // Start loading
       try {
         // Query the profiles collection to find a document where username matches
         const profilesRef = collection(db, "profiles");
@@ -19,28 +22,35 @@ const OtherUserProfile = () => {
         const querySnapshot = await getDocs(q);
 
         if (querySnapshot.empty) {
-          //setError("Profile not found.");
-          navigate("/page-not-found", { replace: true }); //slash page-not-found is not a real page, so goes to PageNotFound
+          // Profile not found
+          setLoading(false); // Stop loading
+          navigate("/page-not-found", { replace: true }); // Navigate to page-not-found
         } else {
           // Assuming there will only be one document with the matching username
           querySnapshot.forEach((doc) => {
             setProfileData(doc.data()); // Set the profile data from the query result
           });
+          setLoading(false); // Stop loading after setting profile data
         }
       } catch (err) {
         setError("Error fetching profile data.");
+        setLoading(false); // Stop loading on error
       }
     };
 
     fetchProfile();
   }, [username, navigate]); // Re-run when username changes
 
+  if (loading) {
+    return <Loading message="Fetching user profile..." />;
+  }
+
   if (error) {
     return <div className="error-message">{error}</div>;
   }
 
   if (!profileData) {
-    return <p>Loading...</p>;
+    return null; // Prevent rendering if profile data is not set
   }
 
   // Add safety checks to prevent errors due to undefined fields

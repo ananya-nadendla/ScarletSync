@@ -1,3 +1,27 @@
+```1/25/2025```
+DONE
+OtherUserProfile
+- Add loading state so that page doesnt flicker to "page not found" before showing someone's profile
+
+Loading.js / css
+- Make the loading screen look nicer
+- Used in 
+  - OtherUserProfile
+  - ProfilePage
+  - SettingsPage
+
+TODO
+- Make major/minor typable/lookup faster
+- Make "Verification email sent!" alert a popup instead (like Interests in Settings)
+- Popup.js: Make Popups a seperate JS file for reuse (Interest[Settings], DeleteAccount[Settings], EmailSent[Signup, Todo], LoggedOut[Todo])
+- Util.js: Make UTIL Js file for reusing code (settings/signup username check)
+- ISSUE
+  - While logged in --> type /profile in address bar --> takes to dashboard instead
+    - But clicking "Profile" in Sidebar works fine
+    - Reason
+      - ProfilePage: line 48 --> navigate("/login");
+      - Login: line 40 --> navigate("/dashboard")
+
 ```1/24/2025 ```
 DONE
 MISC
@@ -11,17 +35,6 @@ MISC
 - PageNotFound: 
   - Create Page Not Found page (if user tries going to nonexisting page, ie localhost:3000/skjdfksdfjd)
     - Prevent logged out user from accessing /profile/someonesprofile (redirects to PageNotFound)
-
-TODO
-- Make "Verification email sent!" alert a popup instead (like Interests in Settings)
-- Popup.js: Make Popups a seperate JS file for reuse (Interest[Settings], DeleteAccount[Settings], EmailSent[Signup, Todo], LoggedOut[Todo])
-- Util.js: Make UTIL Js file for reusing code (settings/signup username check)
-- ISSUE
-  - While logged in --> type /profile in address bar --> takes to dashboard instead
-    - But clicking "Profile" in Sidebar works fine
-    - Reason
-      - ProfilePage: line 48 --> navigate("/login");
-      - Login: line 40 --> navigate("/dashboard")
       
 
 ```1/23/2025```

@@ -3,6 +3,7 @@ import { auth, db } from "../config/firebase"; // Import Firestore and Auth
 import { doc, getDoc } from "firebase/firestore"; // Firestore functions
 import { useNavigate } from "react-router-dom";
 import '../styles/ProfilePage.css'; // Add your custom CSS file for styling
+import Loading from './Loading'
 
 const ProfilePage = () => {
   const [profileData, setProfileData] = useState({
@@ -58,7 +59,7 @@ const ProfilePage = () => {
   }, [user, navigate]);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Loading message="Fetching user profile..." />;
   }
 
   return (

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { auth, db } from "./config/firebase"; // Import Firebase auth and Firestore
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, onSnapshot } from "firebase/firestore"; // Firestore functions
@@ -12,24 +12,38 @@ import Dashboard from "./components/Dashboard";
 import SettingsPage from "./components/SettingsPage";
 import Sidebar from "./components/Sidebar";
 import OtherUserProfile from "./components/OtherUserProfile";
-import PageNotFound from "./components/PageNotFound"
+import PageNotFound from "./components/PageNotFound";
+import Loading from "./components/Loading"
+
+//If user it not logged in and tries to access dashboard, profile, etc, REDIRECT to login
+const ProtectedRoute = ({ user, children }) => {
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+};
 
 const App = () => {
   const [user, setUser] = useState(null);
+  const [loadingAuth, setLoadingAuth] = useState(true); // Add a loading state for authentication
 
   // Listen to authentication state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user); // Update user state on login/logout
+      setLoadingAuth(false); // Auth status is determined
     });
 
     return () => unsubscribe(); // Cleanup the listener on unmount
   }, []);
 
+  if (loadingAuth) {
+    return <Loading message="Loading..." />; // Show a loading screen while checking authentication
+  }
+
   return (
     <Router>
-
-      <PageLogger user={user} /> {/*TEMPORARY DEBUGGER to log user authentication status*/}
+      <PageLogger user={user} /> {/* TEMPORARY DEBUGGER to log user authentication status */}
       <Routes>
         {/* Public routes */}
         <Route path="/" element={<LandingPage />} />
@@ -37,27 +51,44 @@ const App = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/reset-password" element={<ResetPassword />} />
 
-        {/* Protected routes -- can only access these if user is logged in */}
-        {user && (
-          <Route element={<Sidebar />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="/profile/:username" element={<OtherUserProfile />} />
-          </Route>
-        )}
+        {/* Protected routes --> User must be logged in to access these pages*/}
+        <Route element={<Sidebar />}>
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute user={user}>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute user={user}>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile/:username"
+            element={
+              <ProtectedRoute user={user}>
+                <OtherUserProfile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute user={user}>
+                <SettingsPage />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
 
-        {/* Fallback to login -- if user tries to access the 3 website below while logged out*/}
-        {!user && (
-          <>
-            <Route path="/dashboard" element={<Login />} />
-            <Route path="/profile" element={<Login />} />
-            <Route path="/settings" element={<Login />} />
-          </>
-        )}
-
-        {/* Catch-all route for undefined paths */}
-        <Route path="*" element={<PageNotFound />} /> {/* Show PageNotFound for unknown routes */}
+        {/* Catch-all route */}
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </Router>
   );
