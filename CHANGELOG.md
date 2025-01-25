@@ -1,12 +1,16 @@
 ```1/24/2025 ```
 DONE
 MISC
-- Console.log the user's loggedin/loggedout status for testing purposes
-- Create a Delete Account page when user deletes account in Settings
-  - (i.e We're sorry to see you go! Please confirm your account deletion)
-- Username check for special characters (can't have /, etc) (IN SETTINGS & SIGNUP)
-- Create Page Not Found page (if user tries going to nonexisting page, ie localhost:3000/skjdfksdfjd)
-- Prevent logged out user from accessing /profile/someonesprofile
+- App.js
+  - Console.log the user's loggedin/loggedout status for testing purposes
+- SettingsPage.js: 
+  - Create a Delete Account popup when user deletes account in Settings
+    - (i.e We're sorry to see you go! Please confirm your account deletion)
+- Settings + Signup: 
+  - Username check for special characters (can't have /, etc) 
+- PageNotFound: 
+  - Create Page Not Found page (if user tries going to nonexisting page, ie localhost:3000/skjdfksdfjd)
+    - Prevent logged out user from accessing /profile/someonesprofile (redirects to PageNotFound)
 
 TODO
 - Make "Verification email sent!" alert a popup instead (like Interests in Settings)
