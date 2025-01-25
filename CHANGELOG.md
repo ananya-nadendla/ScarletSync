@@ -19,6 +19,10 @@ TODO
 - ISSUE
   - While logged in --> type /profile in address bar --> takes to dashboard instead
     - But clicking "Profile" in Sidebar works fine
+    - Reason
+      - ProfilePage: line 48 --> navigate("/login");
+      - Login: line 40 --> navigate("/dashboard")
+      
 
 ```1/23/2025```
 DONE
