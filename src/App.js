@@ -12,6 +12,7 @@ import Dashboard from "./components/Dashboard";
 import SettingsPage from "./components/SettingsPage";
 import Sidebar from "./components/Sidebar";
 import OtherUserProfile from "./components/OtherUserProfile";
+import PageNotFound from "./components/PageNotFound"
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -54,6 +55,9 @@ const App = () => {
             <Route path="/settings" element={<Login />} />
           </>
         )}
+
+        {/* Catch-all route for undefined paths */}
+        <Route path="*" element={<PageNotFound />} /> {/* Show PageNotFound for unknown routes */}
       </Routes>
     </Router>
   );

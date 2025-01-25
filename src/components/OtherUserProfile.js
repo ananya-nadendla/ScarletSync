@@ -19,7 +19,8 @@ const OtherUserProfile = () => {
         const querySnapshot = await getDocs(q);
 
         if (querySnapshot.empty) {
-          setError("Profile not found.");
+          //setError("Profile not found.");
+          navigate("/page-not-found", { replace: true }); //slash page-not-found is not a real page, so goes to PageNotFound
         } else {
           // Assuming there will only be one document with the matching username
           querySnapshot.forEach((doc) => {
@@ -32,7 +33,7 @@ const OtherUserProfile = () => {
     };
 
     fetchProfile();
-  }, [username]); // Re-run when username changes
+  }, [username, navigate]); // Re-run when username changes
 
   if (error) {
     return <div className="error-message">{error}</div>;

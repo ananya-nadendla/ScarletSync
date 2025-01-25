@@ -1,0 +1,49 @@
+/* Container for the error page */
+.pagenotfound-container {
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Content inside the error page */
+.pagenotfound-content {
+  background-color: #ffffff;
+  padding: 30px 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+/* Error heading */
+.pagenotfound-heading {
+  color: #333333;
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Error message text */
+.pagenotfound-message {
+  font-size: 16px;
+  color: #555555;
+  margin-bottom: 20px;
+}
+
+/* Link to navigate back to the home page */
+.pagenotfound-link {
+  color: #007bff;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.pagenotfound-link:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
