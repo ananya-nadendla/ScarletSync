@@ -13,16 +13,19 @@ Loading.js / css
   - ProfilePage
   - SettingsPage
 
-TODO
-- Make "Verification email sent!" alert a popup instead (like Interests in Settings)
-- Popup.js: Make Popups a seperate JS file for reuse (Interest[Settings], DeleteAccount[Settings], EmailSent[Signup, Todo], LoggedOut[Todo])
-- Util.js: Make UTIL Js file for reusing code (settings/signup username check)
-- ISSUE
+MISC
+- ISSUE (FIXED)
   - While logged in --> type /profile in address bar --> takes to dashboard instead
     - But clicking "Profile" in Sidebar works fine
     - Reason
       - ProfilePage: line 48 --> navigate("/login");
       - Login: line 40 --> navigate("/dashboard")
+
+TODO
+- Optional: Make "Verification email sent!" alert a popup instead (like Interests in Settings)
+- Optional: Popup.js: Make Popups a seperate JS file for reuse (Interest[Settings], DeleteAccount[Settings], EmailSent[Signup, Todo], LoggedOut[Todo])
+- Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
+
 
 ```1/24/2025 ```
 DONE
