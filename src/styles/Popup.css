@@ -1,40 +1,140 @@
-.popup-container {
+/* Popup Styles */
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.popup-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
 }
 
-.popup {
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  text-align: center;
-  max-width: 400px;
-  width: 90%;
-}
-
-.popup-message {
+.popup h2 {
   margin-bottom: 20px;
-  font-size: 16px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
 }
 
-.popup-ok-button {
-  background: #007bff;
-  color: #fff;
-  border: none;
+.popup .popup-buttons {
+  display: flex;
+  justify-content: center;  /* Center the buttons */
+  gap: 10px; /* Space between buttons */
+  margin-top: 20px; /* Add some space above the buttons */
+}
+
+
+.popup button {
   padding: 10px 20px;
-  border-radius: 5px;
+  border-radius: 4px;
+  font-size: 16px;
   cursor: pointer;
 }
 
-.popup-ok-button:hover {
-  background: #0056b3;
+.popup-confirm-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
 }
+
+.popup-confirm-btn:hover {
+  background-color: #0056b3;
+}
+
+.popup-close-btn {
+  background-color: #f44336;
+  color: white;
+  border: none;
+}
+
+.popup-close-btn:hover {
+  background-color: #d32f2f;
+}
+
+/*Settings*/
+
+ /*Translucent gray background behind popup*/
+ .popup-overlay {
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   background-color: rgba(0, 0, 0, 0.5); /* Translucent gray background */
+   z-index: 999; /* Make sure it's behind the popup */
+ }
+
+ .popup h2 {
+   margin-bottom: 20px;
+   font-size: 24px;
+   font-weight: 600;
+   color: #333;
+ }
+
+ .popup h3 {
+   font-size: 18px;
+   margin-top: 10px;
+   color: #555;
+ }
+
+ .popup .interest-group {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 10px;
+   margin-bottom: 20px;
+ }
+
+ .popup .interest-chip {
+   display: inline-flex;
+   align-items: center;
+   padding: 8px 16px;
+   background-color: #e0e0e0;
+   border-radius: 20px;
+   font-size: 14px;
+   cursor: pointer;
+   transition: background-color 0.3s;
+ }
+
+ .popup .interest-chip.selected {
+   background-color: #007bff;
+   color: white;
+ }
+
+ .popup button {
+   background-color: #007bff;
+   color: white;
+   border: none;
+   padding: 10px 20px;
+   border-radius: 4px;
+   cursor: pointer;
+   font-size: 16px;
+   margin-top: 20px;
+ }
+
+ .popup button:hover {
+   background-color: #0056b3;
+ }
+
+ .popup .close-btn {
+   background-color: #f44336;
+   margin-top: 10px;
+ }
+
+ .popup .close-btn:hover {
+   background-color: #d32f2f;
+ }

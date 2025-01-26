@@ -134,11 +134,10 @@ const Signup = () => {
         <Popup
           title="Email Verification Sent"
           content="A verification email has been sent to your email address. Please check your inbox and verify your email."
-          onClose={handlePopupClose}
-          closeButtonText="OK"
+          onConfirm={handlePopupClose}
+          confirmButtonText="OK"
         />
       )}
-
     </div>
   );
 };

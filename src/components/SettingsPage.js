@@ -303,48 +303,49 @@ const SettingsPage = () => {
       </div>
 
       {/* Interests Section */}
-          <div>
-            <label>Interests:</label>
-            <button onClick={() => setIsPopupOpen(true)}>Choose Interests</button>
-            {selectedSubInterests.length > 0 ? (
-              <ul>
-                {selectedSubInterests.map((interest, index) => (
-                  <li key={index}>{interest}</li>
-                ))}
-              </ul>
-            ) : (
-              <p>No interests selected</p>
-            )}
-          </div>
+      <div>
+        <label>Interests:</label>
+        <button onClick={() => setIsPopupOpen(true)}>Choose Interests</button>
+        {selectedSubInterests.length > 0 ? (
+          <ul>
+            {selectedSubInterests.map((interest, index) => (
+              <li key={index}>{interest}</li>
+            ))}
+          </ul>
+        ) : (
+          <p>No interests selected</p>
+        )}
+      </div>
 
-          {isPopupOpen && (
-            <Popup
-              title="Choose Your Interests"
-              content={
-                <div className="interests-container">
-                  {options.interests.map((interest, index) => (
-                    <div key={index} className="interest-group">
-                      <h3>{interest.name}</h3>
-                      {interest.subInterests.map((subInterest, subIndex) => (
-                        <div
-                          key={subIndex}
-                          className={`interest-chip ${
-                            selectedSubInterests.includes(subInterest) ? "selected" : ""
-                          }`}
-                          onClick={() => handleChipClick(subInterest)}
-                        >
-                          {subInterest}
-                        </div>
-                      ))}
+      {isPopupOpen && (
+        <Popup
+          title="Choose Your Interests"
+          content={
+            <div className="interests-container">
+              {options.interests.map((interest, index) => (
+                <div key={index} className="interest-group">
+                  <h3>{interest.name}</h3>
+                  {interest.subInterests.map((subInterest, subIndex) => (
+                    <div
+                      key={subIndex}
+                      className={`interest-chip ${
+                        selectedSubInterests.includes(subInterest) ? "selected" : ""
+                      }`}
+                      onClick={() => handleChipClick(subInterest)}
+                    >
+                      {subInterest}
                     </div>
                   ))}
                 </div>
-              }
-              onClose={() => setIsPopupOpen(false)}
-              onConfirm={() => setIsPopupOpen(false)}
-              closeButtonText="OK"  // Custom text for the Cancel button
-            />
-          )}
+              ))}
+            </div>
+          }
+          onClose={() => setIsPopupOpen(false)}
+          onConfirm={() => setIsPopupOpen(false)}
+          confirmButtonText="Save" // Confirm button with "Save" text
+        />
+      )}
+
 
           {/* Save Button */}
           <button onClick={handleSave}>Save Changes</button>
@@ -368,7 +369,7 @@ const SettingsPage = () => {
               }
               onClose={() => setIsDeletePopupOpen(false)}
               onConfirm={confirmDeleteAccount}
-              closeButtonText="Cancel"  // Custom text for the Cancel button
+              cancelButtonText="Cancel"  // Custom text for the Cancel button
               confirmButtonText="Delete"  // Custom text for the Confirm button
             />
           )}
