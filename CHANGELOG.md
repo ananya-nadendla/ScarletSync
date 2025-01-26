@@ -25,6 +25,7 @@ TODO
 - Optional: Make "Verification email sent!" alert a popup instead (like Interests in Settings)
 - Optional: Popup.js: Make Popups a seperate JS file for reuse (Interest[Settings], DeleteAccount[Settings], EmailSent[Signup, Todo], LoggedOut[Todo])
 - Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
+- Optional: Neaten Settings.js
 
 
 ```1/24/2025 ```
