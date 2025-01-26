@@ -27,10 +27,9 @@ MISC
       - Login: line 40 --> navigate("/dashboard")
 
 TODO
-- Optional: Make "Verification email sent!" alert a popup instead (like Interests in Settings)
 - Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
 - Optional: Neaten Settings.js
-
+- Friend a user button / Friends Count on Profile
 
 ```1/24/2025 ```
 DONE
