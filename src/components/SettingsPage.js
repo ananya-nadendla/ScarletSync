@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Select from 'react-select';
 import '../styles/SettingsPage.css'; // Add your custom CSS file for styling
 import Loading from './Loading';
+import Popup from "./Popup"; // Import the Popup component
 
 const SettingsPage = () => {
   const [profileData, setProfileData] = useState({
@@ -301,68 +302,78 @@ const SettingsPage = () => {
         </ul>
       </div>
 
-      {/* Interests */}
-      <div>
-              <label>Interests:</label>
-              <button onClick={() => setIsPopupOpen(true)}>Choose Interests</button>
-              {selectedSubInterests.length > 0 ? (
-                <ul>
-                  {selectedSubInterests.map((interest, index) => (
-                    <li key={index}>{interest}</li>
-                  ))}
-                </ul>
-              ) : (
-                <p>No interests selected</p>
-              )}
-            </div>
-
-            {isPopupOpen && (
-              <>
-                <div className="popup-overlay" onClick={() => setIsPopupOpen(false)}></div>
-                <div className="popup">
-                  <h2>Choose Your Interests</h2>
-                  <div className="interests-container">
-                    {options.interests.map((interest, index) => (
-                      <div key={index} className="interest-group">
-                        <h3>{interest.name}</h3>
-                        {interest.subInterests.map((subInterest, subIndex) => (
-                          <div
-                            key={subIndex}
-                            className={`interest-chip ${selectedSubInterests.includes(subInterest) ? 'selected' : ''}`}
-                            onClick={() => handleChipClick(subInterest)}
-                          >
-                            {subInterest}
-                          </div>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                  <button onClick={() => setIsPopupOpen(false)} className="close-btn">Close</button>
-                </div>
-              </>
+      {/* Interests Section */}
+          <div>
+            <label>Interests:</label>
+            <button onClick={() => setIsPopupOpen(true)}>Choose Interests</button>
+            {selectedSubInterests.length > 0 ? (
+              <ul>
+                {selectedSubInterests.map((interest, index) => (
+                  <li key={index}>{interest}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>No interests selected</p>
             )}
+          </div>
 
+          {isPopupOpen && (
+            <Popup
+              title="Choose Your Interests"
+              content={
+                <div className="interests-container">
+                  {options.interests.map((interest, index) => (
+                    <div key={index} className="interest-group">
+                      <h3>{interest.name}</h3>
+                      {interest.subInterests.map((subInterest, subIndex) => (
+                        <div
+                          key={subIndex}
+                          className={`interest-chip ${
+                            selectedSubInterests.includes(subInterest) ? "selected" : ""
+                          }`}
+                          onClick={() => handleChipClick(subInterest)}
+                        >
+                          {subInterest}
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              }
+              onClose={() => setIsPopupOpen(false)}
+              onConfirm={() => setIsPopupOpen(false)}
+              closeButtonText="OK"  // Custom text for the Cancel button
+            />
+          )}
 
-      <button onClick={handleSave}>Save Changes</button>
+          {/* Save Button */}
+          <button onClick={handleSave}>Save Changes</button>
 
-      {/* Delete Account Button */}
-        <button className="delete-account-btn" onClick={() => setIsDeletePopupOpen(true)}>
-          Delete Account
+          {/* Delete Account Button */}
+          <button
+            className="delete-account-btn"
+            onClick={() => setIsDeletePopupOpen(true)}
+          >
+            Delete Account
           </button>
 
-          {/* Delete Account Confirmation Popup */}
           {isDeletePopupOpen && (
-              <>
-                <div className="popup-overlay" onClick={() => setIsDeletePopupOpen(false)}></div>
-                <div className="popup">
-                    <h2>Are you sure you want to delete your account?</h2>
-                    <p>This action cannot be undone.</p>
-                    <button onClick={confirmDeleteAccount}>Yes, Delete</button>
-                    <button onClick={() => setIsDeletePopupOpen(false)} className="close-btn">Cancel</button>
-                </div>
-              </>
+            <Popup
+              title="Confirm Account Deletion"
+              content={
+                <p>
+                  Are you sure you want to delete your account? This action cannot be
+                  undone.
+                </p>
+              }
+              onClose={() => setIsDeletePopupOpen(false)}
+              onConfirm={confirmDeleteAccount}
+              closeButtonText="Cancel"  // Custom text for the Cancel button
+              confirmButtonText="Delete"  // Custom text for the Confirm button
+            />
           )}
-    </div>
+
+        </div>
   );
 };
 

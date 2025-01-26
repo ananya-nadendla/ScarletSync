@@ -1,54 +1,51 @@
 import React, { useState } from "react";
 import { auth, db } from "../config/firebase";
-import { createUserWithEmailAndPassword, sendEmailVerification, signOut } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  signOut,
+} from "firebase/auth";
 import { collection, query, where, getDocs, setDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import "../styles/LoginAndSignup.css"; // Shared CSS file for Login and Signup
+import Popup from "../components/Popup"; // Assuming Popup is in the components folder
+import "../styles/LoginAndSignup.css";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState(""); // New state for first name
-  const [lastName, setLastName] = useState("");   // New state for last name
-  const [username, setUsername] = useState("");   // New state for username
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [username, setUsername] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate(); // For navigation
+  const [showPopup, setShowPopup] = useState(false); // State for showing the popup
+  const navigate = useNavigate();
 
-  // Regular expression to check if the username contains invalid characters
-  // Regular expression to check if the username contains invalid characters
   const isValidUsername = (username) => {
-    const allowedChars = /^[a-zA-Z0-9._]+$/; // Only letters, numbers, period (.), and underscore (_)
+    const allowedChars = /^[a-zA-Z0-9._]+$/;
     return allowedChars.test(username);
   };
-
-
 
   const handleSignup = async (e) => {
     e.preventDefault();
     setError("");
 
-    // Check if the username contains only allowed characters
     if (!isValidUsername(username)) {
       setError("Username can only contain letters, numbers, periods (.), and underscores (_).");
       return;
     }
 
     try {
-      // Check if the username already exists
       const q = query(collection(db, "profiles"), where("username", "==", username));
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
-        // Username already exists
         setError("Username is already taken. Please choose another one.");
         return;
       }
 
-      // Create the user with email and password
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Save additional user information to Firestore
       await setDoc(doc(db, "profiles", user.uid), {
         firstName,
         lastName,
@@ -56,20 +53,20 @@ const Signup = () => {
         email,
       });
 
-      // Send the email verification
       await sendEmailVerification(user);
 
-      // Inform the user to check their email
-      alert("Verification email sent! Please check your inbox to verify your email.");
+      setShowPopup(true); // Show the popup
 
       // Log out the user
       await signOut(auth);
-
-      // Navigate to the login page after logging out
-      navigate("/login"); // Redirect to login page
     } catch (err) {
       setError(err.message);
     }
+  };
+
+  const handlePopupClose = () => {
+    setShowPopup(false); // Close the popup
+    navigate("/login"); // Redirect to login page
   };
 
   return (
@@ -133,6 +130,15 @@ const Signup = () => {
           <a href="/login" className="login-link">Login</a>
         </p>
       </form>
+      {showPopup && (
+        <Popup
+          title="Email Verification Sent"
+          content="A verification email has been sent to your email address. Please check your inbox and verify your email."
+          onClose={handlePopupClose}
+          closeButtonText="OK"
+        />
+      )}
+
     </div>
   );
 };
