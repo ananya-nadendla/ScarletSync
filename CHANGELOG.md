@@ -15,8 +15,8 @@ Loading.js / css
 
 Popup.js
   - General file for Popups
-  - Used for : Delete Account[Settings], Choose Interests[Settings], Veritifcation Email Sent[Signup]
-    - TODO: LoggedOut, "Profile Settings Saved";
+  - Used for : Delete Account[Settings], Choose Interests[Settings], Veritifcation Email Sent[Signup], Profile Settings Saved[Settings]
+    - TODO: LoggedOut
 
 MISC
 - ISSUE (FIXED)

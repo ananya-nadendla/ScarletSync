@@ -29,6 +29,7 @@ const SettingsPage = () => {
   });
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isProfileUpdatedPopupOpen, setIsProfileUpdatedPopupOpen] = useState(false);
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
   const [selectedSubInterests, setSelectedSubInterests] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -135,10 +136,9 @@ const SettingsPage = () => {
           { merge: true }
         );
 
-        alert("Profile updated!");
+        //Show popup saying profile is saved
+        setIsProfileUpdatedPopupOpen(true);
 
-        // Redirect to the profile page after saving
-        navigate("/profile");
       } catch (err) {
         setError("Error saving profile data.");
       }
@@ -346,9 +346,25 @@ const SettingsPage = () => {
         />
       )}
 
+        {/*Confirmation Popup for when user hits "Save Changes" and updates profile*/}
+         {isProfileUpdatedPopupOpen && (
+           <Popup
+             isOpen={isProfileUpdatedPopupOpen} // Keeps the popup open
+             onClose={() => setIsProfileUpdatedPopupOpen(false)} // Close popup when clicked outside
+             onConfirm={() => {
+               setIsProfileUpdatedPopupOpen(false);  // Close the popup
+               navigate("/profile");  // Navigate to profile after confirming
+             }}
+             content="Your profile has been updated!"
+             confirmButtonText="OK" // "OK" button text
+           />
+         )}
 
-          {/* Save Button */}
+        {/* Save Button */}
+        <div>
           <button onClick={handleSave}>Save Changes</button>
+        </div>
+
 
           {/* Delete Account Button */}
           <button
@@ -373,7 +389,6 @@ const SettingsPage = () => {
               confirmButtonText="Delete"  // Custom text for the Confirm button
             />
           )}
-
         </div>
   );
 };
