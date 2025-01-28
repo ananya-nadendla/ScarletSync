@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { auth, db } from "../config/firebase"; // Import Firestore and Auth
 import { doc, getDoc } from "firebase/firestore"; // Firestore functions
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom"; // Import Link for navigation
+import Popup from './Popup'; // Import Popup component
 import '../styles/ProfilePage.css'; // Add your custom CSS file for styling
-import Loading from './Loading'
+import Loading from './Loading';
 
 const ProfilePage = () => {
   const [profileData, setProfileData] = useState({
@@ -18,6 +19,9 @@ const ProfilePage = () => {
     selectedSubInterests: [], // Ensure it's always an array
   });
 
+  const [friendCount, setFriendCount] = useState(0); // State for friend count
+  const [friendsList, setFriendsList] = useState([]); // State for the list of friends
+  const [isPopupOpen, setIsPopupOpen] = useState(false); // State to handle popup visibility
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -42,6 +46,20 @@ const ProfilePage = () => {
               campusLocation: data.campusLocation || "",
               selectedSubInterests: Array.isArray(data.selectedSubInterests) ? data.selectedSubInterests : [], // Ensure it's an array
             });
+
+            // Fetch the friend's list to calculate the number of friends
+            const friends = data.friends || [];
+            setFriendCount(friends.length); // Set the number of friends
+
+            // Fetch the usernames of all friends
+            const friendUsernames = [];
+            for (const friendUid of friends) {
+              const friendDoc = await getDoc(doc(db, "profiles", friendUid));
+              if (friendDoc.exists()) {
+                friendUsernames.push(friendDoc.data().username);
+              }
+            }
+            setFriendsList(friendUsernames); // Set the list of friend usernames
           } else {
             setError("Profile not found.");
           }
@@ -57,6 +75,14 @@ const ProfilePage = () => {
 
     fetchProfile();
   }, [user, navigate]);
+
+  const handlePopupClose = () => {
+    setIsPopupOpen(false); // Close the popup
+  };
+
+  const handleFriendCountClick = () => {
+    setIsPopupOpen(true); // Open the popup when friend count is clicked
+  };
 
   if (loading) {
     return <Loading message="Fetching user profile..." />;
@@ -75,6 +101,11 @@ const ProfilePage = () => {
           <h1>{profileData.firstName} {profileData.lastName}</h1>
           <h3>@{profileData.username}</h3>
           <p>{profileData.bio || "No bio set"}</p>
+
+          {/* Friend count - clickable */}
+          <div className="friend-count" onClick={handleFriendCountClick}>
+            <span>{friendCount} {friendCount === 1 ? "friend" : "friends"}</span>
+          </div>
         </div>
       </div>
 
@@ -130,6 +161,28 @@ const ProfilePage = () => {
       <div className="edit-profile-btn">
         <button onClick={() => navigate("/settings")}>Edit Profile</button>
       </div>
+
+      {/* Popup for displaying the list of friends */}
+      {isPopupOpen && (
+        <Popup
+          title="Friends List"
+          content={
+            <ul>
+              {friendsList.length > 0 ? (
+                friendsList.map((username, index) => (
+                  <li key={index}>
+                    <Link to={`/profile/${username}`}>{username}</Link>
+                  </li>
+                ))
+              ) : (
+                <p>No friends to display.</p>
+              )}
+            </ul>
+          }
+          onConfirm={handlePopupClose}
+          confirmButtonText="Close"
+        />
+      )}
     </div>
   );
 };

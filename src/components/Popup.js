@@ -13,7 +13,10 @@ const Popup = ({
     <div className="popup-overlay">
       <div className="popup">
         <h2>{title}</h2>
-        <div>{content}</div>
+        <div className="popup-content">
+          {/* Render your content here */}
+          {content}
+        </div>
         <div className="popup-buttons">
           {/* Only show the cancel button if cancelButtonText is provided */}
           {cancelButtonText && (

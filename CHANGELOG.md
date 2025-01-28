@@ -6,10 +6,15 @@ Notifications.js (WIP)
 
 Friending 
   - OtherUserProfile.js (displays Friend status button)
-  - /util/friendUtils (backend logic for friend status, stored in firebase collections)
-  - Can go to someone's profile and "Send Friend Request"
-  - Friend must accept request to be friends
-  - Different button states done: Send Request, Pending, Friend, Unfriend
+    - Can go to someone's profile and "Send Friend Request"
+    - Different button states done: Send Request, Pending, Friend, Unfriend
+    - Shows Friend Count (not who, privacy)
+  - Profile.js
+    - Shows Friend Count
+    - Click on Friend Count --> Popup displays who friends are + clickable link to each friend's profile
+  - /util/friendUtils 
+    - purpose: (backend logic for friend status, stored in firebase collections)
+    - Friend must accept request to be friends
 
 package-lock.json
   - added "react-select" as a dependency so its automatically downloaded if u just do "npm install"
@@ -18,12 +23,17 @@ TODO
 - Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
 - Optional: Neaten Settings.js
 - Friends
-  - Friend Count on Profile
-  - Click on Friend Count --> Shows list of friends (profile + username + clickable lead to their profile)
+  - Neaten Friend's List Popup
   - IMPORTANT: /profile/myprofile lead directly to /profile (so that user can't friend themselves)
 - Notification.js
   - Make Notifications a "card" that you can X out to close
-  - Fix "xyz sent friend request" to show username isntead of user id
+  - Fix "xyz sent friend request" to show username instead of user id
+- Profile Picture Upload
+  - OtherProfile.js: show pfp on other profile
+  - Profile.js
+    - Show pfp on your own profile
+    - Click on Friend Count --> Shows list of friends (PROFILE TODO + username|done + clickable lead to their profile|done)
+  - Settings.js: Upload profile / have no profile
 
 
 ```1/25/2025```

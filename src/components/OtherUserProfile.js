@@ -14,6 +14,7 @@ import {
 const OtherUserProfile = () => {
   const { username } = useParams(); // Get the username from the URL
   const [profileData, setProfileData] = useState(null);
+  const [friendCount, setFriendCount] = useState(0); // State for friend count
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true); // Add a loading state
   const navigate = useNavigate(); // Hook to navigate programmatically
@@ -42,6 +43,7 @@ const OtherUserProfile = () => {
           querySnapshot.forEach((doc) => {
             setProfileData(doc.data()); // Set the profile data from the query result
             setOtherUserUid(doc.id); // Set the UID of the other user
+            setFriendCount(doc.data().friends?.length || 0); // Set friend count
           });
           setLoading(false); // Stop loading after setting profile data
         }
@@ -54,20 +56,17 @@ const OtherUserProfile = () => {
     fetchProfile();
   }, [username, navigate]); // Re-run when username changes
 
-
-useEffect(() => {
-  if (currentUserUid && otherUserUid) {
-    const fetchRelationshipStatus = async () => {
-      const result = await getRelationshipStatus(currentUserUid, otherUserUid);
-      console.log(result);  // Debugging line
-      setRelationshipStatus(result.status);
-      setRequestId(result.requestId || null);
-    };
-    fetchRelationshipStatus();
-  }
-}, [currentUserUid, otherUserUid]);
-
-
+  useEffect(() => {
+    if (currentUserUid && otherUserUid) {
+      const fetchRelationshipStatus = async () => {
+        const result = await getRelationshipStatus(currentUserUid, otherUserUid);
+        console.log(result);  // Debugging line
+        setRelationshipStatus(result.status);
+        setRequestId(result.requestId || null);
+      };
+      fetchRelationshipStatus();
+    }
+  }, [currentUserUid, otherUserUid]);
 
   const handleSendRequest = async () => {
     const result = await sendFriendRequest(currentUserUid, otherUserUid);
@@ -136,6 +135,11 @@ useEffect(() => {
           <h1>{profileData.firstName} {profileData.lastName}</h1>
           <h3>@{profileData.username}</h3>
           <p>{profileData.bio || "No bio set"}</p>
+
+          {/* Display the friend count for the other user */}
+          <div className="friend-count">
+            <span>{friendCount} {friendCount === 1 ? "friend" : "friends"}</span>
+          </div>
         </div>
       </div>
 
@@ -188,7 +192,7 @@ useEffect(() => {
         </div>
       </div>
 
-    {/* Friend Actions */}
+      {/* Friend Actions */}
       <div className="friend-actions">
         {relationshipStatus === "not friends" && (
           <button onClick={handleSendRequest}>Send Friend Request</button>

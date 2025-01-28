@@ -11,8 +11,18 @@
   max-width: 500px;
   width: 100%;
   z-index: 1000;
-  overflow-y: auto;
+  overflow-y: hidden; /* Prevents the whole popup from scrolling */
+  display: flex;
+  flex-direction: column;
 }
+
+/* Make the content scrollable */
+.popup .popup-content {
+  max-height: 300px; /* Set max height for the scrollable area */
+  overflow-y: auto; /* Enable vertical scrolling */
+  margin-bottom: 20px; /* Adds spacing between content and buttons */
+}
+
 
 .popup-overlay {
   position: fixed;
