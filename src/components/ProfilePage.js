@@ -47,11 +47,8 @@ const ProfilePage = () => {
               selectedSubInterests: Array.isArray(data.selectedSubInterests) ? data.selectedSubInterests : [], // Ensure it's an array
             });
 
-            // Fetch the friend's list to calculate the number of friends
+            // Fetch the friend's list and update it dynamically
             const friends = data.friends || [];
-            setFriendCount(friends.length); // Set the number of friends
-
-            // Fetch the usernames of all friends
             const friendUsernames = [];
             for (const friendUid of friends) {
               const friendDoc = await getDoc(doc(db, "profiles", friendUid));
@@ -59,6 +56,7 @@ const ProfilePage = () => {
                 friendUsernames.push(friendDoc.data().username);
               }
             }
+            setFriendCount(friendUsernames.length); // Update the friend count
             setFriendsList(friendUsernames); // Set the list of friend usernames
           } else {
             setError("Profile not found.");
@@ -75,6 +73,42 @@ const ProfilePage = () => {
 
     fetchProfile();
   }, [user, navigate]);
+
+  useEffect(() => {
+    const removeDeletedFriends = async () => {
+      if (user) {
+        try {
+          const userProfileDoc = await getDoc(doc(db, "profiles", user.uid));
+          if (userProfileDoc.exists()) {
+            const friends = userProfileDoc.data().friends || [];
+            const validFriends = [];
+            for (const friendUid of friends) {
+              const friendDoc = await getDoc(doc(db, "profiles", friendUid));
+              if (friendDoc.exists()) {
+                validFriends.push(friendUid);
+              }
+            }
+            // Update friends list if it has changed
+            if (validFriends.length !== friends.length) {
+              setFriendCount(validFriends.length);
+              const validUsernames = [];
+              for (const validUid of validFriends) {
+                const validDoc = await getDoc(doc(db, "profiles", validUid));
+                if (validDoc.exists()) {
+                  validUsernames.push(validDoc.data().username);
+                }
+              }
+              setFriendsList(validUsernames);
+            }
+          }
+        } catch (err) {
+          console.error("Error updating friends list:", err);
+        }
+      }
+    };
+
+    removeDeletedFriends();
+  }, [user]);
 
   const handlePopupClose = () => {
     setIsPopupOpen(false); // Close the popup

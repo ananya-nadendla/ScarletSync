@@ -1,3 +1,25 @@
+```1/28/2025```
+Friending
+- IMPORTANT: Friend Deletes Account
+  - Remove Notification of Friend (Notification.js)
+  - Remove Friend from Friends List Popup (ProfilePage / OtherUserProfile)
+  - Remove Friend from Friend Counter (ProfilePage / OtherUserProfile)
+
+TODO
+- Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
+- Optional: Neaten Settings.js
+- Friends
+  - Neaten Friend's List Popup
+  - IMPORTANT: /profile/myprofile lead directly to /profile (so that user can't friend themselves)
+- Notification.js
+  - Make Notifications a "card" that you can X out to close
+- Profile Picture Upload
+  - OtherProfile.js: show pfp on other profile
+  - Profile.js
+    - Show pfp on your own profile
+    - Click on Friend Count --> Shows list of friends (PROFILE TODO + username[done] + clickable lead to their profile[done])
+  - Settings.js: Upload profile picture / have no profile picture
+
 ```1/27/2025```
 DONE
 Notifications.js (WIP)
@@ -20,24 +42,6 @@ Friending
 package-lock.json
   - added "react-select" as a dependency so its automatically downloaded if u just do "npm install"
 
-TODO
-- Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
-- Optional: Neaten Settings.js
-- Friends
-  - Neaten Friend's List Popup
-  - IMPORTANT: /profile/myprofile lead directly to /profile (so that user can't friend themselves)
-  - IMPORTANT: Friend Deletes Account
-    - Remove Notification of Friend
-    - Remove Friend from Friends List Popup
-    - Remove Friend from Friend Counter
-- Notification.js
-  - Make Notifications a "card" that you can X out to close
-- Profile Picture Upload
-  - OtherProfile.js: show pfp on other profile
-  - Profile.js
-    - Show pfp on your own profile
-    - Click on Friend Count --> Shows list of friends (PROFILE TODO + username[done] + clickable lead to their profile[done])
-  - Settings.js: Upload profile / have no profile
 
 
 ```1/25/2025```

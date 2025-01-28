@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { db, auth } from "../config/firebase"; // Import Firestore
-import { collection, query, where, getDocs } from "firebase/firestore"; // Firestore query functions
+import { collection, query, where, getDocs, doc, getDoc } from "firebase/firestore"; // Firestore query functions
 import { useParams, useNavigate } from "react-router-dom"; // To access the username from the URL and navigate
-import Loading from "./Loading"
+import Loading from "./Loading";
 import {
   sendFriendRequest,
   acceptFriendRequest,
@@ -15,6 +15,7 @@ const OtherUserProfile = () => {
   const { username } = useParams(); // Get the username from the URL
   const [profileData, setProfileData] = useState(null);
   const [friendCount, setFriendCount] = useState(0); // State for friend count
+  const [friendsList, setFriendsList] = useState([]); // State for the list of friends
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true); // Add a loading state
   const navigate = useNavigate(); // Hook to navigate programmatically
@@ -41,9 +42,11 @@ const OtherUserProfile = () => {
         } else {
           // Assuming there will only be one document with the matching username
           querySnapshot.forEach((doc) => {
-            setProfileData(doc.data()); // Set the profile data from the query result
+            const data = doc.data();
+            setProfileData(data); // Set the profile data from the query result
             setOtherUserUid(doc.id); // Set the UID of the other user
-            setFriendCount(doc.data().friends?.length || 0); // Set friend count
+            setFriendCount(data.friends?.length || 0); // Set friend count
+            setFriendsList(data.friends || []); // Set friends list
           });
           setLoading(false); // Stop loading after setting profile data
         }
@@ -60,13 +63,33 @@ const OtherUserProfile = () => {
     if (currentUserUid && otherUserUid) {
       const fetchRelationshipStatus = async () => {
         const result = await getRelationshipStatus(currentUserUid, otherUserUid);
-        console.log(result);  // Debugging line
         setRelationshipStatus(result.status);
         setRequestId(result.requestId || null);
       };
       fetchRelationshipStatus();
     }
   }, [currentUserUid, otherUserUid]);
+
+  useEffect(() => {
+    const updateFriendCount = async () => {
+      if (friendsList.length > 0) {
+        const validFriends = [];
+        for (const friendUid of friendsList) {
+          const friendDoc = await getDoc(doc(db, "profiles", friendUid));
+          if (friendDoc.exists()) {
+            validFriends.push(friendUid);
+          }
+        }
+
+        if (validFriends.length !== friendsList.length) {
+          setFriendCount(validFriends.length);
+          setFriendsList(validFriends);
+        }
+      }
+    };
+
+    updateFriendCount();
+  }, [friendsList]);
 
   const handleSendRequest = async () => {
     const result = await sendFriendRequest(currentUserUid, otherUserUid);
@@ -76,6 +99,7 @@ const OtherUserProfile = () => {
       setError("Failed to send friend request.");
     }
   };
+
   const handleAcceptRequest = async () => {
     if (requestId) {
       const result = await acceptFriendRequest(requestId, otherUserUid, currentUserUid);
@@ -86,6 +110,7 @@ const OtherUserProfile = () => {
       }
     }
   };
+
   const handleDeclineRequest = async () => {
     if (requestId) {
       const result = await deleteFriendRequest(requestId);
@@ -96,10 +121,12 @@ const OtherUserProfile = () => {
       }
     }
   };
+
   const handleUnfriend = async () => {
     const result = await unfriendUser(currentUserUid, otherUserUid);
     if (result.success) {
       setRelationshipStatus("not friends");
+      setFriendCount((prevCount) => Math.max(prevCount - 1, 0));
     } else {
       setError("Failed to unfriend user.");
     }

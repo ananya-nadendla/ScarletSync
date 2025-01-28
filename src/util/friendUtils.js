@@ -133,3 +133,39 @@ export const getRelationshipStatus = async (currentUid, otherUid) => {
     return { status: "error", error };
   }
 };
+
+// Handle profile deletion
+export const handleProfileDeletion = async (userUid) => {
+  try {
+    // Remove the user from other users' friends lists
+    const profilesRef = collection(db, "profiles");
+    const q = query(profilesRef, where("friends", "array-contains", userUid));
+    const querySnapshot = await getDocs(q);
+
+    for (const docSnapshot of querySnapshot.docs) {
+      const profileData = docSnapshot.data();
+      const updatedFriends = profileData.friends.filter((friendUid) => friendUid !== userUid);
+      await updateDoc(doc(profilesRef, docSnapshot.id), { friends: updatedFriends });
+    }
+
+    // Delete any pending friend requests involving the user
+    const friendRequestsRef = collection(db, "friendRequests");
+    const sentRequestsQuery = query(friendRequestsRef, where("from", "==", userUid));
+    const receivedRequestsQuery = query(friendRequestsRef, where("to", "==", userUid));
+
+    const [sentRequests, receivedRequests] = await Promise.all([
+      getDocs(sentRequestsQuery),
+      getDocs(receivedRequestsQuery),
+    ]);
+
+    for (const docSnapshot of [...sentRequests.docs, ...receivedRequests.docs]) {
+      await deleteDoc(doc(friendRequestsRef, docSnapshot.id));
+    }
+
+    console.log(`Profile and related data cleaned up for user: ${userUid}`);
+    return { success: true };
+  } catch (error) {
+    console.error("Error handling profile deletion:", error);
+    return { success: false, error };
+  }
+};
