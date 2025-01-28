@@ -25,7 +25,7 @@ const OtherUserProfile = () => {
   const currentUserUid = auth.currentUser?.uid; // Replace with actual current user UID from auth
   const [otherUserUid, setOtherUserUid] = useState(null); // Store the UID of the profile being viewed
 
- //If user accesses /profile/MYprofile, redirect to /profile so that they can't friend themselves
+  // If user accesses /profile/MYprofile, redirect to /profile so that they can't friend themselves
   useEffect(() => {
     // Fetch the logged-in user's profile
     const fetchLoggedInUserProfile = async () => {
@@ -47,7 +47,6 @@ const OtherUserProfile = () => {
       fetchLoggedInUserProfile();
     }
   }, [username, profileData, navigate, currentUserUid]);
-
 
   useEffect(() => {
     // Fetch the other user's profile
@@ -177,8 +176,9 @@ const OtherUserProfile = () => {
     <div className="profile-container">
       <div className="profile-header">
         <div className="profile-picture">
+          {/* Display the other user's profile picture */}
           <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpPPrc8VMEPWqvFtOIxFZLDCN4JITg01d-KA&s"
+            src={profileData.profileImage || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpPPrc8VMEPWqvFtOIxFZLDCN4JITg01d-KA&s"} // Default placeholder if no image exists
             alt="Profile"
           />
         </div>

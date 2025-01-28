@@ -7,6 +7,8 @@ import Select from 'react-select';
 import '../styles/SettingsPage.css'; // Add your custom CSS file for styling
 import Loading from './Loading';
 import Popup from "./Popup"; // Import the Popup component
+import axios from "axios";
+import imageCompression from "browser-image-compression";
 
 const SettingsPage = () => {
   const [profileData, setProfileData] = useState({
@@ -19,6 +21,7 @@ const SettingsPage = () => {
     minor: [],  // Ensure this is an array
     campusLocation: "",
     selectedSubInterests: [],
+    profileImage: "" // Store profile image URL
   });
 
   const [options, setOptions] = useState({
@@ -37,6 +40,8 @@ const SettingsPage = () => {
   const [selectedMinor, setSelectedMinor] = useState(""); // Track selected minor
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
+   const [uploading, setUploading] = useState(false); // Track image upload
 
   const user = auth.currentUser;
   const [originalUsername, setOriginalUsername] = useState(""); // Store the original username
@@ -105,6 +110,59 @@ const SettingsPage = () => {
     const querySnapshot = await getDocs(usersQuery);
     return querySnapshot.empty;  // If empty, username is available
   };
+
+
+const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Compress the image using browser-image-compression
+    const options = {
+        maxWidthOrHeight: 800, // Max width or height of the compressed image (adjust as needed)
+        maxSizeMB: 0.5, // Maximum file size in MB (adjust as needed)
+        useWebWorker: true, // Use web workers for better performance
+    };
+
+    try {
+        // Compress the image
+        const compressedFile = await imageCompression(file, options);
+        console.log("Compressed file:", compressedFile);
+
+        // Create FormData for uploading
+        const formData = new FormData();
+        formData.append("file", compressedFile);
+
+        // Cloudinary settings
+        const cloudName = process.env.REACT_APP_CLOUD_NAME;
+        const uploadPreset = process.env.REACT_APP_UPLOAD_PRESET;
+
+        if (!cloudName || !uploadPreset) {
+            console.error("Cloud name or upload preset is missing!");
+            return;
+        }
+
+        formData.append("upload_preset", uploadPreset); // Use the preset from .env
+
+        // Upload to Cloudinary
+        setUploading(true);
+        const uploadUrl = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
+        const response = await axios.post(uploadUrl, formData);
+
+        // Get the image URL from Cloudinary response
+        const imageUrl = response.data.secure_url;
+
+        // Apply Cloudinary transformations: crop to square, resize, compress
+        const transformedImageUrl = `${imageUrl}?c_crop=fill,w_1080,h_1080,q_auto,f_auto`;
+
+        // Update profile data with the transformed image URL
+        setProfileData((prev) => ({ ...prev, profileImage: transformedImageUrl }));
+    } catch (err) {
+        console.error("Error uploading or compressing image:", err);
+    } finally {
+        setUploading(false);
+    }
+};
+
 
   const handleSave = async () => {
     if (user) {
@@ -216,6 +274,19 @@ const SettingsPage = () => {
   return (
     <div className="settings-container">
       <h1>Settings</h1>
+
+    {/* Profile Picture Upload */}
+      <div>
+        <label>Profile Picture:</label>
+        <input type="file" accept="image/*" onChange={handleImageUpload} />
+        {uploading ? (
+          <p>Uploading...</p>
+        ) : profileData.profileImage ? (
+          <img src={profileData.profileImage} alt="Profile" style={{ width: "100px", height: "100px", borderRadius: "50%" }} />
+        ) : (
+          <p>No profile picture uploaded</p>
+        )}
+      </div>
 
       <div>
         <label>First Name:</label>

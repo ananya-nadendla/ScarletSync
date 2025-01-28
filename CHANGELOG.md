@@ -8,6 +8,11 @@ Friending
 OtherUserProfile.js
 - IMPORTANT: /profile/myprofile lead directly to /profile (so that user can't friend themselves)
 
+Profile Picture
+  - OtherUserProfile.js :visible
+  - Profile.js: visible
+  - Settings.js: Can upload profile picture
+
 TODO
 - Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
 - Optional: Neaten Settings.js
@@ -16,11 +21,9 @@ TODO
 - Notification.js
   - Make Notifications a "card" that you can X out to close
 - Profile Picture Upload
-  - OtherProfile.js: show pfp on other profile
   - Profile.js
-    - Show pfp on your own profile
     - Click on Friend Count --> Shows list of friends (PROFILE TODO + username[done] + clickable lead to their profile[done])
-  - Settings.js: Upload profile picture / have no profile picture
+  - Settings.js: Case of Have no profile picture
 
 ```1/27/2025```
 DONE

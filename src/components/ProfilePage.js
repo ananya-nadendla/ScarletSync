@@ -17,6 +17,7 @@ const ProfilePage = () => {
     minor: [],
     campusLocation: "",
     selectedSubInterests: [], // Ensure it's always an array
+    profileImage: "", // New field for profile image
   });
 
   const [friendCount, setFriendCount] = useState(0); // State for friend count
@@ -45,6 +46,7 @@ const ProfilePage = () => {
               minor: Array.isArray(data.minor) ? data.minor : [], // Ensure it's an array
               campusLocation: data.campusLocation || "",
               selectedSubInterests: Array.isArray(data.selectedSubInterests) ? data.selectedSubInterests : [], // Ensure it's an array
+              profileImage: data.profileImage || "", // Fetch profile image URL
             });
 
             // Fetch the friend's list and update it dynamically
@@ -128,8 +130,11 @@ const ProfilePage = () => {
 
       <div className="profile-header">
         <div className="profile-picture">
-          {/* Add a profile picture or placeholder */}
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpPPrc8VMEPWqvFtOIxFZLDCN4JITg01d-KA&s" alt="Profile" />
+          {/* Display the profile image or a default image if not available */}
+          <img
+            src={profileData.profileImage || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpPPrc8VMEPWqvFtOIxFZLDCN4JITg01d-KA&s"}
+            alt="Profile"
+          />
         </div>
         <div className="profile-info">
           <h1>{profileData.firstName} {profileData.lastName}</h1>

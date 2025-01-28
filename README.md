@@ -1,6 +1,7 @@
 youtube video = https://www.youtube.com/watch?v=2hR-uWjBAgw
 
 //Setup project (everyone - only need to do this once)
+Just do ```npm install```. If that doesn't work, download these:
 npm install react-router-dom
     (actually install react [after downloading it from browser])
 npm install firebase
@@ -9,6 +10,10 @@ npm install web-vitals
     (install tools that project needs)
 npm install react-select
     (NEW TOOL - 1/25)
+npm install axios
+npm install cloudinary
+npm install browser-image-compression
+    (NEW TOOLS - 1/28)
 
 //Run project (everyone - need to do this everytime you want to run project)
 git fetch
