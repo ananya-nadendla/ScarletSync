@@ -11,12 +11,16 @@ Friending
   - Friend must accept request to be friends
   - Different button states done: Send Request, Pending, Friend, Unfriend
 
+package-lock.json
+  - added "react-select" as a dependency so its automatically downloaded if u just do "npm install"
+
 TODO
 - Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
 - Optional: Neaten Settings.js
 - Friends
   - Friend Count on Profile
   - Click on Friend Count --> Shows list of friends (profile + username + clickable lead to their profile)
+  - IMPORTANT: /profile/myprofile lead directly to /profile (so that user can't friend themselves)
 - Notification.js
   - Make Notifications a "card" that you can X out to close
 
