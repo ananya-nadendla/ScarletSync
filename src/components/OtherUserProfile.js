@@ -25,13 +25,29 @@ const OtherUserProfile = () => {
   const currentUserUid = auth.currentUser?.uid; // Replace with actual current user UID from auth
   const [otherUserUid, setOtherUserUid] = useState(null); // Store the UID of the profile being viewed
 
-  //If logged in user visits /profile/myprofile, redirect them to /profile
-  //(so they can't friend themselves)
+ //If user accesses /profile/MYprofile, redirect to /profile so that they can't friend themselves
   useEffect(() => {
-    if (profileData && username === profileData.username) {
-      navigate("/profile", { replace: true }); // Redirect to /profile
+    // Fetch the logged-in user's profile
+    const fetchLoggedInUserProfile = async () => {
+      try {
+        const loggedInUserProfileDoc = await getDoc(doc(db, "profiles", currentUserUid)); // Use currentUserUid to get the logged-in user's profile
+        const loggedInUserProfileData = loggedInUserProfileDoc.data();
+
+        // Ensure the current user is not trying to visit their own profile
+        if (loggedInUserProfileData?.username === username) {
+          navigate("/profile", { replace: true }); // Redirect to /profile
+        }
+      } catch (error) {
+        setError("Error fetching logged-in user's profile:", error);
+      }
+    };
+
+    // Fetch logged-in user's profile only if profileData is available
+    if (profileData) {
+      fetchLoggedInUserProfile();
     }
-  }, [username, profileData, navigate]);
+  }, [username, profileData, navigate, currentUserUid]);
+
 
   useEffect(() => {
     // Fetch the other user's profile
