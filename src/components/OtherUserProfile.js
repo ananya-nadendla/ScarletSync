@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { db } from "../config/firebase"; // Import Firestore
+import { db, auth } from "../config/firebase"; // Import Firestore
 import { collection, query, where, getDocs } from "firebase/firestore"; // Firestore query functions
 import { useParams, useNavigate } from "react-router-dom"; // To access the username from the URL and navigate
 import Loading from "./Loading"
+import {
+  sendFriendRequest,
+  acceptFriendRequest,
+  deleteFriendRequest,
+  unfriendUser,
+  getRelationshipStatus,
+} from "../util/friendUtils";
 
 const OtherUserProfile = () => {
   const { username } = useParams(); // Get the username from the URL
@@ -10,6 +17,11 @@ const OtherUserProfile = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true); // Add a loading state
   const navigate = useNavigate(); // Hook to navigate programmatically
+  const [relationshipStatus, setRelationshipStatus] = useState("not friends");
+  const [requestId, setRequestId] = useState(null); // For handling request updates
+
+  const currentUserUid = auth.currentUser?.uid; // Replace with actual current user UID from auth
+  const [otherUserUid, setOtherUserUid] = useState(null); // Store the UID of the profile being viewed
 
   useEffect(() => {
     // Fetch the other user's profile
@@ -29,6 +41,7 @@ const OtherUserProfile = () => {
           // Assuming there will only be one document with the matching username
           querySnapshot.forEach((doc) => {
             setProfileData(doc.data()); // Set the profile data from the query result
+            setOtherUserUid(doc.id); // Set the UID of the other user
           });
           setLoading(false); // Stop loading after setting profile data
         }
@@ -40,6 +53,58 @@ const OtherUserProfile = () => {
 
     fetchProfile();
   }, [username, navigate]); // Re-run when username changes
+
+
+useEffect(() => {
+  if (currentUserUid && otherUserUid) {
+    const fetchRelationshipStatus = async () => {
+      const result = await getRelationshipStatus(currentUserUid, otherUserUid);
+      console.log(result);  // Debugging line
+      setRelationshipStatus(result.status);
+      setRequestId(result.requestId || null);
+    };
+    fetchRelationshipStatus();
+  }
+}, [currentUserUid, otherUserUid]);
+
+
+
+  const handleSendRequest = async () => {
+    const result = await sendFriendRequest(currentUserUid, otherUserUid);
+    if (result.success) {
+      setRelationshipStatus("request sent");
+    } else {
+      setError("Failed to send friend request.");
+    }
+  };
+  const handleAcceptRequest = async () => {
+    if (requestId) {
+      const result = await acceptFriendRequest(requestId, otherUserUid, currentUserUid);
+      if (result.success) {
+        setRelationshipStatus("friends");
+      } else {
+        setError("Failed to accept friend request.");
+      }
+    }
+  };
+  const handleDeclineRequest = async () => {
+    if (requestId) {
+      const result = await deleteFriendRequest(requestId);
+      if (result.success) {
+        setRelationshipStatus("not friends");
+      } else {
+        setError("Failed to decline friend request.");
+      }
+    }
+  };
+  const handleUnfriend = async () => {
+    const result = await unfriendUser(currentUserUid, otherUserUid);
+    if (result.success) {
+      setRelationshipStatus("not friends");
+    } else {
+      setError("Failed to unfriend user.");
+    }
+  };
 
   if (loading) {
     return <Loading message="Fetching user profile..." />;
@@ -122,6 +187,26 @@ const OtherUserProfile = () => {
           )}
         </div>
       </div>
+
+    {/* Friend Actions */}
+      <div className="friend-actions">
+        {relationshipStatus === "not friends" && (
+          <button onClick={handleSendRequest}>Send Friend Request</button>
+        )}
+        {relationshipStatus === "request sent" && (
+          <button onClick={handleDeclineRequest}>Cancel Friend Request</button>
+        )}
+        {relationshipStatus === "request received" && (
+          <>
+            <button onClick={handleAcceptRequest}>Accept Friend Request</button>
+            <button onClick={handleDeclineRequest}>Decline Friend Request</button>
+          </>
+        )}
+        {relationshipStatus === "friends" && (
+          <button onClick={handleUnfriend}>Unfriend</button>
+        )}
+      </div>
+
     </div>
   );
 };

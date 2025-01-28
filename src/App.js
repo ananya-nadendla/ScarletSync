@@ -14,6 +14,7 @@ import Sidebar from "./components/Sidebar";
 import OtherUserProfile from "./components/OtherUserProfile";
 import PageNotFound from "./components/PageNotFound";
 import Loading from "./components/Loading"
+import Notifications from "./components/Notifications"
 
 //If user it not logged in and tries to access dashboard, profile, etc, REDIRECT to login
 const ProtectedRoute = ({ user, children }) => {
@@ -82,6 +83,14 @@ const App = () => {
             element={
               <ProtectedRoute user={user}>
                 <SettingsPage />
+              </ProtectedRoute>
+            }
+          />
+        <Route
+            path="/notifications"
+            element={
+              <ProtectedRoute user={user}>
+                <Notifications />
               </ProtectedRoute>
             }
           />

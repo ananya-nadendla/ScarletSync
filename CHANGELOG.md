@@ -1,3 +1,26 @@
+```1/27/2025```
+DONE
+Notifications.js (WIP)
+  - To display "someone wants to friend you" notification
+    - Link added to Sidebar + Added as private route to App.js (aka need to be logged in to access)
+
+Friending 
+  - OtherUserProfile.js (displays Friend status button)
+  - /util/friendUtils (backend logic for friend status, stored in firebase collections)
+  - Can go to someone's profile and "Send Friend Request"
+  - Friend must accept request to be friends
+  - Different button states done: Send Request, Pending, Friend, Unfriend
+
+TODO
+- Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
+- Optional: Neaten Settings.js
+- Friends
+  - Friend Count on Profile
+  - Click on Friend Count --> Shows list of friends (profile + username + clickable lead to their profile)
+- Notification.js
+  - Make Notifications a "card" that you can X out to close
+
+
 ```1/25/2025```
 DONE
 OtherUserProfile
@@ -26,10 +49,6 @@ MISC
       - ProfilePage: line 48 --> navigate("/login");
       - Login: line 40 --> navigate("/dashboard")
 
-TODO
-- Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
-- Optional: Neaten Settings.js
-- Friend a user button / Friends Count on Profile
 
 ```1/24/2025 ```
 DONE
