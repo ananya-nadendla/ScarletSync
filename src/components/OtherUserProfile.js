@@ -25,6 +25,14 @@ const OtherUserProfile = () => {
   const currentUserUid = auth.currentUser?.uid; // Replace with actual current user UID from auth
   const [otherUserUid, setOtherUserUid] = useState(null); // Store the UID of the profile being viewed
 
+  //If logged in user visits /profile/myprofile, redirect them to /profile
+  //(so they can't friend themselves)
+  useEffect(() => {
+    if (profileData && username === profileData.username) {
+      navigate("/profile", { replace: true }); // Redirect to /profile
+    }
+  }, [username, profileData, navigate]);
+
   useEffect(() => {
     // Fetch the other user's profile
     const fetchProfile = async () => {

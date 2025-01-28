@@ -5,12 +5,14 @@ Friending
   - Remove Friend from Friends List Popup (ProfilePage / OtherUserProfile)
   - Remove Friend from Friend Counter (ProfilePage / OtherUserProfile)
 
+OtherUserProfile.js
+- IMPORTANT: /profile/myprofile lead directly to /profile (so that user can't friend themselves)
+
 TODO
 - Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
 - Optional: Neaten Settings.js
 - Friends
   - Neaten Friend's List Popup
-  - IMPORTANT: /profile/myprofile lead directly to /profile (so that user can't friend themselves)
 - Notification.js
   - Make Notifications a "card" that you can X out to close
 - Profile Picture Upload
