@@ -3,6 +3,7 @@ DONE
 Notifications.js (WIP)
   - To display "someone wants to friend you" notification
     - Link added to Sidebar + Added as private route to App.js (aka need to be logged in to access)
+  -Fixed "xyz sent friend request" to show username instead of user id
 
 Friending 
   - OtherUserProfile.js (displays Friend status button)
@@ -15,7 +16,7 @@ Friending
   - /util/friendUtils 
     - purpose: (backend logic for friend status, stored in firebase collections)
     - Friend must accept request to be friends
-
+    
 package-lock.json
   - added "react-select" as a dependency so its automatically downloaded if u just do "npm install"
 
@@ -25,14 +26,17 @@ TODO
 - Friends
   - Neaten Friend's List Popup
   - IMPORTANT: /profile/myprofile lead directly to /profile (so that user can't friend themselves)
+  - IMPORTANT: Friend Deletes Account
+    - Remove Notification of Friend
+    - Remove Friend from Friends List Popup
+    - Remove Friend from Friend Counter
 - Notification.js
   - Make Notifications a "card" that you can X out to close
-  - Fix "xyz sent friend request" to show username instead of user id
 - Profile Picture Upload
   - OtherProfile.js: show pfp on other profile
   - Profile.js
     - Show pfp on your own profile
-    - Click on Friend Count --> Shows list of friends (PROFILE TODO + username|done + clickable lead to their profile|done)
+    - Click on Friend Count --> Shows list of friends (PROFILE TODO + username[done] + clickable lead to their profile[done])
   - Settings.js: Upload profile / have no profile
 
 
