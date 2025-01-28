@@ -23,6 +23,7 @@ TODO
   - IMPORTANT: /profile/myprofile lead directly to /profile (so that user can't friend themselves)
 - Notification.js
   - Make Notifications a "card" that you can X out to close
+  - Fix "xyz sent friend request" to show username isntead of user id
 
 
 ```1/25/2025```
