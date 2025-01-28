@@ -7,8 +7,7 @@ import Select from 'react-select';
 import '../styles/SettingsPage.css'; // Add your custom CSS file for styling
 import Loading from './Loading';
 import Popup from "./Popup"; // Import the Popup component
-import axios from "axios";
-import imageCompression from "browser-image-compression";
+import { handleImageUpload, deleteProfilePicture } from '../util/imageUploadUtils';
 
 const SettingsPage = () => {
   const [profileData, setProfileData] = useState({
@@ -111,59 +110,6 @@ const SettingsPage = () => {
     return querySnapshot.empty;  // If empty, username is available
   };
 
-
-const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    // Compress the image using browser-image-compression
-    const options = {
-        maxWidthOrHeight: 800, // Max width or height of the compressed image (adjust as needed)
-        maxSizeMB: 0.5, // Maximum file size in MB (adjust as needed)
-        useWebWorker: true, // Use web workers for better performance
-    };
-
-    try {
-        // Compress the image
-        const compressedFile = await imageCompression(file, options);
-        console.log("Compressed file:", compressedFile);
-
-        // Create FormData for uploading
-        const formData = new FormData();
-        formData.append("file", compressedFile);
-
-        // Cloudinary settings
-        const cloudName = process.env.REACT_APP_CLOUD_NAME;
-        const uploadPreset = process.env.REACT_APP_UPLOAD_PRESET;
-
-        if (!cloudName || !uploadPreset) {
-            console.error("Cloud name or upload preset is missing!");
-            return;
-        }
-
-        formData.append("upload_preset", uploadPreset); // Use the preset from .env
-
-        // Upload to Cloudinary
-        setUploading(true);
-        const uploadUrl = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
-        const response = await axios.post(uploadUrl, formData);
-
-        // Get the image URL from Cloudinary response
-        const imageUrl = response.data.secure_url;
-
-        // Apply Cloudinary transformations: crop to square, resize, compress
-        const transformedImageUrl = `${imageUrl}?c_crop=fill,w_1080,h_1080,q_auto,f_auto`;
-
-        // Update profile data with the transformed image URL
-        setProfileData((prev) => ({ ...prev, profileImage: transformedImageUrl }));
-    } catch (err) {
-        console.error("Error uploading or compressing image:", err);
-    } finally {
-        setUploading(false);
-    }
-};
-
-
   const handleSave = async () => {
     if (user) {
       try {
@@ -248,11 +194,24 @@ const handleImageUpload = async (e) => {
   const handleDeleteAccount = async () => {
     if (user) {
       try {
+        // Check if the user has a profile image
+        if (profileData.profileImage) {
+          // Extract the public_id from the profile image URL
+          const publicId = profileData.profileImage.split("/").pop().split(".")[0];
+          console.log("Deleting profile picture with public_id:", publicId);
+
+          // Call deleteProfilePicture to remove the image from Cloudinary
+          await deleteProfilePicture(publicId);
+        }
+
         // Delete the user's profile from Firestore
         await deleteDoc(doc(db, "profiles", user.uid));
+
         // Delete the user's authentication record
         await deleteUser(user);
+
         alert("Your account has been deleted.");
+
         // Redirect to the login page
         navigate("/login");
       } catch (err) {
@@ -261,6 +220,7 @@ const handleImageUpload = async (e) => {
       }
     }
   };
+
 
   const confirmDeleteAccount = async () => {
     setIsDeletePopupOpen(false); // Close the delete popup
@@ -278,7 +238,7 @@ const handleImageUpload = async (e) => {
     {/* Profile Picture Upload */}
       <div>
         <label>Profile Picture:</label>
-        <input type="file" accept="image/*" onChange={handleImageUpload} />
+        <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e.target.files[0], setUploading, setProfileData)} />
         {uploading ? (
           <p>Uploading...</p>
         ) : profileData.profileImage ? (

@@ -16,6 +16,12 @@ Profile Picture
   - OtherUserProfile.js :visible
   - Profile.js: visible
   - Settings.js: Can upload profile picture
+  - WIP: 
+    - Delete pfp when uploading new one (imageUploadUtils=>deleteProfilePicture() not working)
+    - Delete pfp when user deletes account (method already called)
+
+util/imageUploadUtils
+  - Util file for uploading pic (works) + deleting pic (broken, wip)
 
 TODO
 - Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
