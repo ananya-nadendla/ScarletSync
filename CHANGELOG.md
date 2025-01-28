@@ -1,4 +1,8 @@
 ```1/28/2025```
+NOTE:
+  - ImageKit (for profile picture) only supports up till React 18
+  - I set this project from React 19 to React 18 (in package.json && package-lock.json)
+
 Friending
 - IMPORTANT: Friend Deletes Account
   - Remove Notification of Friend (Notification.js)
