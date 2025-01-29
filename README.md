@@ -30,3 +30,12 @@ git add .
 git status
 git commit -m "message"
 git push origin main
+
+
+
+mkdir cloudinary-backend
+cd cloudinary-backend
+npm init -y
+npm install express dotenv cloudinary cors body-parser
+npm install express dotenv cloudinary cors body-parser multer
+npm install streamifier

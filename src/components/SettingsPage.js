@@ -104,6 +104,7 @@ const SettingsPage = () => {
     return allowedChars.test(username);
   };
 
+
   const checkUsernameAvailability = async (newUsername) => {
     const usersQuery = query(collection(db, "profiles"), where("username", "==", newUsername));
     const querySnapshot = await getDocs(usersQuery);
@@ -236,17 +237,26 @@ const SettingsPage = () => {
       <h1>Settings</h1>
 
     {/* Profile Picture Upload */}
-      <div>
-        <label>Profile Picture:</label>
-        <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e.target.files[0], setUploading, setProfileData)} />
-        {uploading ? (
-          <p>Uploading...</p>
-        ) : profileData.profileImage ? (
-          <img src={profileData.profileImage} alt="Profile" style={{ width: "100px", height: "100px", borderRadius: "50%" }} />
-        ) : (
-          <p>No profile picture uploaded</p>
-        )}
-      </div>
+     <div>
+             <label htmlFor="profileImageUpload">Upload Profile Image</label>
+             <input
+               id="profileImageUpload"
+               type="file"
+               accept="image/*"
+               onChange={handleFileChange}
+               disabled={uploading}
+             />
+             {uploading && <p>Uploading...</p>}
+             {profileData.profileImage && (
+               <div>
+                 <img
+                   src={profileData.profileImage}
+                   alt="Profile"
+                   style={{ width: "100px", height: "100px", borderRadius: "50%" }}
+                 />
+               </div>
+             )}
+           </div>
 
       <div>
         <label>First Name:</label>

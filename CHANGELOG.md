@@ -34,7 +34,7 @@ TODO
   - Profile.js
     - Click on Friend Count --> Shows list of friends (PROFILE TODO + username[done] + clickable lead to their profile[done])
   - Settings.js: Case of Have no profile picture
-
+  
 ```1/27/2025```
 DONE
 Notifications.js (WIP)
