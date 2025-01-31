@@ -1,13 +1,14 @@
 ```1/31/2025```
 DONE
 - Made a server folder for server-side w/ own .env file
-- Connected Google Gemini Chatbot 
+- CHATBOT: Connected Google Gemini Chatbot 
   - Note: Go to /chatbot to try it out
   - Gave Google Gemini Chatbot user profile information so it has context
   - If user changes profile, Chatbot is updated with new context automatically
+  - Put Chatbot "AI Advisor" in Sidebar
+  - Prevent logged out users from accessing /chatbot page
 
 TODO
-- Put Chatbot Page on Sidebar
 - OLD STUFF, NOT IMPORTANT
   - Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
   - Optional: Neaten Settings.js
