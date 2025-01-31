@@ -9,6 +9,7 @@ DONE
   - Prevent logged out users from accessing /chatbot page
 
 TODO
+- If user is logged out, redirect to /page-not-found not /login + add Login link in /page-not-found
 - OLD STUFF, NOT IMPORTANT
   - Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
   - Optional: Neaten Settings.js
