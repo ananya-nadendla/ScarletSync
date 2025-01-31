@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { auth, db } from "../config/firebase"; // Import Firestore and Auth
-import { doc, getDoc } from "firebase/firestore"; // Firestore functions
+import { doc, onSnapshot } from "firebase/firestore"; // Firestore functions
 
 const Chatbot = () => {
   const [message, setMessage] = useState("");
@@ -10,21 +10,23 @@ const Chatbot = () => {
 
   const user = auth.currentUser;
 
-  // Fetch the user profile from Firestore
+  // Fetch the user profile from Firestore and listen for changes
   useEffect(() => {
-    const fetchUserProfile = async () => {
+    const unsubscribe = async () => {
       if (user) {
-        try {
-          const userProfileDoc = await getDoc(doc(db, "profiles", user.uid));
-          if (userProfileDoc.exists()) {
-            setUserProfile(userProfileDoc.data()); // Save profile data
+        const userProfileDoc = doc(db, "profiles", user.uid);
+
+        // Set up a real-time listener
+        onSnapshot(userProfileDoc, (docSnapshot) => {
+          if (docSnapshot.exists()) {
+            setUserProfile(docSnapshot.data()); // Update profile data whenever it changes
           }
-        } catch (error) {
-          console.error("Error fetching user profile:", error);
-        }
+        });
       }
     };
-    fetchUserProfile();
+    unsubscribe(); // Unsubscribe from listener when component unmounts
+
+    return () => unsubscribe(); // Cleanup when component unmounts
   }, [user]);
 
   // Function to send message to backend

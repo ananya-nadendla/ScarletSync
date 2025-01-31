@@ -4,10 +4,10 @@ DONE
 - Connected Google Gemini Chatbot 
   - Note: Go to /chatbot to try it out
   - Gave Google Gemini Chatbot user profile information so it has context
+  - If user changes profile, Chatbot is updated with new context automatically
 
 TODO
-- Give Chatbot user information / context
-- Put Chatbot on Sidebar
+- Put Chatbot Page on Sidebar
 - OLD STUFF, NOT IMPORTANT
   - Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
   - Optional: Neaten Settings.js
