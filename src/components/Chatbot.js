@@ -1,38 +1,72 @@
-//CURRENTLY UTILIZING FAKE USER DATA
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { auth, db } from "../config/firebase"; // Import Firestore and Auth
+import { doc, getDoc } from "firebase/firestore"; // Firestore functions
 
 const Chatbot = () => {
   const [message, setMessage] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [userProfile, setUserProfile] = useState(null); // State to hold user profile data
+
+  const user = auth.currentUser;
+
+  // Fetch the user profile from Firestore
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (user) {
+        try {
+          const userProfileDoc = await getDoc(doc(db, "profiles", user.uid));
+          if (userProfileDoc.exists()) {
+            setUserProfile(userProfileDoc.data()); // Save profile data
+          }
+        } catch (error) {
+          console.error("Error fetching user profile:", error);
+        }
+      }
+    };
+    fetchUserProfile();
+  }, [user]);
 
   // Function to send message to backend
   const sendMessage = async (message) => {
     setLoading(true); // Show loading indicator while waiting for response
 
-    try {
-      const response = await fetch("http://localhost:5000/chatbot", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userQuery: message,
-          userProfile: { interests: ["AI", "CS"], courses: ["CS101"] }, // Replace with real user data
-          rutgersInfo: { courses: { CS101: "Intro to Computer Science" } } // Replace with real Rutgers data
-        }),
-      });
+    if (userProfile) {
+      try {
+        const response = await fetch("http://localhost:5000/chatbot", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userQuery: message,
+            userProfile: {
+              firstName: userProfile.firstName,
+              lastName: userProfile.lastName,
+              schoolYear: userProfile.schoolYear,
+              major: userProfile.major,
+              minor: userProfile.minor,
+              selectedSubInterests: userProfile.selectedSubInterests,
+              campusLocation: userProfile.campusLocation,
+              bio: userProfile.bio,
+            },
+            rutgersInfo: {
+              courses: { CS101: "Intro to Computer Science" }, // Replace with actual Rutgers data
+            },
+          }),
+        });
 
-      const data = await response.json();
-      setChatMessages((prevMessages) => [
-        ...prevMessages,
-        { text: data.reply, sender: "bot" },
-      ]);
-      setMessage(""); // Clear input field after sending message
-    } catch (error) {
-      console.error("Error:", error);
-      setChatMessages((prevMessages) => [
-        ...prevMessages,
-        { text: "Sorry, something went wrong.", sender: "bot" },
-      ]);
+        const data = await response.json();
+        setChatMessages((prevMessages) => [
+          ...prevMessages,
+          { text: data.reply, sender: "bot" },
+        ]);
+        setMessage(""); // Clear input field after sending message
+      } catch (error) {
+        console.error("Error:", error);
+        setChatMessages((prevMessages) => [
+          ...prevMessages,
+          { text: "Sorry, something went wrong.", sender: "bot" },
+        ]);
+      }
     }
 
     setLoading(false); // Hide loading indicator after response
