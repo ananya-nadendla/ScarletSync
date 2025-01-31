@@ -15,17 +15,26 @@ npm install cloudinary
 npm install browser-image-compression
     (NEW TOOLS - 1/28)
 npm install express cors dotenv @google/generative-ai
-
+    (NEW TOOLS - 1/31)
 
 //Run project (everyone - need to do this everytime you want to run project)
+OPEN A TERMINAL 
 git fetch
     (get updates from github)
 git reset --hard origin/main
     (update your project in VScode)
+cd server
+    (go in server folder -- should say \scarletsync\server in terminal)
+node server.js
+    (start node server - part 1 of running program)
+OPEN A **NEW** TERMINAL
+    (should now be back in scarletsync folder -- should say \scarletsync in terminal)
 npm start
-    (run program in browser)
+    (run program in browser - part 2 of running program)
+
+STOP PROGRAM
 ^C 
-    (to stop program)
+    (In both terminals, to stop program)
 
 //Push updates to github (developers only)
 git add .

@@ -1,5 +1,6 @@
 ```1/31/2025```
 DONE
+- Made a server folder for server-side w/ own .env file
 - Connected Google Gemini Chatbot 
   - Note: Go to /chatbot to try it out
 
