@@ -15,6 +15,7 @@ import OtherUserProfile from "./components/OtherUserProfile";
 import PageNotFound from "./components/PageNotFound";
 import Loading from "./components/Loading"
 import Notifications from "./components/Notifications"
+import Chatbot from "./components/Chatbot"
 
 //If user it not logged in and tries to access dashboard, profile, etc, REDIRECT to login
 const ProtectedRoute = ({ user, children }) => {
@@ -91,6 +92,14 @@ const App = () => {
             element={
               <ProtectedRoute user={user}>
                 <Notifications />
+              </ProtectedRoute>
+            }
+          />
+        <Route
+            path="/chatbot"
+            element={
+              <ProtectedRoute user={user}>
+                <Chatbot />
               </ProtectedRoute>
             }
           />

@@ -1,3 +1,23 @@
+```1/31/2025```
+DONE
+- Connected Google Gemini Chatbot 
+  - Note: Go to /chatbot to try it out
+
+TODO
+- Give Chatbot user information / context
+- Put Chatbot on Sidebar
+- OLD STUFF, NOT IMPORTANT
+  - Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
+  - Optional: Neaten Settings.js
+  - Friends
+      - Neaten Friend's List Popup
+  - Notification.js
+      - Make Notifications a "card" that you can X out to close
+  - Profile Picture Upload
+      - Profile.js
+          - Click on Friend Count --> Shows list of friends (PROFILE TODO + username[done] + clickable lead to their profile[done])
+      - Settings.js: Case of Have no profile picture
+
 ```1/28/2025```
 NOTE:
   - ImageKit (for profile picture) only supports up till React 18
@@ -23,17 +43,7 @@ Profile Picture
 util/imageUploadUtils
   - Util file for uploading pic (works) + deleting pic (broken, wip)
 
-TODO
-- Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
-- Optional: Neaten Settings.js
-- Friends
-  - Neaten Friend's List Popup
-- Notification.js
-  - Make Notifications a "card" that you can X out to close
-- Profile Picture Upload
-  - Profile.js
-    - Click on Friend Count --> Shows list of friends (PROFILE TODO + username[done] + clickable lead to their profile[done])
-  - Settings.js: Case of Have no profile picture
+
 
 ```1/27/2025```
 DONE

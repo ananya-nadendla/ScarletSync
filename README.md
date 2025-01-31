@@ -14,6 +14,8 @@ npm install axios
 npm install cloudinary
 npm install browser-image-compression
     (NEW TOOLS - 1/28)
+npm install express cors dotenv @google/generative-ai
+
 
 //Run project (everyone - need to do this everytime you want to run project)
 git fetch
