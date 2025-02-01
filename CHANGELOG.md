@@ -7,9 +7,12 @@ DONE
   - If user changes profile, Chatbot is updated with new context automatically
   - Put Chatbot "AI Advisor" in Sidebar
   - Prevent logged out users from accessing /chatbot page
+  - Give chatbot chat history so it has context 
+    - TODO: History gets lost every time user refrehes page
+  - Added support for Links (chatbot can give a link)
 
 TODO
-- IMPORTANT: ACCIDENTALLY GOT RID OF CAMPUS OPTION IN SETTINGS: put it back
+- TODO: Chatbot.js: History gets lost every time user refreshes page
 - If user is logged out, redirect to /page-not-found not /login + add Login link in /page-not-found
 - OLD STUFF, NOT IMPORTANT
   - Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)

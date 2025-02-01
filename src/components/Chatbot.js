@@ -7,6 +7,7 @@ const Chatbot = () => {
   const [chatMessages, setChatMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [userProfile, setUserProfile] = useState(null); // State to hold user profile data
+  const [chatHistory, setChatHistory] = useState([]); // Track chat history
 
   const user = auth.currentUser;
 
@@ -31,10 +32,16 @@ const Chatbot = () => {
 
   // Function to send message to backend
   const sendMessage = async (message) => {
+    console.log("Sending message: ", message); // Log the message being sent
     setLoading(true); // Show loading indicator while waiting for response
 
     if (userProfile) {
       try {
+        console.log("User profile data:", userProfile); // Log user profile
+
+        // Append the new user message to chat history
+        const updatedHistory = [...chatHistory, { sender: "user", text: message }];
+
         const response = await fetch("http://localhost:5000/chatbot", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -50,20 +57,28 @@ const Chatbot = () => {
               campusLocation: userProfile.campusLocation,
               bio: userProfile.bio,
             },
-            rutgersInfo: {
-              courses: { CS101: "Intro to Computer Science" }, // Replace with actual Rutgers data
-            },
+            chatHistory: updatedHistory,  // Send the chat history
           }),
         });
 
         const data = await response.json();
-        setChatMessages((prevMessages) => [
-          ...prevMessages,
-          { text: data.reply, sender: "bot" },
-        ]);
+        console.log("Response data:", data); // Log the parsed response
+
+        if (data.reply) {
+          setChatHistory([...updatedHistory, { sender: "bot", text: data.reply }]);
+          setChatMessages((prevMessages) => [
+            ...prevMessages,
+            { text: data.reply, sender: "bot" },
+          ]);
+        } else {
+          setChatMessages((prevMessages) => [
+            ...prevMessages,
+            { text: "Sorry, I didn't get that. Please try again.", sender: "bot" },
+          ]);
+        }
         setMessage(""); // Clear input field after sending message
       } catch (error) {
-        console.error("Error:", error);
+        console.error("Error in sending message:", error); // Log errors in the API call
         setChatMessages((prevMessages) => [
           ...prevMessages,
           { text: "Sorry, something went wrong.", sender: "bot" },
@@ -79,7 +94,11 @@ const Chatbot = () => {
       <div className="chatbox">
         {chatMessages.map((msg, index) => (
           <div key={index} className={msg.sender}>
-            <p>{msg.text}</p>
+            <p
+                dangerouslySetInnerHTML={{
+                    __html: msg.text, // Render HTML content (e.g., links)
+                }}
+            />
           </div>
         ))}
       </div>

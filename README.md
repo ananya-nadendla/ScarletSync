@@ -15,7 +15,9 @@ npm install cloudinary
 npm install browser-image-compression
     (NEW TOOLS - 1/28)
 npm install express cors dotenv @google/generative-ai
-    (NEW TOOLS - 1/31)
+    (NEW TOOLS for server- 1/31)
+npm install @supabase/supabase-js
+    (NEW TOOLS for server- 2/1)
 
 //Run project (everyone - need to do this everytime you want to run project)
 OPEN A TERMINAL 
