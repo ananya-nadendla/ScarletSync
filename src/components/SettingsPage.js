@@ -333,6 +333,16 @@ const SettingsPage = () => {
         </ul>
       </div>
 
+        <div>
+          <label>Campus Location:</label>
+          <Select
+            options={options.campusLocations.map((location) => ({ value: location, label: location }))}
+            value={profileData.campusLocation ? { value: profileData.campusLocation, label: profileData.campusLocation } : null}
+            onChange={(selectedOption) => setProfileData({ ...profileData, campusLocation: selectedOption ? selectedOption.value : "" })}
+            placeholder="Select Campus Location"
+          />
+        </div>
+
       {/* Interests Section */}
       <div>
         <label>Interests:</label>
