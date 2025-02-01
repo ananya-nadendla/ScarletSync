@@ -9,6 +9,7 @@ DONE
   - Prevent logged out users from accessing /chatbot page
 
 TODO
+- IMPORTANT: ACCIDENTALLY GOT RID OF CAMPUS OPTION IN SETTINGS: put it back
 - If user is logged out, redirect to /page-not-found not /login + add Login link in /page-not-found
 - OLD STUFF, NOT IMPORTANT
   - Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
