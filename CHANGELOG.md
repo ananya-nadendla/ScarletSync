@@ -1,20 +1,25 @@
-```1/31/2025```
+```2/1 && 1/31/2025```
 DONE
 - Made a server folder for server-side w/ own .env file
-- CHATBOT: Connected Google Gemini Chatbot 
-  - Note: Go to /chatbot to try it out
-  - Gave Google Gemini Chatbot user profile information so it has context
-  - If user changes profile, Chatbot is updated with new context automatically
-  - Put Chatbot "AI Advisor" in Sidebar
-  - Prevent logged out users from accessing /chatbot page
-  - Give chatbot chat history so it has context 
-    - TODO: History gets lost every time user refrehes page
-  - Added support for Links (chatbot can give a link)
-  - Chatbot.css: Styled chatbot
-  - Showed user's messages in Chatbot page too
+- CHATBOT 
+  - (Connected Google Gemini Chatbot)
+    - Note: Go to /chatbot to try it out
+    - Gave Google Gemini Chatbot user profile information so it has context
+    - If user changes profile, Chatbot is updated with new context automatically
+    - Put Chatbot "AI Advisor" in Sidebar
+    - Prevent logged out users from accessing /chatbot page
+    - Give chatbot chat history so it has context 
+      - TODO: History gets lost every time user refrehes page
+    - Added support for Links (chatbot can give a link)
+    - Chatbot.css: Styled chatbot
+    - Showed user's messages in Chatbot page too
 
 TODO
-- TODO: Chatbot.js: History gets lost every time user refreshes page
+- TODO: Chatbot.js
+  - History gets lost every time user refreshes page
+  - Rate limit (so that quota for day isnt filled)
+    - IDEA: Only save last 5 prompts of user's history 
+    - IDEA: Limit supabase knowledge
 - If user is logged out, redirect to /page-not-found not /login + add Login link in /page-not-found
 - OLD STUFF, NOT IMPORTANT
   - Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
