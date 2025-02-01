@@ -10,6 +10,8 @@ DONE
   - Give chatbot chat history so it has context 
     - TODO: History gets lost every time user refrehes page
   - Added support for Links (chatbot can give a link)
+  - Chatbot.css: Styled chatbot
+  - Showed user's messages in Chatbot page too
 
 TODO
 - TODO: Chatbot.js: History gets lost every time user refreshes page

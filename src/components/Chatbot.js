@@ -36,12 +36,16 @@ const Chatbot = () => {
     console.log("Sending message: ", message); // Log the message being sent
     setLoading(true); // Show loading indicator while waiting for response
 
+    // Clear the input field immediately after sending the message
+    setMessage("");
+
     if (userProfile) {
       try {
         console.log("User profile data:", userProfile); // Log user profile
 
-        // Append the new user message to chat history
+        // Append the new user message to chat history and chatMessages
         const updatedHistory = [...chatHistory, { sender: "user", text: message }];
+        setChatMessages([...chatMessages, { sender: "user", text: message }]);
 
         const response = await fetch("http://localhost:5000/chatbot", {
           method: "POST",
@@ -58,7 +62,7 @@ const Chatbot = () => {
               campusLocation: userProfile.campusLocation,
               bio: userProfile.bio,
             },
-            chatHistory: updatedHistory,  // Send the chat history
+            chatHistory: updatedHistory,  // Send the updated chat history
           }),
         });
 
@@ -77,7 +81,6 @@ const Chatbot = () => {
             { text: "Sorry, I didn't get that. Please try again.", sender: "bot" },
           ]);
         }
-        setMessage(""); // Clear input field after sending message
       } catch (error) {
         console.error("Error in sending message:", error); // Log errors in the API call
         setChatMessages((prevMessages) => [

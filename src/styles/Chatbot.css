@@ -1,15 +1,18 @@
 .chatbot-container {
   width: 100%;
-  max-width: 400px;
+  max-width: 600px; /* Adjusted max width */
   margin: 20px auto;
   background-color: #f7f7f7;
   border-radius: 10px;
   padding: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: 80vh; /* Make the container take 80% of the viewport height */
+  display: flex;
+  flex-direction: column;
 }
 
 .chatbox {
-  max-height: 300px;
+  flex: 1; /* Allow the chatbox to grow and take available space */
   overflow-y: auto;
   padding: 10px;
   background-color: #fff;
