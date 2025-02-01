@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { auth, db } from "../config/firebase"; // Import Firestore and Auth
 import { doc, onSnapshot } from "firebase/firestore"; // Firestore functions
+import "../styles/Chatbot.css"; // Import the CSS for chatbot styling
 
 const Chatbot = () => {
   const [message, setMessage] = useState("");
