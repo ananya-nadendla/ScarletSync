@@ -31,6 +31,13 @@ const Chatbot = () => {
     return () => unsubscribe(); // Cleanup when component unmounts
   }, [user]);
 
+  // Add intro message when the component mounts
+  useEffect(() => {
+    setChatMessages([
+      { sender: "bot", text: "Hello! I'm your AI Advisor, here to assist you with any questions about Rutgers University. Whether you're curious about programs, events, or campus life, I'm ready to help!" }
+    ]);
+  }, []);
+
   // Function to send message to backend
   const sendMessage = async (message) => {
     console.log("Sending message: ", message); // Log the message being sent

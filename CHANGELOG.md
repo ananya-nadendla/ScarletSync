@@ -13,6 +13,7 @@ DONE
     - Added support for Links (chatbot can give a link)
     - Chatbot.css: Styled chatbot
     - Showed user's messages in Chatbot page too
+    - Intro: "Hi, I'm your AI advwhat do you need help w/ today"?
 
 TODO
 - TODO: Chatbot.js
@@ -20,6 +21,7 @@ TODO
   - Rate limit (so that quota for day isnt filled)
     - IDEA: Only save last 5 prompts of user's history 
     - IDEA: Limit supabase knowledge
+  
 - If user is logged out, redirect to /page-not-found not /login + add Login link in /page-not-found
 - OLD STUFF, NOT IMPORTANT
   - Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
