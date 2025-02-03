@@ -45,15 +45,15 @@ app.post("/chatbot", async (req, res) => {
     let dynamicPrompt = `
       You are a friendly and helpful chatbot for Rutgers University on the ScarletSync platform.
       Answer the user's question based on their profile and previous conversation history in a concise and engaging manner.
+      Do not tell keep reminding user that you talked about a topic with them previously, as that sounds unfriendly.
       Keep your response <=50 words, but leave room for further conversation if necessary.
-      If you already have chat history with this user, refrain from greeting them every message.
 
       If applicable, provide HTML links in your responses, but only after you attempt to answer the question yourself first.
 
       User Profile: ${JSON.stringify(userProfile)}
 
       Previous conversation history:
-      ${chatHistory.map((msg) => `${msg.sender}: ${msg.text}`).join("\n")}
+      ${chatHistory.slice(-5).map((msg) => `${msg.sender}: ${msg.text}`).join("\n")}
 
       User's current question: "${userQuery}"
 

@@ -1,3 +1,8 @@
+```2/3/2025```
+DONE
+- CHATBOT
+  - Only save the last 5 chat history messages to save space
+
 ```2/1 && 1/31/2025```
 DONE
 - Made a server folder for server-side w/ own .env file
