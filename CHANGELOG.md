@@ -3,6 +3,23 @@ DONE
 - CHATBOT
   - Only save the last 5 chat history messages to save space
 
+TODO
+- TODO: Chatbot.js
+  - Rate limit (so that quota for day isnt filled)
+- If user is logged out, redirect to /page-not-found not /login + add Login link in /page-not-found
+- OLD STUFF, NOT IMPORTANT
+  - Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
+  - Optional: Neaten Settings.js
+  - Friends
+    - Neaten Friend's List Popup
+  - Notification.js
+    - Make Notifications a "card" that you can X out to close
+  - Profile Picture Upload
+    - Profile.js
+      - Click on Friend Count --> Shows list of friends (PROFILE TODO + username[done] + clickable lead to their profile[done])
+    - Settings.js: Case of Have no profile picture
+
+
 ```2/1 && 1/31/2025```
 DONE
 - Made a server folder for server-side w/ own .env file
@@ -20,25 +37,6 @@ DONE
     - Showed user's messages in Chatbot page too
     - Intro: "Hi, I'm your AI advwhat do you need help w/ today"?
 
-TODO
-- TODO: Chatbot.js
-  - History gets lost every time user refreshes page
-  - Rate limit (so that quota for day isnt filled)
-    - IDEA: Only save last 5 prompts of user's history 
-    - IDEA: Limit supabase knowledge
-  
-- If user is logged out, redirect to /page-not-found not /login + add Login link in /page-not-found
-- OLD STUFF, NOT IMPORTANT
-  - Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
-  - Optional: Neaten Settings.js
-  - Friends
-      - Neaten Friend's List Popup
-  - Notification.js
-      - Make Notifications a "card" that you can X out to close
-  - Profile Picture Upload
-      - Profile.js
-          - Click on Friend Count --> Shows list of friends (PROFILE TODO + username[done] + clickable lead to their profile[done])
-      - Settings.js: Case of Have no profile picture
 
 ```1/28/2025```
 NOTE:
