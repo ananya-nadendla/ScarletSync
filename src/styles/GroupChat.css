@@ -66,3 +66,31 @@
 .groupchat-send-button:hover {
   background-color: #357ab7;
 }
+
+
+.add-user-section {
+  display: flex;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.add-user-section input {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.add-user-section button {
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-user-section button:hover {
+  background-color: #45a049;
+}

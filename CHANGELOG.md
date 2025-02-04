@@ -5,7 +5,10 @@ DONE
   - Added GroupChat.js, GroupChat.css, util/fetchStreamToken
   - Set up Stream in server.js
   - Added Groupchat link to Sidebar.js
-  - CURRENTLY: Each user is in their "own" groupchat + history saves
+  - CURRENTLY: Each user generates with their own unique channel
+
+  - Adding ANYONE to a groupchat works
+    - Cannot add non-existent user
 
 TODO
 - Groupchat

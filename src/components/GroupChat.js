@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Channel, MessageList, MessageInput, Chat } from "stream-chat-react";
 import { db } from "../config/firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { collection, query, where, getDocs, doc, getDoc } from "firebase/firestore"; // Firebase imports
 import { useStreamChat } from "../context/StreamChatContext";
 import "../styles/GroupChat.css";
 import { StreamChat } from "stream-chat";
 
+// Function to fetch the Stream token from the backend
 export const fetchStreamToken = async (userId) => {
   try {
     const response = await fetch("http://localhost:5000/stream/token", {
@@ -23,9 +24,46 @@ export const fetchStreamToken = async (userId) => {
   }
 };
 
+// Function to add a user to the Stream channel
+const addUserToChannel = async (username, channel) => {
+  try {
+    // Query the profiles collection to find a document where username matches
+    const profilesRef = collection(db, "profiles");
+    const q = query(profilesRef, where("username", "==", username));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      // Profile not found
+      alert(`User ${username} does not exist!`);
+    } else {
+      // Assuming there will only be one document with the matching username
+      querySnapshot.forEach((doc) => {
+        const userUid = doc.id; // Get the user's UID (same as Stream ID)
+
+        // Add the user to the Stream channel
+        channel.addMembers([userUid]);
+        alert(`User ${username} added to the channel!`);
+      });
+    }
+  } catch (error) {
+    console.error("Error adding user to channel:", error);
+    alert("Something went wrong. Please try again.");
+  }
+};
+
 const GroupChat = ({ userId }) => {
+  const [channels, setChannels] = useState([]); // State to hold all the channels
   const [channel, setChannel] = useState(null);
+  const [newUser, setNewUser] = useState(""); // State to hold the username of the person to add
   const { client, setClient } = useStreamChat();
+
+  const handleAddUser = () => {
+    if (newUser.trim() === "") return;
+
+    // Call the add user function
+    addUserToChannel(newUser, channel);
+    setNewUser(""); // Clear the input field after adding the user
+  };
 
   useEffect(() => {
     const setupChat = async () => {
@@ -46,20 +84,19 @@ const GroupChat = ({ userId }) => {
           token
         );
 
-        // Log user role and permissions
-        console.log("User role:", streamClient.user.role);
-        console.log("User permissions:", streamClient.user.permissions);
-
         setClient(streamClient); // Update the global client
 
-        // Create a unique channel for the user
-        const userChannel = streamClient.channel("messaging", `user-${userId}`, {
-          name: `${username}'s Channel`,
-          members: [userId], // Ensure the user is added as a member
+        // Fetch all channels the user is part of
+        const channels = await streamClient.queryChannels({
+          members: { $in: [userId] }, // Query channels where the user is a member
         });
 
-        await userChannel.watch(); // Watch the channel
-        setChannel(userChannel);
+        setChannels(channels); // Set the channels in the state
+
+        // If the user is a member of any channel, set the first one as the default
+        if (channels.length > 0) {
+          setChannel(channels[0]);
+        }
       } catch (error) {
         console.error("Error setting up chat:", error);
       }
@@ -75,11 +112,23 @@ const GroupChat = ({ userId }) => {
     };
   }, [userId, client, setClient]);
 
-  if (!channel || !client) return <div>Loading...</div>;
+  if (!channels.length || !client) return <div>Loading...</div>;
 
   return (
     <div className="groupchat-container">
-      <div className="groupchat-header">{channel.data.name}</div>
+      <div className="groupchat-header">
+        <h2>Channels</h2>
+        <div className="channel-list">
+          {channels.map((channel) => (
+            <button
+              key={channel.id}
+              onClick={() => setChannel(channel)} // Switch channels on click
+            >
+              {channel.data.name}
+            </button>
+          ))}
+        </div>
+      </div>
       <div className="groupchat-chat-container">
         <Chat client={client}>
           <Channel channel={channel}>
@@ -87,6 +136,15 @@ const GroupChat = ({ userId }) => {
             <MessageInput className="groupchat-message-input" />
           </Channel>
         </Chat>
+      </div>
+      <div className="add-user-section">
+        <input
+          type="text"
+          value={newUser}
+          onChange={(e) => setNewUser(e.target.value)}
+          placeholder="Enter username to add"
+        />
+        <button onClick={handleAddUser}>Add User</button>
       </div>
     </div>
   );
