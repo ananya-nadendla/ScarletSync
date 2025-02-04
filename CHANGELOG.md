@@ -3,6 +3,13 @@ DONE
 - CHATBOT
   - Only save the last 5 chat history messages to save space
 
+- FRIENDS
+  - User Deletes Account
+    - In each profile of the firebase "profiles" collection, the deleted user uid is gone from the "friends" field
+    - In the "friendRequests" collection, any deleted user uid in the "to"/"from" field deletes the whole friendRequest
+    - RESULT: Now when a user deletes profile, their profile is deleted from all other users' friends' pages/lists too. 
+  - Made Friends Popup neater
+
 TODO
 - TODO: Chatbot.js
   - Rate limit (so that quota for day isnt filled)
@@ -10,8 +17,6 @@ TODO
 - OLD STUFF, NOT IMPORTANT
   - Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
   - Optional: Neaten Settings.js
-  - Friends
-    - Neaten Friend's List Popup
   - Notification.js
     - Make Notifications a "card" that you can X out to close
   - Profile Picture Upload

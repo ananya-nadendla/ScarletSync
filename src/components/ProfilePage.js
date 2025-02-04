@@ -50,16 +50,26 @@ const ProfilePage = () => {
             });
 
             // Fetch the friend's list and update it dynamically
-            const friends = data.friends || [];
-            const friendUsernames = [];
-            for (const friendUid of friends) {
-              const friendDoc = await getDoc(doc(db, "profiles", friendUid));
-              if (friendDoc.exists()) {
-                friendUsernames.push(friendDoc.data().username);
-              }
-            }
-            setFriendCount(friendUsernames.length); // Update the friend count
-            setFriendsList(friendUsernames); // Set the list of friend usernames
+
+              const friends = data.friends || [];
+                         const friendDetails = await Promise.all(
+                           friends.map(async (friendUid) => {
+                             const friendDoc = await getDoc(doc(db, "profiles", friendUid));
+                             if (friendDoc.exists()) {
+                               const friendData = friendDoc.data();
+                               return {
+                                 username: friendData.username,
+                                 profileImage: friendData.profileImage || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpPPrc8VMEPWqvFtOIxFZLDCN4JITg01d-KA&s",
+                               };
+                             }
+                             return null;
+                           })
+                         );
+
+                         const validFriends = friendDetails.filter(friend => friend !== null);
+                         console.log("Final friends list being set:", validFriends);
+                         setFriendCount(validFriends.length);
+                         setFriendsList(validFriends);
           } else {
             setError("Profile not found.");
           }
@@ -206,17 +216,18 @@ const ProfilePage = () => {
         <Popup
           title="Friends List"
           content={
-            <ul>
-              {friendsList.length > 0 ? (
-                friendsList.map((username, index) => (
-                  <li key={index}>
-                    <Link to={`/profile/${username}`}>{username}</Link>
-                  </li>
+            <div className="friends-list">
+                          {friendsList.length > 0 ? (
+                            friendsList.map((friend, index) => (
+                              <div key={index} className="friend-card">
+                                <img src={friend.profileImage} alt={friend.username} className="friend-profile-pic" />
+                                <Link to={`/profile/${friend.username}`} className="friend-username">{friend.username}</Link>
+                              </div>
                 ))
               ) : (
                 <p>No friends to display.</p>
               )}
-            </ul>
+            </div>
           }
           onConfirm={handlePopupClose}
           confirmButtonText="Close"

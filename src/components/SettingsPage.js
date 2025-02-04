@@ -8,6 +8,7 @@ import '../styles/SettingsPage.css'; // Add your custom CSS file for styling
 import Loading from './Loading';
 import Popup from "./Popup"; // Import the Popup component
 import { handleImageUpload, deleteProfilePicture } from '../util/imageUploadUtils';
+import { handleProfileDeletion } from '../util/friendUtils';
 
 const SettingsPage = () => {
   const [profileData, setProfileData] = useState({
@@ -194,13 +195,13 @@ const SettingsPage = () => {
   const handleDeleteAccount = async () => {
     if (user) {
       try {
-        // Check if the user has a profile image
+        // Call handleProfileDeletion to remove user from friends lists and friend requests
+        await handleProfileDeletion(user.uid);
+
+        // Check if the user has a profile image and delete it
         if (profileData.profileImage) {
-          // Extract the public_id from the profile image URL
           const publicId = profileData.profileImage.split("/").pop().split(".")[0];
           console.log("Deleting profile picture with public_id:", publicId);
-
-          // Call deleteProfilePicture to remove the image from Cloudinary
           await deleteProfilePicture(publicId);
         }
 
@@ -211,8 +212,6 @@ const SettingsPage = () => {
         await deleteUser(user);
 
         alert("Your account has been deleted.");
-
-        // Redirect to the login page
         navigate("/login");
       } catch (err) {
         console.error("Error deleting account: ", err);
@@ -220,6 +219,7 @@ const SettingsPage = () => {
       }
     }
   };
+
 
 
   const confirmDeleteAccount = async () => {

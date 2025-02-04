@@ -119,7 +119,7 @@ export const getRelationshipStatus = async (currentUid, otherUid) => {
 
     if (userDoc.exists()) {
       const userData = userDoc.data();
-      const friends = userData.friends || []; // Ensure friends is an array
+      const friends = userData.friends || [];
 
       // Check if the friend exists in the list
       if (Array.isArray(friends) && friends.includes(otherUid)) {
@@ -134,21 +134,29 @@ export const getRelationshipStatus = async (currentUid, otherUid) => {
   }
 };
 
-// Handle profile deletion
+// Handle profile deletion in regards to friending
+// Called in Settings.js
+/* Removes to things:
+    1) The deleted user's UID is deleted from the "friends" field of other people's profiles (in the "profiles" firebase collection)
+    2) In "friendRequests", any friendRequest containing the deleted user's UID in the "from" or "to" fields deletes the whole friendRequest
+*/
 export const handleProfileDeletion = async (userUid) => {
   try {
+    console.log(`Starting deletion process for user: ${userUid}`);
+
     // Remove the user from other users' friends lists
     const profilesRef = collection(db, "profiles");
     const q = query(profilesRef, where("friends", "array-contains", userUid));
     const querySnapshot = await getDocs(q);
 
     for (const docSnapshot of querySnapshot.docs) {
-      const profileData = docSnapshot.data();
-      const updatedFriends = profileData.friends.filter((friendUid) => friendUid !== userUid);
-      await updateDoc(doc(profilesRef, docSnapshot.id), { friends: updatedFriends });
+      console.log(`Removing ${userUid} from friends list of: ${docSnapshot.id}`);
+      await updateDoc(doc(db, "profiles", docSnapshot.id), {
+        friends: arrayRemove(userUid),
+      });
     }
 
-    // Delete any pending friend requests involving the user
+    // Delete any pending or accepted friend requests involving the user
     const friendRequestsRef = collection(db, "friendRequests");
     const sentRequestsQuery = query(friendRequestsRef, where("from", "==", userUid));
     const receivedRequestsQuery = query(friendRequestsRef, where("to", "==", userUid));
@@ -159,7 +167,8 @@ export const handleProfileDeletion = async (userUid) => {
     ]);
 
     for (const docSnapshot of [...sentRequests.docs, ...receivedRequests.docs]) {
-      await deleteDoc(doc(friendRequestsRef, docSnapshot.id));
+      console.log(`Deleting friend request involving ${userUid}: ${docSnapshot.id}`);
+      await deleteDoc(doc(db, "friendRequests", docSnapshot.id));
     }
 
     console.log(`Profile and related data cleaned up for user: ${userUid}`);
