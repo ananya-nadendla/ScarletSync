@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { createClient } from "@supabase/supabase-js";
+import { StreamChat } from 'stream-chat';
 
 dotenv.config();
 const app = express();
@@ -13,6 +14,11 @@ app.use(express.json());
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-latest" });
+
+const streamApiKey = process.env.STREAM_API_KEY;
+const streamApiSecret = process.env.STREAM_API_SECRET;
+// Initialize Stream client (already loaded API key & secret)
+const streamClient = StreamChat.getInstance(process.env.STREAM_API_KEY, process.env.STREAM_API_SECRET);
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
@@ -73,6 +79,23 @@ app.post("/chatbot", async (req, res) => {
   } catch (error) {
     console.error("Chatbot error:", error);
     res.status(500).json({ error: "Something went wrong during query processing" });
+  }
+});
+
+// Endpoint to generate Stream user token
+app.post('/stream/token', (req, res) => {
+  const { userId } = req.body;  // User ID should be passed from the frontend
+
+  if (!userId) {
+    return res.status(400).json({ error: "User ID is required" });
+  }
+
+  try {
+    const token = streamClient.createToken(userId);  // Generate token for user
+    res.json({ token });  // Return the token to the frontend
+  } catch (error) {
+    console.error("Error generating Stream token:", error);
+    res.status(500).json({ error: "Failed to generate token" });
   }
 });
 

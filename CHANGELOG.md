@@ -1,3 +1,29 @@
+```2/4/2025```
+DONE
+- GroupChat
+  - Installed Stream + setup api keys
+  - Added GroupChat.js, GroupChat.css, util/fetchStreamToken
+  - Set up Stream in server.js
+  - Added Groupchat link to Sidebar.js
+
+TODO
+- Groupchat
+  - Make it look less ugly
+  - USER DELETES ACCOUNT: Must delete off of groupchat
+- OLD STUFF, NOT IMPORTANT YET
+  - Chatbot.js:
+    - Rate limit (so that quota for day isnt filled)
+  - If user is logged out, redirect to /page-not-found not /login + add Login link in /page-not-found
+    - Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
+    - Optional: Neaten Settings.js
+    - Notification.js
+      - Make Notifications a "card" that you can X out to close
+    - Profile Picture Upload
+      - Profile.js
+        - Click on Friend Count --> Shows list of friends (PROFILE TODO + username[done] + clickable lead to their profile[done])
+      - Settings.js: Case of Have no profile picture
+
+
 ```2/3/2025```
 DONE
 - CHATBOT
@@ -10,19 +36,6 @@ DONE
     - RESULT: Now when a user deletes profile, their profile is deleted from all other users' friends' pages/lists too. 
   - Made Friends Popup neater
 
-TODO
-- TODO: Chatbot.js
-  - Rate limit (so that quota for day isnt filled)
-- If user is logged out, redirect to /page-not-found not /login + add Login link in /page-not-found
-- OLD STUFF, NOT IMPORTANT
-  - Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
-  - Optional: Neaten Settings.js
-  - Notification.js
-    - Make Notifications a "card" that you can X out to close
-  - Profile Picture Upload
-    - Profile.js
-      - Click on Friend Count --> Shows list of friends (PROFILE TODO + username[done] + clickable lead to their profile[done])
-    - Settings.js: Case of Have no profile picture
 
 
 ```2/1 && 1/31/2025```

@@ -41,6 +41,11 @@ const Sidebar = () => {
             </NavLink>
           </li>
           <li>
+            <NavLink to="/groupchat" className="sidebar-menu-link" activeClassName="sidebar-active-link">
+              Chats
+            </NavLink>
+          </li>
+          <li>
             <NavLink to="/settings" className="sidebar-menu-link" activeClassName="sidebar-active-link">
               Settings
             </NavLink>

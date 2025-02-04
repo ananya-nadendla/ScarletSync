@@ -16,6 +16,7 @@ import PageNotFound from "./components/PageNotFound";
 import Loading from "./components/Loading"
 import Notifications from "./components/Notifications"
 import Chatbot from "./components/Chatbot"
+import GroupChat from "./components/GroupChat"
 
 //If user it not logged in and tries to access dashboard, profile, etc, REDIRECT to login
 const ProtectedRoute = ({ user, children }) => {
@@ -103,6 +104,16 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+
+        <Route
+          path="/groupchat"
+          element={
+            <ProtectedRoute user={user}>
+              <GroupChat userId={user?.uid} /> {/* Pass userId from the logged-in user */}
+            </ProtectedRoute>
+          }
+        />
+
         </Route>
 
         {/* Catch-all route */}
