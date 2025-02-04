@@ -5,6 +5,7 @@ DONE
   - Added GroupChat.js, GroupChat.css, util/fetchStreamToken
   - Set up Stream in server.js
   - Added Groupchat link to Sidebar.js
+  - CURRENTLY: Each user is in their "own" groupchat + history saves
 
 TODO
 - Groupchat

@@ -3,18 +3,25 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../config/firebase"; // Import your Firebase auth instance
 import "../styles/Sidebar.css"; // Dedicated CSS for the layout and side panel
+import { useStreamChat } from "../context/StreamChatContext";
 
 const Sidebar = () => {
   const navigate = useNavigate();
-  const handleLogout = () => {
-    signOut(auth)
-      .then(() => {
+    const { client } = useStreamChat();
+
+    const handleLogout = async () => {
+      try {
+        if (client) {
+          await client.disconnectUser(); // Wait for disconnect to complete
+        }
+
+        await signOut(auth);
         navigate("/login"); // Redirect to login after logout
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error("Error logging out:", err.message);
-      });
-  };
+      }
+    };
+
 
   return (
     <div className="sidebar-layout-container">
