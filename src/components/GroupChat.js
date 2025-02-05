@@ -130,14 +130,17 @@ const GroupChat = ({ userId }) => {
           ))}
         </div>
       </div>
-      <div className="groupchat-chat-container">
-        <Chat client={client}>
-          <Channel channel={channel}>
-            <MessageList className="groupchat-message-list" />
-            <MessageInput className="groupchat-message-input" />
-          </Channel>
-        </Chat>
-      </div>
+<div className="groupchat-chat-container">
+  <Chat client={client}>
+    <Channel channel={channel}>
+      <MessageList className="groupchat-message-list" />
+    </Channel>
+    <Channel channel={channel}>
+      <MessageInput className="groupchat-message-input" />
+    </Channel>
+  </Chat>
+</div>
+
       <div className="add-user-section">
         <input
           type="text"
