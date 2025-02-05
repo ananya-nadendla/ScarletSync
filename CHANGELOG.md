@@ -10,6 +10,9 @@ DONE
   - Adding ANYONE to a groupchat works
     - Cannot add non-existent user
 
+  - Styling groupchat w/ Stream's default styles
+  - FIX WEIRD LAYOUT
+
 TODO
 - Groupchat
   - Make it look less ugly

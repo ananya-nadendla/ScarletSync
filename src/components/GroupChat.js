@@ -5,6 +5,7 @@ import { collection, query, where, getDocs, doc, getDoc } from "firebase/firesto
 import { useStreamChat } from "../context/StreamChatContext";
 import "../styles/GroupChat.css";
 import { StreamChat } from "stream-chat";
+import "stream-chat-react/dist/css/v2/index.css";
 
 // Function to fetch the Stream token from the backend
 export const fetchStreamToken = async (userId) => {
