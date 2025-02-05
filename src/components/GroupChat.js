@@ -82,23 +82,29 @@ const GroupChat = ({ userId }) => {
 
         // Connect the new user
         await streamClient.connectUser(
-          { id: userId, name: username, role: "user" }, // Ensure the role is set
+          { id: userId, name: username, role: "user" },
           token
         );
 
         setClient(streamClient); // Update the global client
 
         // Fetch all channels the user is part of
-        const channels = await streamClient.queryChannels({
-          members: { $in: [userId] }, // Query channels where the user is a member
+        let channels = await streamClient.queryChannels({
+          members: { $in: [userId] },
         });
 
-        setChannels(channels); // Set the channels in the state
-
-        // If the user is a member of any channel, set the first one as the default
-        if (channels.length > 0) {
-          setChannel(channels[0]);
+        // If the user is in no channels, create a default one
+        if (channels.length === 0) {
+          const defaultChannel = streamClient.channel("messaging", `welcome-${userId}`, {
+            name: "Welcome Channel",
+            members: [userId],
+          });
+          await defaultChannel.create();
+          channels = [defaultChannel]; // Update channels list
         }
+
+        setChannels(channels);
+        setChannel(channels[0]); // Set the first channel as default
       } catch (error) {
         console.error("Error setting up chat:", error);
       }
