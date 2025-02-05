@@ -5,19 +5,22 @@ import { collection, getDocs } from "firebase/firestore";
 import Notifications from "../components/Notifications";
 import "../styles/FriendsPage.css";
 
+
 const FriendsPage = () => {
   const [activeTab, setActiveTab] = useState("notifications");
   const [friendRecommendations, setFriendRecommendations] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
+
   useEffect(() => {
     const fetchRecommendations = async () => {
       const recommendations = await getDocs(collection(db, "profiles"));
-      setFriendRecommendations(recommendations.docs.map((doc) => doc.data()));
+      setFriendRecommendations(recommendations.docs.map(doc => doc.data()));
     };
     fetchRecommendations();
   }, []);
+
 
   useEffect(() => {
     if (searchQuery.trim() === "") {
@@ -25,16 +28,17 @@ const FriendsPage = () => {
       return;
     }
     const lowerQuery = searchQuery.toLowerCase();
-    const filteredResults = friendRecommendations.filter((profile) =>
+    const filteredResults = friendRecommendations.filter(profile =>
       profile.username.toLowerCase().startsWith(lowerQuery)
     );
     setSearchResults(filteredResults);
   }, [searchQuery, friendRecommendations]);
 
+
   return (
     <div className="friends-page">
       <div className="tabs">
-        {["notifications", "recommendations", "search"].map((tab) => (
+        {["notifications", "recommended", "search"].map(tab => (
           <button
             key={tab}
             className={`tab-button ${activeTab === tab ? "active" : ""}`}
@@ -45,41 +49,43 @@ const FriendsPage = () => {
         ))}
       </div>
 
-      {activeTab === "notifications" && <Notifications />}
 
+      {activeTab === "notifications" && <Notifications />}
+     
       {activeTab === "recommendations" && (
         <div className="recommendations-tab">
           <h3>Friend Recommendations</h3>
           <div className="recommendations-list">
             {friendRecommendations.map((profile, index) => (
-              <Link to={`/profile/${profile.username}`} key={index} className="profile-card">
-                <img src={profile.profilePicture || "/default-avatar.png"} alt="Profile" className="profile-picture" />
-                <div className="profile-username">{profile.username}</div>
-              </Link>
+              <div key={index} className="profile-card">
+                <Link to={`/profile/${profile.username}`} className="profile-username">
+                  {profile.username}
+                </Link>
+              </div>
             ))}
           </div>
         </div>
       )}
 
+
       {activeTab === "search" && (
         <div className="search-tab">
           <h3>Search Profiles</h3>
-          <div className="search-bar-container">
-            <input
-              type="text"
-              placeholder="Search by username"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="search-input"
-            />
-          </div>
+          <input
+            type="text"
+            placeholder="Search by username"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
+          />
           <div className="search-results">
             {searchResults.length > 0 ? (
               searchResults.map((profile, index) => (
-                <Link to={`/profile/${profile.username}`} key={index} className="profile-card">
-                  <img src={profile.profilePicture || "/default-avatar.png"} alt="Profile" className="profile-picture" />
-                  <div className="profile-username">{profile.username}</div>
-                </Link>
+                <div key={index} className="profile-card">
+                  <Link to={`/profile/${profile.username}`} className="profile-username">
+                    {profile.username}
+                  </Link>
+                </div>
               ))
             ) : (
               <p>{searchQuery.length > 0 ? "No profiles found" : "Start typing to search for profiles"}</p>
@@ -90,5 +96,6 @@ const FriendsPage = () => {
     </div>
   );
 };
+
 
 export default FriendsPage;
