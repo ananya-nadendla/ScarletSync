@@ -116,40 +116,41 @@ const GroupChat = ({ userId }) => {
 
   if (!channels.length || !client) return <Loading message="Loading chats..."/>;
 
-  return (
+    return (
     <div className="groupchat-container">
-      <div className="groupchat-header">
+      {/* Sidebar (Channels + Add User Section) */}
+      <div className="groupchat-sidebar">
         <h2>Channels</h2>
         <div className="channel-list">
           {channels.map((channel) => (
-            <button
-              key={channel.id}
-              onClick={() => setChannel(channel)} // Switch channels on click
-            >
+            <button key={channel.id} onClick={() => setChannel(channel)}>
               {channel.data.name}
             </button>
           ))}
         </div>
-      </div>
-<div className="groupchat-chat-container">
-  <Chat client={client}>
-    <Channel channel={channel}>
-      <MessageList className="groupchat-message-list" />
-    </Channel>
-    <Channel channel={channel}>
-      <MessageInput className="groupchat-message-input" />
-    </Channel>
-  </Chat>
-</div>
 
-      <div className="add-user-section">
-        <input
-          type="text"
-          value={newUser}
-          onChange={(e) => setNewUser(e.target.value)}
-          placeholder="Enter username to add"
-        />
-        <button onClick={handleAddUser}>Add User</button>
+        {/* Add User Section (Now Inside Sidebar) */}
+        <div className="add-user-section">
+          <input
+            type="text"
+            value={newUser}
+            onChange={(e) => setNewUser(e.target.value)}
+            placeholder="Enter username to add"
+          />
+          <button onClick={handleAddUser}>Add User</button>
+        </div>
+      </div>
+
+      {/* Chat Container - Spanning Full Right Section */}
+      <div className="groupchat-chat-container">
+    <Chat client={client}>
+      <Channel channel={channel}>
+        <div className="groupchat-channel">
+          <MessageList className="groupchat-message-list" />
+          <MessageInput className="groupchat-message-input" />
+        </div>
+      </Channel>
+    </Chat>
       </div>
     </div>
   );
