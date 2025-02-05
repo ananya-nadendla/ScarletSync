@@ -114,7 +114,7 @@ const GroupChat = ({ userId }) => {
     };
   }, [userId, client, setClient]);
 
-  if (!channels.length || !client) return <Loading message="Fetching user profile..." />;
+  if (!channels.length || !client) return <Loading message="Loading chats..."/>;
 
   return (
     <div className="groupchat-container">
