@@ -6,6 +6,7 @@ import { useStreamChat } from "../context/StreamChatContext";
 import "../styles/GroupChat.css";
 import { StreamChat } from "stream-chat";
 import "stream-chat-react/dist/css/v2/index.css";
+import Loading from "./Loading"
 
 // Function to fetch the Stream token from the backend
 export const fetchStreamToken = async (userId) => {
@@ -113,7 +114,7 @@ const GroupChat = ({ userId }) => {
     };
   }, [userId, client, setClient]);
 
-  if (!channels.length || !client) return <div>Loading...</div>;
+  if (!channels.length || !client) return <Loading message="Fetching user profile..." />;
 
   return (
     <div className="groupchat-container">
