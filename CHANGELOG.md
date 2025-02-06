@@ -18,6 +18,8 @@ DONE
   - GroupChat feature: If you add a 3rd person to a DM, it turns into a groupchat
     - After you turn it into a groupchat, you can start a new DM (with the first two ppl)
 
+  - Leave Chat done
+
 TODO
 - Groupchat
   - Make it look less ugly

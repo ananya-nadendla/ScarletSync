@@ -84,12 +84,55 @@ const startDirectMessage = async (currentUserId, recipientUsername, client, setC
   }
 };
 
+const handleRemoveUser = async (userIdToRemove, channel) => {
+  if (!channel) return;
+  try {
+    await channel.removeMembers([userIdToRemove]);
+    alert(`User removed successfully!`);
+  } catch (error) {
+    console.error("Error removing user:", error);
+    alert("Something went wrong. Please try again.");
+  }
+};
+
+const handleLeaveChat = async (userId, channel, setChannel, setChannels) => {
+  if (!channel) return;
+  try {
+    const user = channel.state.members[userId]?.user;
+    const username = user?.name || "A user";
+
+    // Send a normal message instead of a system message
+    await channel.sendMessage({
+      text: `⚠️ ${username} has left the chat.`,
+      custom_type: "leave_message", // Optional: Use a custom type to differentiate
+    });
+
+    await channel.removeMembers([userId]);
+    const updatedChannel = await channel.query();
+    const remainingMembers = updatedChannel?.state?.members ?? {};
+
+    if (Object.keys(remainingMembers).length === 0) {
+      await channel.delete();
+      setChannels((prev) => prev.filter((ch) => ch.id !== channel.id));
+      setChannel(null);
+    }
+
+    alert("You left the chat.");
+    setChannel(null);
+  } catch (error) {
+    console.error("Error leaving chat:", error);
+    alert("Something went wrong. Please try again.");
+  }
+};
+
+
 const GroupChat = ({ userId }) => {
   const [channels, setChannels] = useState([]);
   const [channel, setChannel] = useState(null);
   const [newUser, setNewUser] = useState("");
   const [dmUser, setDmUser] = useState(""); // State for DM input
   const { client, setClient } = useStreamChat();
+
 
     const handleAddUser = async () => {
       if (newUser.trim() === "" || !channel) return;
@@ -222,6 +265,25 @@ const GroupChat = ({ userId }) => {
     }
   };
 
+useEffect(() => {
+  if (!client) return;
+
+  const handleMemberRemoved = (event) => {
+    if (event.user.id === userId) {
+      setChannels((prevChannels) => prevChannels.filter((ch) => ch.id !== event.channel_id));
+      if (channel?.id === event.channel_id) {
+        setChannel(null);
+      }
+    }
+  };
+
+  client.on("member.removed", handleMemberRemoved);
+
+  return () => {
+    client.off("member.removed", handleMemberRemoved);
+  };
+}, [client, userId, channel]);
+
 
   useEffect(() => {
     const setupChat = async () => {
@@ -274,21 +336,17 @@ const GroupChat = ({ userId }) => {
 
   if (!channels.length || !client) return <Loading message="Loading chats..." />;
 
-  return (
+return (
     <div className="groupchat-container">
-      {/* Sidebar (Channels, Add User, DM Section) */}
       <div className="groupchat-sidebar">
         <h2>Channels</h2>
         <div className="channel-list">
           {channels.map((ch) => {
-            // If it's a DM, show the name of the other user instead of an empty box
-            let channelName = ch.data.name || "Unnamed Channel";
-
+            let channelName = ch.data.name || "Direct Message";
             if (ch.data.member_count === 2) {
               const otherUser = Object.keys(ch.state.members).find((member) => member !== userId);
               if (otherUser) {
-                const otherMember = ch.state.members[otherUser];
-                channelName = otherMember?.user?.name || "Direct Message";
+                channelName = ch.state.members[otherUser]?.user?.name || "Direct Message";
               }
             }
 
@@ -300,7 +358,6 @@ const GroupChat = ({ userId }) => {
           })}
         </div>
 
-        {/* Add User Section */}
         <div className="add-user-section">
           <input
             type="text"
@@ -311,7 +368,6 @@ const GroupChat = ({ userId }) => {
           <button onClick={handleAddUser}>Add User</button>
         </div>
 
-        {/* Direct Messaging Section */}
         <div className="dm-section">
           <input
             type="text"
@@ -323,13 +379,19 @@ const GroupChat = ({ userId }) => {
         </div>
       </div>
 
-      {/* Chat Container */}
       <div className="groupchat-chat-container">
         <Chat client={client}>
           <Channel channel={channel}>
             <div className="groupchat-channel">
               <MessageList className="groupchat-message-list" />
               <MessageInput className="groupchat-message-input" />
+              <div className="groupchat-controls">
+                {channel && (
+                  <button onClick={() => handleLeaveChat(userId, channel, setChannel, setChannels)}>
+                    Leave
+                  </button>
+                )}
+              </div>
             </div>
           </Channel>
         </Chat>
