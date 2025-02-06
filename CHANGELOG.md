@@ -14,6 +14,10 @@ DONE
   - Fixed WEIRD LAYOUT
   - USER DELETES ACCOUNT: User is deleted from groupchats 
 
+  - DM Feature: Can enter someone's username and dm them
+  - GroupChat feature: If you add a 3rd person to a DM, it turns into a groupchat
+    - After you turn it into a groupchat, you can start a new DM (with the first two ppl)
+
 TODO
 - Groupchat
   - Make it look less ugly
