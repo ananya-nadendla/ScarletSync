@@ -9,7 +9,7 @@ import "stream-chat-react/dist/css/v2/index.css";
 import Loading from "./Loading"
 
 // Function to fetch the Stream token from the backend
-export const fetchStreamToken = async (userId) => {
+const fetchStreamToken = async (userId) => {
   try {
     const response = await fetch("http://localhost:5000/stream/token", {
       method: "POST",
