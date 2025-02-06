@@ -84,11 +84,29 @@ const startDirectMessage = async (currentUserId, recipientUsername, client, setC
   }
 };
 
-const handleRemoveUser = async (userIdToRemove, channel) => {
-  if (!channel) return;
+const handleRemoveUser = async (removeUser, channel) => {
+  if (removeUser.trim() === "" || !channel) return;
+
   try {
-    await channel.removeMembers([userIdToRemove]);
-    alert(`User removed successfully!`);
+    const profilesRef = collection(db, "profiles");
+    const q = query(profilesRef, where("username", "==", removeUser));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      alert(`User ${removeUser} does not exist!`);
+      return;
+    }
+
+    const userDoc = querySnapshot.docs[0];
+    const userUid = userDoc.id;
+
+    if (!channel.state.members[userUid]) {
+      alert(`User ${removeUser} is not in this chat!`);
+      return;
+    }
+
+    await channel.removeMembers([userUid]);
+    alert(`User ${removeUser} removed successfully!`);
   } catch (error) {
     console.error("Error removing user:", error);
     alert("Something went wrong. Please try again.");
@@ -132,6 +150,7 @@ const GroupChat = ({ userId }) => {
   const [newUser, setNewUser] = useState("");
   const [dmUser, setDmUser] = useState(""); // State for DM input
   const { client, setClient } = useStreamChat();
+   const [removeUser, setRemoveUser] = useState("");
 
 
     const handleAddUser = async () => {
@@ -367,6 +386,16 @@ return (
           />
           <button onClick={handleAddUser}>Add User</button>
         </div>
+
+        <div className="remove-user-section">
+                  <input
+                    type="text"
+                    value={removeUser}
+                    onChange={(e) => setRemoveUser(e.target.value)}
+                    placeholder="Enter username to remove"
+                  />
+                  <button onClick={() => handleRemoveUser(removeUser, channel)}>Remove User</button>
+                </div>
 
         <div className="dm-section">
           <input
