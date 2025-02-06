@@ -99,4 +99,41 @@ app.post('/stream/token', (req, res) => {
   }
 });
 
+app.post('/stream/delete-user', async (req, res) => {
+  const { userId } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({ error: "User ID is required" });
+  }
+
+  try {
+    // Fetch all channels where the user is a member
+    const userChannels = await streamClient.queryChannels({ members: { $in: [userId] } });
+
+    // Remove user from all their channels
+    for (const channel of userChannels) {
+      await channel.removeMembers([userId]);
+    }
+
+    // Attempt a hard delete first
+    try {
+      await streamClient.deleteUser(userId, { hard_delete: true });
+      console.log(`User ${userId} hard deleted from Stream.`);
+    } catch (hardDeleteError) {
+      console.warn(`Hard delete failed for ${userId}. Trying soft delete...`);
+
+      // If hard delete fails (likely due to message history), perform a soft delete instead
+      await streamClient.deleteUser(userId, { soft_delete: true });
+      console.log(`User ${userId} soft deleted from Stream.`);
+    }
+
+    res.json({ message: "User successfully removed from Stream Chat." });
+  } catch (error) {
+    console.error("Error deleting Stream user:", error);
+    res.status(500).json({ error: "Failed to delete Stream user." });
+  }
+});
+
+
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

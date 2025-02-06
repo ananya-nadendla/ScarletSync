@@ -9,6 +9,7 @@ import Loading from './Loading';
 import Popup from "./Popup"; // Import the Popup component
 import { handleImageUpload, deleteProfilePicture } from '../util/imageUploadUtils';
 import { handleProfileDeletion } from '../util/friendUtils';
+import { StreamChat } from 'stream-chat';
 
 const SettingsPage = () => {
   const [profileData, setProfileData] = useState({
@@ -195,20 +196,26 @@ const SettingsPage = () => {
   const handleDeleteAccount = async () => {
     if (user) {
       try {
-        // Call handleProfileDeletion to remove user from friends lists and friend requests
+        // 1️⃣ Call backend to delete Stream user
+        await fetch("http://localhost:5000/stream/delete-user", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user.uid }),
+        });
+
+        // 2️⃣ Call handleProfileDeletion to remove user from friends lists and friend requests
         await handleProfileDeletion(user.uid);
 
-        // Check if the user has a profile image and delete it
+        // 3️⃣ Delete profile picture (if exists)
         if (profileData.profileImage) {
           const publicId = profileData.profileImage.split("/").pop().split(".")[0];
-          console.log("Deleting profile picture with public_id:", publicId);
           await deleteProfilePicture(publicId);
         }
 
-        // Delete the user's profile from Firestore
+        // 4️⃣ Delete user profile from Firestore
         await deleteDoc(doc(db, "profiles", user.uid));
 
-        // Delete the user's authentication record
+        // 5️⃣ Delete authentication record
         await deleteUser(user);
 
         alert("Your account has been deleted.");
@@ -219,7 +226,6 @@ const SettingsPage = () => {
       }
     }
   };
-
 
 
   const confirmDeleteAccount = async () => {

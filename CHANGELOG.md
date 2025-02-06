@@ -1,4 +1,4 @@
-```2/4/2025```
+```2/4/2025 && 2/6```
 DONE
 - GroupChat
   - Installed Stream + setup api keys
@@ -11,12 +11,12 @@ DONE
     - Cannot add non-existent user
 
   - Styling groupchat w/ Stream's default styles
-  - FIX WEIRD LAYOUT
+  - Fixed WEIRD LAYOUT
+  - USER DELETES ACCOUNT: User is deleted from groupchats 
 
 TODO
 - Groupchat
   - Make it look less ugly
-  - USER DELETES ACCOUNT: Must delete off of groupchat
 - OLD STUFF, NOT IMPORTANT YET
   - Chatbot.js:
     - Rate limit (so that quota for day isnt filled)
