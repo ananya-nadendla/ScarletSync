@@ -72,9 +72,16 @@ const GroupChat = ({ userId }) => {
       if (!userId || client) return;
 
       try {
-        // Fetch the username from Firebase
+        // Fetch the user's profile from Firebase
         const userDoc = await getDoc(doc(db, "profiles", userId));
-        const username = userDoc.exists() ? userDoc.data().username : userId;
+        let displayName = "New User"; // Default name in case data is missing
+
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          const firstName = userData.firstName || "";
+          const lastName = userData.lastName || "";
+          displayName = `${firstName} ${lastName}`.trim() || userId; // Use full name, fallback to userId if empty
+        }
 
         // Fetch Stream token
         const token = await fetchStreamToken(userId);
@@ -82,7 +89,7 @@ const GroupChat = ({ userId }) => {
 
         // Connect the new user
         await streamClient.connectUser(
-          { id: userId, name: username, role: "user" },
+          { id: userId, name: displayName, role: "user" },
           token
         );
 
@@ -96,7 +103,7 @@ const GroupChat = ({ userId }) => {
         // If the user is in no channels, create a default one
         if (channels.length === 0) {
           const defaultChannel = streamClient.channel("messaging", `welcome-${userId}`, {
-            name: "Welcome Channel",
+            name: `${displayName}'s Chat`,  // Use first + last name
             members: [userId],
           });
           await defaultChannel.create();
