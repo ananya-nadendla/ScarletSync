@@ -27,6 +27,7 @@ DONE
   
   - Channel that user is currently on turns GREY
   - When user makes new account, Welcome Chat is created w/ Welcome message
+  - Allowed renaming chats for chats of 3+ members
 
 TODO
 - Groupchat

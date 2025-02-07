@@ -145,6 +145,7 @@ const handleLeaveChat = async (userId, channel, setChannel, setChannels) => {
 };
 
 
+
 const GroupChat = ({ userId }) => {
   const [channels, setChannels] = useState([]);
   const [channel, setChannel] = useState(null);
@@ -153,6 +154,30 @@ const GroupChat = ({ userId }) => {
   const { client, setClient } = useStreamChat();
   const [removeUser, setRemoveUser] = useState("");
   const [showSettings, setShowSettings] = useState(false);
+  const [newChatName, setNewChatName] = useState("");
+
+
+
+const handleRenameChat = async () => {
+  if (!channel || newChatName.trim() === "") return;
+
+  // Check if the chat has 3 or more members
+  const memberCount = Object.keys(channel.state.members).length;
+  if (memberCount < 3) {
+    alert("You can only rename group chats with 3 or more members.");
+    return;
+  }
+
+  try {
+    await channel.update({ name: newChatName });
+    alert("Chat name updated!");
+    setNewChatName("");
+  } catch (error) {
+    console.error("Error renaming chat:", error);
+    alert("Something went wrong. Please try again.");
+  }
+};
+
 
 
     const handleAddUser = async () => {
@@ -427,6 +452,15 @@ return (
           title="Chat Settings"
           content={(
             <div className="groupchat-popup-settings">
+            <div className="groupchat-input-group">
+              <input
+                type="text"
+                value={newChatName}
+                onChange={(e) => setNewChatName(e.target.value)}
+                placeholder="Enter new chat name"
+              />
+              <button onClick={handleRenameChat}>Rename Chat</button>
+            </div>
               <div className="groupchat-input-group">
                 <input
                   type="text"
