@@ -21,11 +21,11 @@ DONE
   - Leave Chat done
   - Admin can remove user from chat
 
+  - Made settings page for add user / remove user / leave chat
+  - Added "XYZ Left the group" message
+  - Neatened UI
+
 TODO
-- Groupchat
-  - Make it look less ugly 
-  - Add "XYZ Left the group" message
-  - Move add User / remove User to a groupchat settings
 - OLD STUFF, NOT IMPORTANT YET
   - Chatbot.js:
     - Rate limit (so that quota for day isnt filled)

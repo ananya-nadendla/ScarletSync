@@ -101,3 +101,110 @@
   overflow-y: auto;
   padding: 10px;
 }
+
+/* Popup Styling */
+.groupchat-popup-settings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.groupchat-input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.groupchat-input-group input {
+  padding: 8px;
+  width: 250px;
+  margin-bottom: 5px;
+}
+
+.groupchat-input-group button {
+  width: 150px;
+  padding: 8px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.groupchat-input-group button:hover {
+  background-color: #0056b3;
+}
+
+.groupchat-centered {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.groupchat-leave-btn {
+  background-color: red;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.groupchat-leave-btn:hover {
+  background-color: darkred;
+}
+
+.dm-section {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.dm-section input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.dm-section input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.dm-section button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.dm-section button:hover {
+  background-color: #0056b3;
+}
+
+.groupchat-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px;
+}
+
+.groupchat-settings-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.2s ease-in-out;
+}
+
+.groupchat-settings-btn:hover {
+  color: #007bff;
+}

@@ -8,6 +8,7 @@ import { StreamChat } from "stream-chat";
 import "stream-chat-react/dist/css/v2/index.css";
 import Loading from "./Loading";
 import { v4 as uuidv4 } from "uuid"; // Import UUID for unique ID generation
+import Popup from "./Popup";
 
 // Function to fetch the Stream token from the backend
 const fetchStreamToken = async (userId) => {
@@ -150,7 +151,8 @@ const GroupChat = ({ userId }) => {
   const [newUser, setNewUser] = useState("");
   const [dmUser, setDmUser] = useState(""); // State for DM input
   const { client, setClient } = useStreamChat();
-   const [removeUser, setRemoveUser] = useState("");
+  const [removeUser, setRemoveUser] = useState("");
+  const [showSettings, setShowSettings] = useState(false);
 
 
     const handleAddUser = async () => {
@@ -358,7 +360,18 @@ useEffect(() => {
 return (
     <div className="groupchat-container">
       <div className="groupchat-sidebar">
-        <h2>Channels</h2>
+        <h2>Chats</h2>
+
+        <div className="dm-section">
+                  <input
+                    type="text"
+                    value={dmUser}
+                    onChange={(e) => setDmUser(e.target.value)}
+                    placeholder="Enter username to DM"
+                  />
+                  <button onClick={handleStartDM}>DM</button>
+                </div>
+
         <div className="channel-list">
           {channels.map((ch) => {
             let channelName = ch.data.name || "Direct Message";
@@ -377,54 +390,64 @@ return (
           })}
         </div>
 
-        <div className="add-user-section">
-          <input
-            type="text"
-            value={newUser}
-            onChange={(e) => setNewUser(e.target.value)}
-            placeholder="Enter username to add"
-          />
-          <button onClick={handleAddUser}>Add User</button>
-        </div>
 
-        <div className="remove-user-section">
-                  <input
-                    type="text"
-                    value={removeUser}
-                    onChange={(e) => setRemoveUser(e.target.value)}
-                    placeholder="Enter username to remove"
-                  />
-                  <button onClick={() => handleRemoveUser(removeUser, channel)}>Remove User</button>
-                </div>
-
-        <div className="dm-section">
-          <input
-            type="text"
-            value={dmUser}
-            onChange={(e) => setDmUser(e.target.value)}
-            placeholder="Enter username to DM"
-          />
-          <button onClick={handleStartDM}>DM</button>
-        </div>
       </div>
 
       <div className="groupchat-chat-container">
         <Chat client={client}>
           <Channel channel={channel}>
             <div className="groupchat-channel">
+              {/* Settings button at the top of the chat */}
+              <div className="groupchat-header">
+                <button className="groupchat-settings-btn" onClick={() => setShowSettings(true)}>⚙</button>
+              </div>
+
               <MessageList className="groupchat-message-list" />
               <MessageInput className="groupchat-message-input" />
-              <div className="groupchat-controls">
-                {channel && (
-                  <button onClick={() => handleLeaveChat(userId, channel, setChannel, setChannels)}>
-                    Leave
-                  </button>
-                )}
-              </div>
             </div>
           </Channel>
         </Chat>
       </div>
+
+      {showSettings && (
+        <Popup
+          title="Chat Settings"
+          content={(
+            <div className="groupchat-popup-settings">
+              <div className="groupchat-input-group">
+                <input
+                  type="text"
+                  value={newUser}
+                  onChange={(e) => setNewUser(e.target.value)}
+                  placeholder="Enter username to add"
+                />
+                <button onClick={handleAddUser}>Add User</button>
+              </div>
+              <div className="groupchat-input-group">
+                <input
+                  type="text"
+                  value={removeUser}
+                  onChange={(e) => setRemoveUser(e.target.value)}
+                  placeholder="Enter username to remove"
+                />
+                <button onClick={() => handleRemoveUser(removeUser, channel)}>Remove User</button>
+              </div>
+              <div className="groupchat-centered">
+                <button
+                  className="groupchat-leave-btn"
+                  onClick={() => {
+                    handleLeaveChat(userId, channel, setChannel, setChannels);
+                    setShowSettings(false);
+                  }}
+                >
+                  Leave Chat
+                </button>
+              </div>
+            </div>
+          )}
+          onConfirm={() => setShowSettings(false)}
+        />
+      )}
     </div>
   );
 };
