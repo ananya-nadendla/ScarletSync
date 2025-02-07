@@ -1,6 +1,8 @@
 // utils/imageUploadUtils.js
 import axios from "axios";
 import imageCompression from "browser-image-compression";
+import { StreamChat } from "stream-chat";
+import { auth } from "../config/firebase"; // Import Firebase auth to get the current user ID
 
 // Method to delete the old profile picture from Cloudinary
 // Method to delete the old profile picture from Cloudinary
@@ -83,9 +85,38 @@ export const handleImageUpload = async (file, setUploading, setProfileData, prof
             console.log("Updated profile data:", updatedProfileData);
             return updatedProfileData;
         });
+
+        // ✅ Update Stream Chat Profile Picture
+                const currentUser = auth.currentUser;
+                if (currentUser) {
+                    await updateStreamProfilePicture(currentUser.uid, transformedImageUrl);
+                }
     } catch (err) {
         console.error("Error uploading or compressing image:", err);
     } finally {
         setUploading(false);
+    }
+};
+
+
+// ✅ Function to update Stream Chat profile picture
+const updateStreamProfilePicture = async (userId, imageUrl) => {
+    try {
+        const streamClient = StreamChat.getInstance(process.env.REACT_APP_STREAM_API_KEY);
+
+        if (!streamClient || !userId) {
+            console.error("Stream client is not initialized or user ID is missing.");
+            return;
+        }
+
+        console.log("🔄 Updating Stream Chat profile picture...");
+        await streamClient.partialUpdateUser({
+            id: userId,
+            set: { image: imageUrl },
+        });
+
+        console.log("✅ Stream profile picture updated successfully!");
+    } catch (err) {
+        console.error("❌ Error updating Stream profile picture:", err);
     }
 };

@@ -35,6 +35,8 @@ DONE
     - Notify nonadmins that only admins can do those 3 functions
 
   - If chat has 0 members, delete chat
+
+  - Added user's ProfilePic (PFP) to Stream PFP
 "
 
 TODO
