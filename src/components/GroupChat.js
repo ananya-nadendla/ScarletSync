@@ -331,12 +331,21 @@ useEffect(() => {
 
         if (channels.length === 0) {
           const defaultChannel = streamClient.channel("messaging", `welcome-${userId}`, {
-            name: `${displayName}'s Chat`,
+            name: "Welcome Chat",
             members: [userId],
           });
+
           await defaultChannel.create();
+
+          // Send a default welcome message
+          await defaultChannel.sendMessage({
+            text: "👋 Welcome to your Chats! This is your space to start conversations. Add people to this chat or search up users to DM!",
+            user_id: userId, // Ensure the message appears as sent by the user
+          });
+
           channels = [defaultChannel];
         }
+
 
         setChannels(channels);
         setChannel(channels[0]);
@@ -372,23 +381,27 @@ return (
                   <button onClick={handleStartDM}>DM</button>
                 </div>
 
-        <div className="channel-list">
-          {channels.map((ch) => {
-            let channelName = ch.data.name || "Direct Message";
-            if (ch.data.member_count === 2) {
-              const otherUser = Object.keys(ch.state.members).find((member) => member !== userId);
-              if (otherUser) {
-                channelName = ch.state.members[otherUser]?.user?.name || "Direct Message";
-              }
-            }
+       <div className="channel-list">
+         {channels.map((ch) => {
+           let channelName = ch.data.name || "Direct Message";
+           if (ch.data.member_count === 2) {
+             const otherUser = Object.keys(ch.state.members).find((member) => member !== userId);
+             if (otherUser) {
+               channelName = ch.state.members[otherUser]?.user?.name || "Direct Message";
+             }
+           }
 
-            return (
-              <button key={ch.id} onClick={() => setChannel(ch)}>
-                {channelName}
-              </button>
-            );
-          })}
-        </div>
+           return (
+             <button
+               key={ch.id}
+               onClick={() => setChannel(ch)}
+               className={ch.id === channel?.id ? "active-channel" : ""}
+             >
+               {channelName}
+             </button>
+           );
+         })}
+       </div>
 
 
       </div>

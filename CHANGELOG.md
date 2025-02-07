@@ -24,8 +24,13 @@ DONE
   - Made settings page for add user / remove user / leave chat
   - Added "XYZ Left the group" message
   - Neatened UI
+  
+  - Channel that user is currently on turns GREY
+  - When user makes new account, Welcome Chat is created w/ Welcome message
 
 TODO
+- Groupchat
+  - Allow renaming of Groupchats 
 - OLD STUFF, NOT IMPORTANT YET
   - Chatbot.js:
     - Rate limit (so that quota for day isnt filled)

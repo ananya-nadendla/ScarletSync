@@ -208,3 +208,20 @@
 .groupchat-settings-btn:hover {
   color: #007bff;
 }
+
+.channel-list button {
+  padding: 10px;
+  border: none;
+  background-color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.channel-list button:hover {
+  background-color: #f0f0f0;
+}
+
+.channel-list button.active-channel {
+  background-color: #d3d3d3; /* Light grey for selected channel */
+  font-weight: bold;
+}
