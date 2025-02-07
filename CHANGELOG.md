@@ -32,6 +32,9 @@ DONE
 TODO
 - Groupchat
   - Allow renaming of Groupchats 
+  - Figure out "ConnectUser twice" error
+- OtherUserProfile
+  - Style Add Friend Button + Position Better
 - OLD STUFF, NOT IMPORTANT YET
   - Chatbot.js:
     - Rate limit (so that quota for day isnt filled)
