@@ -85,10 +85,61 @@ const startDirectMessage = async (currentUserId, recipientUsername, client, setC
   }
 };
 
+
+
+const handleLeaveChat = async (userId, channel, setChannel, setChannels) => {
+  if (!channel) return;
+
+  try {
+    const user = channel.state.members[userId]?.user;
+    const username = user?.name || "A user";
+
+    // Show the alert before any API calls (ensures user sees it)
+    alert("You left the chat.");
+
+    // Send a normal message before removing the user
+    await channel.sendMessage({
+      text: `⚠️ ${username} has left the chat.`,
+      custom_type: "leave_message",
+    });
+
+    await channel.removeMembers([userId]);
+
+    // Update state immediately to prevent permission-related errors
+    setChannels((prev) => prev.filter((ch) => ch.id !== channel.id));
+    setChannel(null);
+  } catch (error) {
+    console.error("Error leaving chat:", error);
+
+    // Ignore ReadChannel errors, as the user has already left
+    if (!error.message.includes("ReadChannel")) {
+      alert("Something went wrong. Please try again.");
+    }
+  }
+};
+
+const GroupChat = ({ userId }) => {
+  const [channels, setChannels] = useState([]);
+  const [channel, setChannel] = useState(null);
+  const [newUser, setNewUser] = useState("");
+  const [dmUser, setDmUser] = useState(""); // State for DM input
+  const { client, setClient } = useStreamChat();
+  const [removeUser, setRemoveUser] = useState("");
+  const [showSettings, setShowSettings] = useState(false);
+  const [newChatName, setNewChatName] = useState("");
+
 const handleRemoveUser = async (removeUser, channel) => {
   if (removeUser.trim() === "" || !channel) return;
 
   try {
+    // Check if the current user is the chat creator (admin)
+    const creatorId = channel.data.created_by?.id;
+
+    if (creatorId !== userId) {
+      alert("Only the admin who created this chat can remove users.");
+      return;
+    }
+
     const profilesRef = collection(db, "profiles");
     const q = query(profilesRef, where("username", "==", removeUser));
     const querySnapshot = await getDocs(q);
@@ -110,53 +161,14 @@ const handleRemoveUser = async (removeUser, channel) => {
     alert(`User ${removeUser} removed successfully!`);
   } catch (error) {
     console.error("Error removing user:", error);
-    alert("Something went wrong. Please try again.");
-  }
-};
 
-const handleLeaveChat = async (userId, channel, setChannel, setChannels) => {
-  if (!channel) return;
-  try {
-    const user = channel.state.members[userId]?.user;
-    const username = user?.name || "A user";
-
-    // Send a normal message instead of a system message
-    await channel.sendMessage({
-      text: `⚠️ ${username} has left the chat.`,
-      custom_type: "leave_message", // Optional: Use a custom type to differentiate
-    });
-
-    await channel.removeMembers([userId]);
-    const updatedChannel = await channel.query();
-    const remainingMembers = updatedChannel?.state?.members ?? {};
-
-    if (Object.keys(remainingMembers).length === 0) {
-      await channel.delete();
-      setChannels((prev) => prev.filter((ch) => ch.id !== channel.id));
-      setChannel(null);
+    if (error.message.includes("UpdateChannelMembers")) {
+      alert("Only the chat admin can remove users.");
+    } else {
+      alert("Something went wrong. Please try again.");
     }
-
-    alert("You left the chat.");
-    setChannel(null);
-  } catch (error) {
-    console.error("Error leaving chat:", error);
-    alert("Something went wrong. Please try again.");
   }
 };
-
-
-
-const GroupChat = ({ userId }) => {
-  const [channels, setChannels] = useState([]);
-  const [channel, setChannel] = useState(null);
-  const [newUser, setNewUser] = useState("");
-  const [dmUser, setDmUser] = useState(""); // State for DM input
-  const { client, setClient } = useStreamChat();
-  const [removeUser, setRemoveUser] = useState("");
-  const [showSettings, setShowSettings] = useState(false);
-  const [newChatName, setNewChatName] = useState("");
-
-
 
 const handleRenameChat = async () => {
   if (!channel || newChatName.trim() === "") return;
@@ -174,16 +186,28 @@ const handleRenameChat = async () => {
     setNewChatName("");
   } catch (error) {
     console.error("Error renaming chat:", error);
-    alert("Something went wrong. Please try again.");
+
+        if (error.message.includes("UpdateChannel failed")) {
+          alert("Only the chat admin can rename this chat.");
+        } else {
+          alert("Something went wrong. Please try again.");
+        }
   }
 };
-
 
 
     const handleAddUser = async () => {
       if (newUser.trim() === "" || !channel) return;
 
       try {
+        // Check if the current user is the chat creator (admin)
+        const creatorId = channel.data.created_by?.id;
+
+        if (creatorId !== userId) {
+          alert("Only the admin who created this chat can add users.");
+          return;
+        }
+
         // Query Firebase to find user by username
         const profilesRef = collection(db, "profiles");
         const q = query(profilesRef, where("username", "==", newUser));
@@ -213,7 +237,12 @@ const handleRenameChat = async () => {
         setNewUser(""); // Clear input field
       } catch (error) {
         console.error("Error adding user to channel:", error);
-        alert("Something went wrong. Please try again.");
+
+        if (error.message.includes("UpdateChannelMembers")) {
+          alert("Only the chat admin can add users.");
+        } else {
+          alert("Something went wrong. Please try again.");
+        }
       }
     };
 

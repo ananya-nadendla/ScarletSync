@@ -1,4 +1,4 @@
-```2/4/2025 && 2/6```
+```2/4/2025 && 2/6 && 2/7```
 DONE
 - GroupChat
   - Installed Stream + setup api keys
@@ -19,6 +19,7 @@ DONE
     - After you turn it into a groupchat, you can start a new DM (with the first two ppl)
 
   - Leave Chat done
+    - "You left this chat" alert
   - Admin can remove user from chat
 
   - Made settings page for add user / remove user / leave chat
@@ -28,6 +29,11 @@ DONE
   - Channel that user is currently on turns GREY
   - When user makes new account, Welcome Chat is created w/ Welcome message
   - Allowed renaming chats for chats of 3+ members
+    
+  - Chat admin permissions
+    - Only admins can remove / add / rename chat 
+    - Notify nonadmins that only admins can do those 3 functions
+"
 
 TODO
 - Groupchat
