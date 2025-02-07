@@ -175,27 +175,29 @@ app.post("/stream/remove-user", async (req, res) => {
   try {
     const channel = streamClient.channel("messaging", channelId);
 
-    // Check if the requester is the chat admin
-    const creatorId = channel.data.created_by?.id;
+    // ✅ Fetch the latest channel data to access members
+    await channel.watch();
+    const members = channel.state.members;
+
+    // ✅ Check if the requester is the chat admin
+    const creatorId = channel.data?.created_by?.id;
     if (adminId !== creatorId) {
       return res.status(403).json({ error: "Only the chat admin can remove users." });
     }
 
-    // Check if the user to remove is actually in the chat
-    const memberExists = channel.state.members[removeUserId];
-
-    if (!memberExists) {
+    // ✅ Check if the user to remove is actually in the chat
+    if (!members[removeUserId]) {
       return res.status(404).json({ error: `User ${removeUserId} is not in this chat!` });
     }
 
-    // Remove the user from the chat
+    // ✅ Remove the user from the chat
     await channel.removeMembers([removeUserId]);
 
-    // Refresh channel state
+    // ✅ Refresh channel state
     await channel.watch();
     const remainingMembers = Object.keys(channel.state.members).length;
 
-    // If no members left, delete the chat
+    // ✅ If no members left, delete the chat
     if (remainingMembers === 0) {
       await channel.delete();
       console.log(`Channel ${channelId} deleted as it had no members.`);
@@ -207,6 +209,7 @@ app.post("/stream/remove-user", async (req, res) => {
     res.status(500).json({ success: false, message: "Failed to remove user from chat." });
   }
 });
+
 
 
 

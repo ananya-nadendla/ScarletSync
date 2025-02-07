@@ -121,28 +121,47 @@ const GroupChat = ({ userId }) => {
   const [showSettings, setShowSettings] = useState(false);
   const [newChatName, setNewChatName] = useState("");
 
-const handleRemoveUser = async (removeUser, channel) => {
-  if (removeUser.trim() === "" || !channel) return;
+const handleRemoveUser = async (removeUsername, channel) => {
+  if (removeUsername.trim() === "" || !channel) return;
 
   try {
-    // Check if the current user is the chat creator (admin)
+    // ✅ Check if the current user is the chat creator (admin)
     const creatorId = channel.data.created_by?.id;
-
     if (creatorId !== userId) {
       alert("Only the admin who created this chat can remove users.");
       return;
     }
 
+    // ✅ Query Firestore to get the user ID from the username
+    const profilesRef = collection(db, "profiles");
+    const q = query(profilesRef, where("username", "==", removeUsername));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      alert(`User ${removeUsername} does not exist!`);
+      return;
+    }
+
+    const userDoc = querySnapshot.docs[0]; // Get the first matching user
+    const removeUserId = userDoc.id; // Extract the user ID
+
+    // ✅ Send API request to remove the user from the chat
     const response = await fetch("http://localhost:5000/stream/remove-user", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ adminId: userId, removeUserId: removeUser, channelId: channel.id }),
+      body: JSON.stringify({ adminId: userId, removeUserId, channelId: channel.id }),
     });
 
     const data = await response.json();
 
     if (data.success) {
-      alert(`User ${removeUser} removed successfully!`);
+      // ✅ Send a system message notifying others that the user was removed
+      /*await channel.sendMessage({
+        text: `⚠️ ${removeUsername} has been removed from the chat by ${channel.state.members[userId]?.user?.name || "an admin"}.`,
+        custom_type: "system",
+      });*/
+
+      alert(`User ${removeUsername} removed successfully!`);
     } else {
       alert(data.error || "Something went wrong.");
     }
@@ -151,6 +170,7 @@ const handleRemoveUser = async (removeUser, channel) => {
     alert("Something went wrong. Please try again.");
   }
 };
+
 
 
 
