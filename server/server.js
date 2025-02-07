@@ -134,6 +134,80 @@ app.post('/stream/delete-user', async (req, res) => {
   }
 });
 
+// 🆕 **Endpoint to leave a chat (handles deleting empty chats)**
+app.post("/stream/leave-chat", async (req, res) => {
+  const { userId, channelId } = req.body;
+
+  if (!userId || !channelId) {
+    return res.status(400).json({ error: "User ID and Channel ID are required" });
+  }
+
+  try {
+    const channel = streamClient.channel("messaging", channelId);
+
+    // Remove user from channel
+    await channel.removeMembers([userId]);
+
+    // Refresh channel state after removal
+    await channel.watch();
+    const remainingMembers = Object.keys(channel.state.members).length;
+
+    // If no members left, delete the channel
+    if (remainingMembers === 0) {
+      await channel.delete();
+      console.log(`Channel ${channelId} deleted as it had no members.`);
+    }
+
+    res.json({ success: true, message: "User left the chat." });
+  } catch (error) {
+    console.error("Error leaving chat:", error);
+    res.status(500).json({ success: false, message: "Failed to leave chat." });
+  }
+});
+
+app.post("/stream/remove-user", async (req, res) => {
+  const { adminId, removeUserId, channelId } = req.body;
+
+  if (!adminId || !removeUserId || !channelId) {
+    return res.status(400).json({ error: "Admin ID, User ID, and Channel ID are required" });
+  }
+
+  try {
+    const channel = streamClient.channel("messaging", channelId);
+
+    // Check if the requester is the chat admin
+    const creatorId = channel.data.created_by?.id;
+    if (adminId !== creatorId) {
+      return res.status(403).json({ error: "Only the chat admin can remove users." });
+    }
+
+    // Check if the user to remove is actually in the chat
+    const memberExists = channel.state.members[removeUserId];
+
+    if (!memberExists) {
+      return res.status(404).json({ error: `User ${removeUserId} is not in this chat!` });
+    }
+
+    // Remove the user from the chat
+    await channel.removeMembers([removeUserId]);
+
+    // Refresh channel state
+    await channel.watch();
+    const remainingMembers = Object.keys(channel.state.members).length;
+
+    // If no members left, delete the chat
+    if (remainingMembers === 0) {
+      await channel.delete();
+      console.log(`Channel ${channelId} deleted as it had no members.`);
+    }
+
+    res.json({ success: true, message: `User ${removeUserId} removed from chat.` });
+  } catch (error) {
+    console.error("Error removing user from chat:", error);
+    res.status(500).json({ success: false, message: "Failed to remove user from chat." });
+  }
+});
+
 
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

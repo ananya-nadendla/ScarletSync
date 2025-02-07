@@ -85,38 +85,31 @@ const startDirectMessage = async (currentUserId, recipientUsername, client, setC
   }
 };
 
-
-
 const handleLeaveChat = async (userId, channel, setChannel, setChannels) => {
   if (!channel) return;
 
   try {
-    const user = channel.state.members[userId]?.user;
-    const username = user?.name || "A user";
-
-    // Show the alert before any API calls (ensures user sees it)
-    alert("You left the chat.");
-
-    // Send a normal message before removing the user
-    await channel.sendMessage({
-      text: `⚠️ ${username} has left the chat.`,
-      custom_type: "leave_message",
+    const response = await fetch("http://localhost:5000/stream/leave-chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId, channelId: channel.id }),
     });
 
-    await channel.removeMembers([userId]);
+    const data = await response.json();
 
-    // Update state immediately to prevent permission-related errors
-    setChannels((prev) => prev.filter((ch) => ch.id !== channel.id));
-    setChannel(null);
+    if (data.success) {
+      alert("You left the chat.");
+      setChannels((prev) => prev.filter((ch) => ch.id !== channel.id));
+      setChannel(null);
+    } else {
+      alert("Something went wrong.");
+    }
   } catch (error) {
     console.error("Error leaving chat:", error);
-
-    // Ignore ReadChannel errors, as the user has already left
-    if (!error.message.includes("ReadChannel")) {
-      alert("Something went wrong. Please try again.");
-    }
+    alert("Something went wrong. Please try again.");
   }
 };
+
 
 const GroupChat = ({ userId }) => {
   const [channels, setChannels] = useState([]);
@@ -140,35 +133,26 @@ const handleRemoveUser = async (removeUser, channel) => {
       return;
     }
 
-    const profilesRef = collection(db, "profiles");
-    const q = query(profilesRef, where("username", "==", removeUser));
-    const querySnapshot = await getDocs(q);
+    const response = await fetch("http://localhost:5000/stream/remove-user", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ adminId: userId, removeUserId: removeUser, channelId: channel.id }),
+    });
 
-    if (querySnapshot.empty) {
-      alert(`User ${removeUser} does not exist!`);
-      return;
+    const data = await response.json();
+
+    if (data.success) {
+      alert(`User ${removeUser} removed successfully!`);
+    } else {
+      alert(data.error || "Something went wrong.");
     }
-
-    const userDoc = querySnapshot.docs[0];
-    const userUid = userDoc.id;
-
-    if (!channel.state.members[userUid]) {
-      alert(`User ${removeUser} is not in this chat!`);
-      return;
-    }
-
-    await channel.removeMembers([userUid]);
-    alert(`User ${removeUser} removed successfully!`);
   } catch (error) {
     console.error("Error removing user:", error);
-
-    if (error.message.includes("UpdateChannelMembers")) {
-      alert("Only the chat admin can remove users.");
-    } else {
-      alert("Something went wrong. Please try again.");
-    }
+    alert("Something went wrong. Please try again.");
   }
 };
+
+
 
 const handleRenameChat = async () => {
   if (!channel || newChatName.trim() === "") return;

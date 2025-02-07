@@ -33,11 +33,12 @@ DONE
   - Chat admin permissions
     - Only admins can remove / add / rename chat 
     - Notify nonadmins that only admins can do those 3 functions
+
+  - If chat has 0 members, delete chat
 "
 
 TODO
 - Groupchat
-  - Allow renaming of Groupchats 
   - Figure out "ConnectUser twice" error
 - OtherUserProfile
   - Style Add Friend Button + Position Better
