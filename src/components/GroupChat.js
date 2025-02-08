@@ -214,15 +214,13 @@ const handleRenameChat = async () => {
       if (newUser.trim() === "" || !channel) return;
 
       try {
-        // Check if the current user is the chat creator (admin)
         const creatorId = channel.data.created_by?.id;
-
         if (creatorId !== userId) {
-          alert("Only the admin who created this chat can add users.");
+          alert("Only the chat admin can add users.");
           return;
         }
 
-        // Query Firebase to find user by username
+        // Query Firestore to find user by username
         const profilesRef = collection(db, "profiles");
         const q = query(profilesRef, where("username", "==", newUser));
         const querySnapshot = await getDocs(q);
@@ -233,32 +231,29 @@ const handleRenameChat = async () => {
         }
 
         const userDoc = querySnapshot.docs[0];
-        const userUid = userDoc.id; // Get the UID of the user
+        const userUid = userDoc.id;
 
-        // Add the user to the channel
-        await channel.addMembers([userUid]);
+        // API call to backend to add user
+        const response = await fetch("http://localhost:5000/stream/add-user", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ adminId: userId, newUserId: userUid, channelId: channel.id }),
+        });
 
-        // Fetch updated member count
-        await channel.watch(); // Refresh channel info
-        const memberCount = Object.keys(channel.state.members).length;
+        const data = await response.json();
 
-        // If there are now 3 or more members, rename to "New Group Chat"
-        if (memberCount >= 3) {
-          await channel.update({ name: "New Group Chat" });
-        }
-
-        alert(`User ${newUser} added successfully!`);
-        setNewUser(""); // Clear input field
-      } catch (error) {
-        console.error("Error adding user to channel:", error);
-
-        if (error.message.includes("UpdateChannelMembers")) {
-          alert("Only the chat admin can add users.");
+        if (data.success) {
+          alert(`User ${newUser} added successfully!`);
+          setNewUser("");
         } else {
-          alert("Something went wrong. Please try again.");
+          alert(data.error || "Something went wrong.");
         }
+      } catch (error) {
+        console.error("Error adding user to chat:", error);
+        alert("Something went wrong. Please try again.");
       }
     };
+
 
   const handleStartDM = async () => {
     if (dmUser.trim() === "" || !client) return;

@@ -38,7 +38,9 @@ DONE
 
   - Added user's ProfilePic (PFP) to Stream PFP
   - "View Members" button (next to Groupchat Settings) to see members in chat
-"
+
+  - Added system bot for system messages (x joined chat, x left chat, etc)
+    - server/firebase-service-account.json (NOT IN GITHUB)
 
 TODO
 - Groupchat

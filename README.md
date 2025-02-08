@@ -22,6 +22,8 @@ npm install stream-chat dotenv
 npm install stream-chat stream-chat-react
 npm install @stream-io/stream-chat-css
     (NEW TOOL - 2/4)
+npm install firebase-admin
+    (SERVER)
 
 //Run project (everyone - need to do this everytime you want to run project)
 OPEN A TERMINAL 
