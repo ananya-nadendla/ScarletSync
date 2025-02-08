@@ -43,11 +43,12 @@ DONE
     - server/firebase-service-account.json (NOT IN GITHUB)
 
 TODO
-- Groupchat
-  - Figure out "ConnectUser twice" error
 - OtherUserProfile
   - Style Add Friend Button + Position Better
 - OLD STUFF, NOT IMPORTANT YET
+  - Groupchat.js
+    - If admin leaves chat, appoint NEW admin
+    -  Figure out "ConnectUser twice" error
   - Chatbot.js:
     - Rate limit (so that quota for day isnt filled)
   - If user is logged out, redirect to /page-not-found not /login + add Login link in /page-not-found
