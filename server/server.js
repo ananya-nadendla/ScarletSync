@@ -276,7 +276,44 @@ app.post("/stream/add-user", async (req, res) => {
   }
 });
 
-// 🆕 Helper Function: Fetch Username from Firestore
+app.post("/stream/rename-chat", async (req, res) => {
+  const { userId, channelId, newChatName } = req.body;
+
+  if (!userId || !channelId || !newChatName.trim()) {
+    return res.status(400).json({ error: "User ID, Channel ID, and New Chat Name are required" });
+  }
+
+  try {
+    const channel = streamClient.channel("messaging", channelId);
+    await channel.watch(); // Ensure latest state
+
+    // ✅ Check if the requester is the admin (creator of the chat)
+    const creatorId = channel.data?.created_by?.id;
+    if (userId !== creatorId) {
+      return res.status(403).json({ error: "Only the chat admin can rename this chat." });
+    }
+
+    // Get the user’s name from Stream
+    const user = await streamClient.queryUsers({ id: userId });
+    const username = user.users[0]?.name || "Unknown User";
+
+    // ✅ Update the channel name
+    await channel.update({ name: newChatName });
+
+    // ✅ Send system message
+    await channel.sendMessage({
+      text: `✏️ The chat has been renamed to **${newChatName}** by ${username}.`,
+      user_id: "system",
+      custom_type: "system",
+    });
+
+    res.json({ success: true, message: "Chat renamed successfully" });
+  } catch (error) {
+    console.error("Error renaming chat:", error);
+    res.status(500).json({ success: false, message: "Failed to rename chat" });
+  }
+});
+
 
 // ✅ Fetch username from Firestore using UID
 const getUsernameFromFirestore = async (userId) => {

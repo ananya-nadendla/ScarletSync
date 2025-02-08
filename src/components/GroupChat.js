@@ -182,12 +182,9 @@ const handleRemoveUser = async (removeUsername, channel) => {
 };
 
 
-
-
 const handleRenameChat = async () => {
   if (!channel || newChatName.trim() === "") return;
 
-  // Check if the chat has 3 or more members
   const memberCount = Object.keys(channel.state.members).length;
   if (memberCount < 3) {
     alert("You can only rename group chats with 3 or more members.");
@@ -195,19 +192,25 @@ const handleRenameChat = async () => {
   }
 
   try {
-    await channel.update({ name: newChatName });
-    alert("Chat name updated!");
-    setNewChatName("");
+    const response = await fetch("http://localhost:5000/stream/rename-chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId, channelId: channel.id, newChatName }),
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      alert("Chat name updated!");
+      setNewChatName(""); // Clear input field
+    } else {
+      alert(data.error || "Something went wrong."); // Show error if not admin
+    }
   } catch (error) {
     console.error("Error renaming chat:", error);
-
-        if (error.message.includes("UpdateChannel failed")) {
-          alert("Only the chat admin can rename this chat.");
-        } else {
-          alert("Something went wrong. Please try again.");
-        }
+    alert("Something went wrong. Please try again.");
   }
 };
+
 
 
     const handleAddUser = async () => {
@@ -446,7 +449,7 @@ return (
 
        <div className="channel-list">
          {channels.map((ch) => {
-           let channelName = ch.data.name || "Direct Message";
+           let channelName = ch.data.name || "New Group Chat";
            if (ch.data.member_count === 2) {
              const otherUser = Object.keys(ch.state.members).find((member) => member !== userId);
              if (otherUser) {

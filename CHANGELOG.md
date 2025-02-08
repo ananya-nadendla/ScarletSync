@@ -31,7 +31,7 @@ DONE
   - Allowed renaming chats for chats of 3+ members
     
   - Chat admin permissions
-    - Only admins can remove / add / rename chat 
+    - Only admins can remove / add users / rename chat
     - Notify nonadmins that only admins can do those 3 functions
 
   - If chat has 0 members, delete chat
@@ -39,7 +39,7 @@ DONE
   - Added user's ProfilePic (PFP) to Stream PFP
   - "View Members" button (next to Groupchat Settings) to see members in chat
 
-  - Added system bot for system messages (x joined chat, x left chat, etc)
+  - System Bot: Added system bot for system messages (x joined chat, x left chat, x renamed chat etc)
     - server/firebase-service-account.json (NOT IN GITHUB)
 
 TODO
