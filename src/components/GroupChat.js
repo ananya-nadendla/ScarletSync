@@ -120,6 +120,16 @@ const GroupChat = ({ userId }) => {
   const [removeUser, setRemoveUser] = useState("");
   const [showSettings, setShowSettings] = useState(false);
   const [newChatName, setNewChatName] = useState("");
+  const [showMembers, setShowMembers] = useState(false); // State for the members popup
+
+// Function to get chat members
+const getChatMembers = () => {
+  if (!channel) return [];
+  return Object.values(channel.state.members).map((member) => ({
+    id: member.user_id,
+    name: member.user?.name || "Unknown User",
+  }));
+};
 
 const handleRemoveUser = async (removeUsername, channel) => {
   if (removeUsername.trim() === "" || !channel) return;
@@ -471,6 +481,7 @@ return (
               {/* Settings button at the top of the chat */}
               <div className="groupchat-header">
                 <button className="groupchat-settings-btn" onClick={() => setShowSettings(true)}>⚙</button>
+                <button className="groupchat-settings-btn" onClick={() => setShowMembers(true)}>👥</button>
               </div>
 
               <MessageList className="groupchat-message-list" />
@@ -528,6 +539,27 @@ return (
           onConfirm={() => setShowSettings(false)}
         />
       )}
+
+      {/* View Members Popup */}
+          {showMembers && (
+            <Popup
+              title="Chat Members"
+              content={(
+                <div className="groupchat-popup-members">
+                  {getChatMembers().length > 0 ? (
+                    getChatMembers().map((member) => (
+                      <div key={member.id} className="groupchat-member-item">
+                        {member.name}
+                      </div>
+                    ))
+                  ) : (
+                    <p>No members found.</p>
+                  )}
+                </div>
+              )}
+              onConfirm={() => setShowMembers(false)}
+            />
+          )}
     </div>
   );
 };

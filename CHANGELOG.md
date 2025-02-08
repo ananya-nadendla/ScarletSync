@@ -37,6 +37,7 @@ DONE
   - If chat has 0 members, delete chat
 
   - Added user's ProfilePic (PFP) to Stream PFP
+  - "View Members" button (next to Groupchat Settings) to see members in chat
 "
 
 TODO
