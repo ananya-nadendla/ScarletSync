@@ -43,6 +43,8 @@ DONE
     - server/firebase-service-account.json (NOT IN GITHUB)
 
 TODO
+- Remove NODE MODULES off github from server
+  - In gitignore, put (server/node_modules/) -> (will do after merging groupchat back to main)
 - OtherUserProfile
   - Style Add Friend Button + Position Better
 - OLD STUFF, NOT IMPORTANT YET
