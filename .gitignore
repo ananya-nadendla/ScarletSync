@@ -29,3 +29,6 @@ yarn-error.log*
 firebase-adminsdk-*.json
 server/firebase-service-account.json
 
+# IDE stuff
+.idea/
+
