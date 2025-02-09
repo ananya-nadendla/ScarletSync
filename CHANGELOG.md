@@ -5,6 +5,9 @@ DONE
 - Remove .idea off Github 
   - Its for IntelliJ IDE Only (not vscode)
 
+- SettingsPage.js
+  - Added noneditable EMAIL
+  - Fixed Profile Picture preview
 
 TODO
 - OtherUserProfile

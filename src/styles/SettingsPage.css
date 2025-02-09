@@ -54,3 +54,18 @@
    font-size: 14px;
    margin-bottom: 10px;
  }
+
+.settings-uneditable-field {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.settings-profile-image {
+  width: 100px; /* Set a consistent width */
+  height: 100px; /* Set a consistent height to make it a square */
+  border-radius: 50%; /* Make it a circle */
+  object-fit: cover; /* Ensure the image scales proportionally while filling the area */
+  display: block;
+  margin: 10px auto; /* Center the image */
+}
+

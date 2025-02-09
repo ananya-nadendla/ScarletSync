@@ -248,12 +248,20 @@ const SettingsPage = () => {
         {uploading ? (
           <p>Uploading...</p>
         ) : profileData.profileImage ? (
-          <img src={profileData.profileImage} alt="Profile" style={{ width: "100px", height: "100px", borderRadius: "50%" }} />
+          <img src={profileData.profileImage} alt="Profile" className="settings-profile-image" />
         ) : (
           <p>No profile picture uploaded</p>
         )}
       </div>
-
+    <div>
+      <label>Email:</label>
+      <input
+        type="text"
+        value={user?.email || ""}
+        readOnly
+        className="settings-uneditable-field"
+      />
+    </div>
       <div>
         <label>First Name:</label>
         <input
