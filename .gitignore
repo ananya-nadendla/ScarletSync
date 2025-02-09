@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+server/node_modules
 
 # testing
 /coverage
@@ -27,3 +28,4 @@ yarn-error.log*
 # Firebase Admin SDK credentials (DO NOT COMMIT)
 firebase-adminsdk-*.json
 server/firebase-service-account.json
+
