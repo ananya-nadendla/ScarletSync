@@ -1,3 +1,30 @@
+```2/9```
+DONE
+- Remove NODE MODULES off github from server
+  - In gitignore, put (server/node_modules/) -> (will do after merging groupchat back to main)
+- Remove .idea off Github 
+  - Its for IntelliJ IDE Only (not vscode)
+
+
+TODO
+- OtherUserProfile
+  - Style Add Friend Button + Position Better
+- OLD STUFF, NOT IMPORTANT 
+  - Groupchat.js
+    - If admin leaves chat, appoint NEW admin
+    -  Figure out "ConnectUser twice" error
+  - Chatbot.js:
+    - Rate limit (so that quota for day isnt filled)
+  - If user is logged out, redirect to /page-not-found not /login + add Login link in /page-not-found
+    - Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
+    - Optional: Neaten Settings.js
+    - Notification.js
+      - Make Notifications a "card" that you can X out to close
+    - Profile Picture Upload
+      - Profile.js
+        - Click on Friend Count --> Shows list of friends (PROFILE TODO + username[done] + clickable lead to their profile[done])
+      - Settings.js: Case of Have no profile picture
+
 ```2/4/2025 && 2/6 && 2/7```
 DONE
 - GroupChat
@@ -42,26 +69,6 @@ DONE
   - System Bot: Added system bot for system messages (x joined chat, x left chat, x renamed chat etc)
     - server/firebase-service-account.json (NOT IN GITHUB)
 
-TODO
-- Remove NODE MODULES off github from server
-  - In gitignore, put (server/node_modules/) -> (will do after merging groupchat back to main)
-- OtherUserProfile
-  - Style Add Friend Button + Position Better
-- OLD STUFF, NOT IMPORTANT YET
-  - Groupchat.js
-    - If admin leaves chat, appoint NEW admin
-    -  Figure out "ConnectUser twice" error
-  - Chatbot.js:
-    - Rate limit (so that quota for day isnt filled)
-  - If user is logged out, redirect to /page-not-found not /login + add Login link in /page-not-found
-    - Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
-    - Optional: Neaten Settings.js
-    - Notification.js
-      - Make Notifications a "card" that you can X out to close
-    - Profile Picture Upload
-      - Profile.js
-        - Click on Friend Count --> Shows list of friends (PROFILE TODO + username[done] + clickable lead to their profile[done])
-      - Settings.js: Case of Have no profile picture
 
 
 ```2/3/2025```
