@@ -9,6 +9,9 @@ DONE
   - Added noneditable EMAIL
   - Fixed Profile Picture preview
 
+- server.js / imageUploadUtils
+  - Fixed Stream profile picture updating Bug
+
 TODO
 - OtherUserProfile
   - Style Add Friend Button + Position Better

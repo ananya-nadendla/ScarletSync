@@ -314,6 +314,28 @@ app.post("/stream/rename-chat", async (req, res) => {
   }
 });
 
+app.post("/stream/update-profile", async (req, res) => {
+  const { userId, profileImage } = req.body;
+
+  if (!userId || !profileImage) {
+    return res.status(400).json({ error: "User ID and Profile Image URL are required" });
+  }
+
+  try {
+    // Update the user's profile in Stream Chat
+    await streamClient.upsertUser({
+      id: userId,
+      image: profileImage, // Update the profile picture
+    });
+
+    res.json({ success: true, message: "Stream user profile updated successfully." });
+  } catch (error) {
+    console.error("Error updating Stream user profile:", error);
+    res.status(500).json({ error: "Failed to update Stream user profile." });
+  }
+});
+
+
 
 // ✅ Fetch username from Firestore using UID
 const getUsernameFromFirestore = async (userId) => {
