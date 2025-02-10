@@ -1,0 +1,227 @@
+.groupchat-container {
+  display: flex;
+  height: 100vh;
+  background-color: #f7f7f7;
+}
+
+/* Sidebar: Channels + Add User */
+.groupchat-sidebar {
+  width: 20%;
+  background-color: #ffffff;
+  border-right: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+}
+
+.channel-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.channel-list button {
+  padding: 10px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  width: 100%;
+}
+
+.channel-list button:hover {
+  background-color: #e0e0e0;
+}
+
+/* Add User Section inside Sidebar */
+.add-user-section {
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.add-user-section input {
+  padding: 8px;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.add-user-section button {
+  width: 100%;
+  padding: 8px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-user-section button:hover {
+  background-color: #357abd;
+}
+
+/* Chat Container */
+.groupchat-chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 80%;
+}
+
+/* Ensure messages fill available space */
+.groupchat-channel {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+}
+
+.groupchat-message-input {
+  border-top: 1px solid #ccc;
+  padding: 10px;
+  background: white;
+  width: 100%;
+}
+
+/* Fix Message Input at the bottom */
+.message-input-container {
+  border-top: 1px solid #ccc;
+  padding: 10px;
+  background: white;
+  width: 100%;
+}
+
+.message-list-container {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+/* Popup Styling */
+.groupchat-popup-settings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.groupchat-input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.groupchat-input-group input {
+  padding: 8px;
+  width: 250px;
+  margin-bottom: 5px;
+}
+
+.groupchat-input-group button {
+  width: 150px;
+  padding: 8px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.groupchat-input-group button:hover {
+  background-color: #0056b3;
+}
+
+.groupchat-centered {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.groupchat-leave-btn {
+  background-color: red;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.groupchat-leave-btn:hover {
+  background-color: darkred;
+}
+
+.dm-section {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.dm-section input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.dm-section input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.dm-section button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.dm-section button:hover {
+  background-color: #0056b3;
+}
+
+.groupchat-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px;
+}
+
+.groupchat-settings-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.2s ease-in-out;
+}
+
+.groupchat-settings-btn:hover {
+  color: #007bff;
+}
+
+.channel-list button {
+  padding: 10px;
+  border: none;
+  background-color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.channel-list button:hover {
+  background-color: #f0f0f0;
+}
+
+.channel-list button.active-channel {
+  background-color: #d3d3d3; /* Light grey for selected channel */
+  font-weight: bold;
+}

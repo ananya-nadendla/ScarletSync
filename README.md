@@ -17,7 +17,13 @@ npm install browser-image-compression
 npm install express cors dotenv @google/generative-ai
     (NEW TOOLS for server- 1/31)
 npm install @supabase/supabase-js
-    (NEW TOOLS for server- 2/1)
+npm install stream-chat dotenv
+    (NEW TOOLS for server- 2/1 && 2/4)
+npm install stream-chat stream-chat-react
+npm install @stream-io/stream-chat-css
+    (NEW TOOL - 2/4)
+npm install firebase-admin
+    (SERVER)
 
 //Run project (everyone - need to do this everytime you want to run project)
 OPEN A TERMINAL 

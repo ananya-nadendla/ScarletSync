@@ -1,3 +1,82 @@
+```2/9```
+DONE
+- Remove NODE MODULES off github from server
+  - In gitignore, put (server/node_modules/) -> (will do after merging groupchat back to main)
+- Remove .idea off Github 
+  - Its for IntelliJ IDE Only (not vscode)
+
+- SettingsPage.js
+  - Added noneditable EMAIL
+  - Fixed Profile Picture preview
+
+- server.js / imageUploadUtils
+  - Fixed Stream profile picture updating Bug
+
+TODO
+- OtherUserProfile
+  - Style Add Friend Button + Position Better
+- OLD STUFF, NOT IMPORTANT 
+  - Groupchat.js
+    - If admin leaves chat, appoint NEW admin
+    -  Figure out "ConnectUser twice" error
+  - Chatbot.js:
+    - Rate limit (so that quota for day isnt filled)
+  - If user is logged out, redirect to /page-not-found not /login + add Login link in /page-not-found
+    - Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
+    - Optional: Neaten Settings.js
+    - Notification.js
+      - Make Notifications a "card" that you can X out to close
+    - Profile Picture Upload
+      - Profile.js
+        - Click on Friend Count --> Shows list of friends (PROFILE TODO + username[done] + clickable lead to their profile[done])
+      - Settings.js: Case of Have no profile picture
+
+```2/4/2025 && 2/6 && 2/7```
+DONE
+- GroupChat
+  - Installed Stream + setup api keys
+  - Added GroupChat.js, GroupChat.css, util/fetchStreamToken
+  - Set up Stream in server.js
+  - Added Groupchat link to Sidebar.js
+  - CURRENTLY: Each user generates with their own unique channel
+
+  - Adding ANYONE to a groupchat works
+    - Cannot add non-existent user
+
+  - Styling groupchat w/ Stream's default styles
+  - Fixed WEIRD LAYOUT
+  - USER DELETES ACCOUNT: User is deleted from groupchats 
+
+  - DM Feature: Can enter someone's username and dm them
+  - GroupChat feature: If you add a 3rd person to a DM, it turns into a groupchat
+    - After you turn it into a groupchat, you can start a new DM (with the first two ppl)
+
+  - Leave Chat done
+    - "You left this chat" alert
+  - Admin can remove user from chat
+
+  - Made settings page for add user / remove user / leave chat
+  - Added "XYZ Left the group" message
+  - Neatened UI
+  
+  - Channel that user is currently on turns GREY
+  - When user makes new account, Welcome Chat is created w/ Welcome message
+  - Allowed renaming chats for chats of 3+ members
+    
+  - Chat admin permissions
+    - Only admins can remove / add users / rename chat
+    - Notify nonadmins that only admins can do those 3 functions
+
+  - If chat has 0 members, delete chat
+
+  - Added user's ProfilePic (PFP) to Stream PFP
+  - "View Members" button (next to Groupchat Settings) to see members in chat
+
+  - System Bot: Added system bot for system messages (x joined chat, x left chat, x renamed chat etc)
+    - server/firebase-service-account.json (NOT IN GITHUB)
+
+
+
 ```2/3/2025```
 DONE
 - CHATBOT
@@ -10,19 +89,6 @@ DONE
     - RESULT: Now when a user deletes profile, their profile is deleted from all other users' friends' pages/lists too. 
   - Made Friends Popup neater
 
-TODO
-- TODO: Chatbot.js
-  - Rate limit (so that quota for day isnt filled)
-- If user is logged out, redirect to /page-not-found not /login + add Login link in /page-not-found
-- OLD STUFF, NOT IMPORTANT
-  - Optional: Util.js: Make UTIL Js file for reusing code (settings/signup username check)
-  - Optional: Neaten Settings.js
-  - Notification.js
-    - Make Notifications a "card" that you can X out to close
-  - Profile Picture Upload
-    - Profile.js
-      - Click on Friend Count --> Shows list of friends (PROFILE TODO + username[done] + clickable lead to their profile[done])
-    - Settings.js: Case of Have no profile picture
 
 
 ```2/1 && 1/31/2025```

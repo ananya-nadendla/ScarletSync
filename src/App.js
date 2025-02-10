@@ -14,11 +14,13 @@ import Sidebar from "./components/Sidebar";
 import OtherUserProfile from "./components/OtherUserProfile";
 import PageNotFound from "./components/PageNotFound";
 import Loading from "./components/Loading";
-// Import FriendsPage instead of Notifications
+
 import FriendsPage from "./components/FriendsPage";
 import Chatbot from "./components/Chatbot";
+import GroupChat from "./components/GroupChat";
+import { StreamChatProvider } from "./context/StreamChatContext"; // Import the StreamChatProvider
 
-//If user is not logged in and tries to access dashboard, profile, etc, REDIRECT to login
+// If user is not logged in and tries to access dashboard, profile, etc, REDIRECT to login
 const ProtectedRoute = ({ user, children }) => {
   if (!user) {
     return <Navigate to="/login" replace />;
@@ -45,72 +47,82 @@ const App = () => {
   }
 
   return (
-    <Router>
-      <PageLogger user={user} /> {/* TEMPORARY DEBUGGER to log user authentication status */}
-      <Routes>
-        {/* Public routes */}
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+    <StreamChatProvider>
+      <Router>
+        <PageLogger user={user} /> {/* TEMPORARY DEBUGGER to log user authentication status */}
+        <Routes>
+          {/* Public routes */}
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
-        {/* Protected routes --> User must be logged in to access these pages */}
-        <Route element={<Sidebar />}>
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute user={user}>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute user={user}>
-                <ProfilePage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/profile/:username"
-            element={
-              <ProtectedRoute user={user}>
-                <OtherUserProfile />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/settings"
-            element={
-              <ProtectedRoute user={user}>
-                <SettingsPage />
-              </ProtectedRoute>
-            }
-          />
-          {/* Change Notifications route to FriendsPage */}
-          <Route
-            path="/friends"
-            element={
-              <ProtectedRoute user={user}>
-                <FriendsPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/chatbot"
-            element={
-              <ProtectedRoute user={user}>
-                <Chatbot />
-              </ProtectedRoute>
-            }
-          />
-        </Route>
 
-        {/* Catch-all route */}
-        <Route path="*" element={<PageNotFound />} />
-      </Routes>
-    </Router>
+          {/* Protected routes --> User must be logged in to access these pages*/}
+          <Route element={<Sidebar />}>
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute user={user}>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute user={user}>
+                  <ProfilePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile/:username"
+              element={
+                <ProtectedRoute user={user}>
+                  <OtherUserProfile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute user={user}>
+                  <SettingsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/friends"
+              element={
+                <ProtectedRoute user={user}>
+                  <Notifications />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/chatbot"
+              element={
+                <ProtectedRoute user={user}>
+                  <Chatbot />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/groupchat"
+              element={
+                <ProtectedRoute user={user}>
+                  <GroupChat userId={user?.uid} /> {/* Pass userId from the logged-in user */}
+                </ProtectedRoute>
+              }
+            />
+          </Route>
+
+          {/* Catch-all route */}
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </Router>
+    </StreamChatProvider>
   );
 };
 
