@@ -14,7 +14,8 @@ import Sidebar from "./components/Sidebar";
 import OtherUserProfile from "./components/OtherUserProfile";
 import PageNotFound from "./components/PageNotFound";
 import Loading from "./components/Loading";
-import Notifications from "./components/Notifications";
+
+import FriendsPage from "./components/FriendsPage";
 import Chatbot from "./components/Chatbot";
 import GroupChat from "./components/GroupChat";
 import { StreamChatProvider } from "./context/StreamChatContext"; // Import the StreamChatProvider
@@ -56,6 +57,7 @@ const App = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/reset-password" element={<ResetPassword />} />
 
+
           {/* Protected routes --> User must be logged in to access these pages*/}
           <Route element={<Sidebar />}>
             <Route
@@ -91,7 +93,7 @@ const App = () => {
               }
             />
             <Route
-              path="/notifications"
+              path="/friends"
               element={
                 <ProtectedRoute user={user}>
                   <Notifications />

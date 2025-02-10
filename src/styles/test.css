@@ -1,0 +1,90 @@
+.friends-page {
+    padding: 30px;
+    background-color: #f9f9f9;
+  }
+  
+  .tabs {
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 20px;
+  }
+  
+  .tab-button {
+    background-color: #fff;
+    border: 2px solid #ddd;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  }
+  
+  .tab-button:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .tab-button.active {
+    background-color: #e63e3e;
+    color: #fff;
+    border-color: #e63e3e;
+  }
+  
+  .notifications-tab,
+  .recommendations-tab,
+  .search-tab {
+    margin-top: 20px;
+  }
+  
+  .profile-card {
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .profile-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile-username {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .profile-username:hover {
+    color: #e63e3e;
+  }
+  
+  .search-input {
+    padding: 15px;
+    width: 100%;
+    font-size: 18px;
+    margin-bottom: 20px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    transition: border-color 0.3s;
+  }
+  
+  .search-input:focus {
+    border-color: #e63e3e;
+    outline: none;
+  }
+  
+  .search-results p {
+    color: #999;
+    font-size: 16px;
+    font-style: italic;
+  }
+  
+  .search-results {
+    margin-top: 10px;
+  }
+  

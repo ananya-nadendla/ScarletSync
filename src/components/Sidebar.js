@@ -34,9 +34,11 @@ const Sidebar = () => {
               Dashboard
             </NavLink>
           </li>
-            <NavLink to="/notifications" className="sidebar-menu-link" activeClassName="sidebar-active-link">
-              Notifications
+          <li>
+            <NavLink to="/friends" className="sidebar-menu-link" activeClassName="sidebar-active-link">
+              Friends
             </NavLink>
+          </li>
           <li>
             <NavLink to="/profile" className="sidebar-menu-link" activeClassName="sidebar-active-link">
               Profile
