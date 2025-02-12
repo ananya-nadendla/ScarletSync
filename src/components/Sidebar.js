@@ -55,6 +55,11 @@ const Sidebar = () => {
             </NavLink>
           </li>
           <li>
+            <NavLink to="/academic-plan" className="sidebar-menu-link" activeClassName="sidebar-active-link">
+              Academic Planner
+            </NavLink>
+          </li>
+          <li>
             <NavLink to="/settings" className="sidebar-menu-link" activeClassName="sidebar-active-link">
               Settings
             </NavLink>

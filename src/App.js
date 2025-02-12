@@ -14,11 +14,11 @@ import Sidebar from "./components/Sidebar";
 import OtherUserProfile from "./components/OtherUserProfile";
 import PageNotFound from "./components/PageNotFound";
 import Loading from "./components/Loading";
-
 import FriendsPage from "./components/FriendsPage";
 import Chatbot from "./components/Chatbot";
 import GroupChat from "./components/GroupChat";
 import { StreamChatProvider } from "./context/StreamChatContext"; // Import the StreamChatProvider
+import AcademicPlanGenerator from "./components/AcademicPlanGenerator";
 
 // If user is not logged in and tries to access dashboard, profile, etc, REDIRECT to login
 const ProtectedRoute = ({ user, children }) => {
@@ -113,6 +113,15 @@ const App = () => {
               element={
                 <ProtectedRoute user={user}>
                   <GroupChat userId={user?.uid} /> {/* Pass userId from the logged-in user */}
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/academic-plan"
+              element={
+                <ProtectedRoute user={user}>
+                  {/* Pass the studentProfile. For example, profileData obtained from Firebase */}
+                  <AcademicPlanGenerator studentProfile={profileData}/>
                 </ProtectedRoute>
               }
             />
