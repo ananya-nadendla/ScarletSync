@@ -3,6 +3,7 @@ DONE
   - Styling
     - OtherUserProfile.js
     - ProfilePage.js
+    - Sidebar.js
 
 ```2/9```
 DONE

@@ -24,6 +24,8 @@ npm install @stream-io/stream-chat-css
     (NEW TOOL - 2/4)
 npm install firebase-admin
     (SERVER)
+npm install @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome
+
 
 //Run project (everyone - need to do this everytime you want to run project)
 OPEN A TERMINAL 

@@ -4,6 +4,9 @@ import { signOut } from "firebase/auth";
 import { auth } from "../config/firebase"; // Import your Firebase auth instance
 import "../styles/Sidebar.css"; // Dedicated CSS for the layout and side panel
 import { useStreamChat } from "../context/StreamChatContext";
+// Import FontAwesome icons
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser, faHome, faCog, faComment, faRobot, faSignOutAlt, faBell, faUsers } from "@fortawesome/free-solid-svg-icons";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -31,36 +34,43 @@ const Sidebar = () => {
         <ul className="sidebar-menu-options">
           <li>
             <NavLink to="/dashboard" className="sidebar-menu-link" activeClassName="sidebar-active-link">
+             <FontAwesomeIcon icon={faHome} />
               Dashboard
             </NavLink>
           </li>
           <li>
             <NavLink to="/friends" className="sidebar-menu-link" activeClassName="sidebar-active-link">
+            <FontAwesomeIcon icon={faUsers} />
               Friends
             </NavLink>
           </li>
           <li>
             <NavLink to="/profile" className="sidebar-menu-link" activeClassName="sidebar-active-link">
-              Profile
-            </NavLink>
+            <FontAwesomeIcon icon={faUser} />
+              ‎  Profile
+            </NavLink> {/*LRM Is a blank space*/}
           </li>
           <li>
             <NavLink to="/chatbot" className="sidebar-menu-link" activeClassName="sidebar-active-link">
+            <FontAwesomeIcon icon={faRobot} />
               AI Advisor
             </NavLink>
           </li>
           <li>
             <NavLink to="/groupchat" className="sidebar-menu-link" activeClassName="sidebar-active-link">
-              Chats
+            <FontAwesomeIcon icon={faComment} />
+              Messages
             </NavLink>
           </li>
           <li>
             <NavLink to="/settings" className="sidebar-menu-link" activeClassName="sidebar-active-link">
+            <FontAwesomeIcon icon={faCog} />
               Settings
             </NavLink>
           </li>
           <li>
             <button onClick={handleLogout} className="sidebar-menu-link sidebar-logout-btn">
+            <FontAwesomeIcon icon={faSignOutAlt} />
               Log Out
             </button>
           </li>
