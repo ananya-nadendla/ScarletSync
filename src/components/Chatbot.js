@@ -9,6 +9,7 @@ const Chatbot = () => {
   const [loading, setLoading] = useState(false);
   const [userProfile, setUserProfile] = useState(null); // State to hold user profile data
   const [chatHistory, setChatHistory] = useState([]); // Track chat history
+  const [botState, setBotState] = useState("idle"); // "thinking" | "talking" | "idle"
 
   const user = auth.currentUser;
 
@@ -42,6 +43,7 @@ const Chatbot = () => {
   const sendMessage = async (message) => {
     console.log("Sending message: ", message); // Log the message being sent
     setLoading(true); // Show loading indicator while waiting for response
+    setBotState("thinking"); // Set bot to thinking mode
 
     // Clear the input field immediately after sending the message
     setMessage("");
@@ -75,6 +77,8 @@ const Chatbot = () => {
 
         const data = await response.json();
         console.log("Response data:", data); // Log the parsed response
+        setBotState("talking"); // Set bot to talking mode
+
 
         if (data.reply) {
           setChatHistory([...updatedHistory, { sender: "bot", text: data.reply }]);
@@ -98,35 +102,40 @@ const Chatbot = () => {
     }
 
     setLoading(false); // Hide loading indicator after response
+     setTimeout(() => setBotState("idle"), 1000); // Reset after 1 sec
   };
 
   return (
-    <div className="chatbot-container">
-      <div className="chatbox">
-        {chatMessages.map((msg, index) => (
-          <div key={index} className={msg.sender}>
-            <p
-                dangerouslySetInnerHTML={{
-                    __html: msg.text, // Render HTML content (e.g., links)
-                }}
-            />
+      <div className="chatbot-container">
+        {/* Chat Header with Robot Avatar */}
+        <div className="chatbot-header">
+          <div className={`bot-avatar ${botState}`}>
+            {botState === "thinking" ? "🤖💭" : "🤖😊"}
           </div>
-        ))}
-      </div>
+          <h2>AI Chatbot</h2>
+        </div>
 
-      <div className="input-container">
-        <input
-          type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Ask me anything about Rutgers..."
-        />
-        <button onClick={() => sendMessage(message)} disabled={loading}>
-          {loading ? "Loading..." : "Send"}
-        </button>
+        <div className="chatbox">
+          {chatMessages.map((msg, index) => (
+            <div key={index} className={`message ${msg.sender}`}>
+              <p dangerouslySetInnerHTML={{ __html: msg.text }} />
+            </div>
+          ))}
+        </div>
+
+        <div className="input-container">
+          <input
+            type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Ask me anything about Rutgers..."
+          />
+          <button onClick={() => sendMessage(message)} disabled={loading}>
+            {loading ? "..." : "Send"}
+          </button>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
 export default Chatbot;

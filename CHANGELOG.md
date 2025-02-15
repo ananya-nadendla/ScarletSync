@@ -4,6 +4,7 @@ DONE
     - OtherUserProfile.js
     - ProfilePage.js
     - Sidebar.js
+    - Chatbot.js
 
 ```2/9```
 DONE
