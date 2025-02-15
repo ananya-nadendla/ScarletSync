@@ -1,3 +1,9 @@
+```2/15```
+DONE
+  - Styling
+    - OtherUserProfile.js
+    - ProfilePage.js
+
 ```2/9```
 DONE
 - Remove NODE MODULES off github from server

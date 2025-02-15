@@ -139,7 +139,7 @@ const ProfilePage = () => {
       {error && <div className="error-message">{error}</div>} {/* Display error if exists */}
 
       <div className="profile-header">
-        <div className="profile-picture">
+        <div className="profile-profile-picture">
           {/* Display the profile image or a default image if not available */}
           <img
             src={profileData.profileImage || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpPPrc8VMEPWqvFtOIxFZLDCN4JITg01d-KA&s"}

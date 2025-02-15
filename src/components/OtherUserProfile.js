@@ -175,7 +175,7 @@ const OtherUserProfile = () => {
   return (
     <div className="profile-container">
       <div className="profile-header">
-        <div className="profile-picture">
+        <div className="profile-profile-picture">
           {/* Display the other user's profile picture */}
           <img
             src={profileData.profileImage || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpPPrc8VMEPWqvFtOIxFZLDCN4JITg01d-KA&s"} // Default placeholder if no image exists
