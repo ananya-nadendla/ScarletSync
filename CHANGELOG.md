@@ -5,6 +5,10 @@ DONE
     - ProfilePage.js
     - Sidebar.js
     - Chatbot.js
+    - Popup.js
+    - GroupChat.js
+  - npm install @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome
+    - Used for icons (like in Sidebar)
 
 ```2/9```
 DONE
