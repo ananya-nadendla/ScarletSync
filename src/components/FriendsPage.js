@@ -5,15 +5,12 @@ import { db, auth } from "../config/firebase";
 import { collection, getDocs, getDoc, doc } from "firebase/firestore";
 import Notifications from "../components/Notifications";
 import "../styles/FriendsPage.css";
-import { getFriendRecommendations } from "../util/friendRecommendationUtil"; // Utility for friend recommendations
+import { getFriendRecommendations } from "../util/friendRecommendationUtil";
 
 const FriendsPage = () => {
   const [activeTab, setActiveTab] = useState("notifications");
-  // All profiles from Firestore (with each document's id)
   const [friendRecommendations, setFriendRecommendations] = useState([]);
-  // Final top 5 recommendations (after scoring)
   const [recommendedFriends, setRecommendedFriends] = useState([]);
-  // Current user's profile data
   const [currentUserProfile, setCurrentUserProfile] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -32,7 +29,7 @@ const FriendsPage = () => {
     fetchCurrentUserProfile();
   }, []);
 
-  // Fetch all profiles (include document id)
+  // Fetch all profiles from Firestore and include profile images
   useEffect(() => {
     const fetchRecommendations = async () => {
       const recommendationsSnapshot = await getDocs(collection(db, "profiles"));
@@ -40,12 +37,22 @@ const FriendsPage = () => {
         id: docSnapshot.id,
         ...docSnapshot.data(),
       }));
-      setFriendRecommendations(profiles);
+
+      // Fetch profile images for each user
+      const profilesWithImages = profiles.map((profile) => ({
+        ...profile,
+        profileImage:
+          profile.profileImage ||
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpPPrc8VMEPWqvFtOIxFZLDCN4JITg01d-KA&s", // Default image
+      }));
+
+      setFriendRecommendations(profilesWithImages);
     };
+
     fetchRecommendations();
   }, []);
 
-  // Compute friend recommendations using the utility function
+  // Compute friend recommendations
   useEffect(() => {
     const currentUserUid = auth.currentUser?.uid;
     if (currentUserProfile && friendRecommendations.length > 0 && currentUserUid) {
@@ -58,7 +65,7 @@ const FriendsPage = () => {
     }
   }, [currentUserProfile, friendRecommendations]);
 
-  // Update search results based on the search query
+  // Update search results based on query
   useEffect(() => {
     if (searchQuery.trim() === "") {
       setSearchResults([]);
@@ -99,7 +106,7 @@ const FriendsPage = () => {
                   className="profile-card"
                 >
                   <img
-                    src={profile.profilePicture || "/default-avatar.png"}
+                    src={profile.profileImage}
                     alt="Profile"
                     className="profile-picture"
                   />
@@ -134,7 +141,7 @@ const FriendsPage = () => {
                   className="profile-card"
                 >
                   <img
-                    src={profile.profilePicture || "/default-avatar.png"}
+                    src={profile.profileImage}
                     alt="Profile"
                     className="profile-picture"
                   />

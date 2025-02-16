@@ -103,7 +103,7 @@ const Notifications = () => {
             </div>
           ))
         ) : (
-          <p>No pending friend requests.</p>
+          <p></p>
         )}
       </div>
     </div>
