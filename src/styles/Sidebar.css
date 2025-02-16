@@ -1,56 +1,69 @@
-/* Container for the entire layout */
+/* Sidebar Layout */
 .sidebar-layout-container {
   display: flex;
   height: 100vh;
   font-family: Arial, sans-serif;
 }
 
-/* Side panel styles */
+/* Sidebar Panel */
 .sidebar-side-panel {
-  background-color: #a80000; /* Scarlet red background */
+  background-color: #4a5259; /* Dark gray background */
   color: #ffffff;
-  width: 250px;
+  width: 220px;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Aligning back to the left */
-  gap: 25px; /* Increased spacing */
+  align-items: center;
+  gap: 20px;
 }
 
-/* Logo in the side panel */
-.sidebar-side-panel-logo {
-  font-size: 24px;
+/* Logo Section */
+.sidebar-logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar-logo {
+  width: 60px; /* Adjust logo size */
+  height: auto;
+}
+
+.sidebar-title {
+  font-size: 20px;
   font-weight: bold;
-  margin-bottom: 40px; /* Added more spacing below logo */
-  text-align: left;
-  width: 100%;
+  text-align: center;
+  margin: 0;
 }
 
-/* Menu options */
+/* Sidebar Menu */
 .sidebar-menu-options {
   list-style: none;
   padding: 0;
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 18px; /* Increased spacing between menu items */
+  gap: 15px;
 }
 
 .sidebar-menu-link {
   display: flex;
   align-items: center;
-  gap: 12px; /* Ensures proper spacing */
-  padding: 14px 18px; /* Increased padding for better spacing */
+  justify-content: center; /* Center the items */
+  gap: 10px;
+  padding: 12px;
   color: #ffffff;
   text-decoration: none;
-  border-radius: 4px;
+  border-radius: 6px;
   transition: background-color 0.3s ease;
   font-size: 16px;
   font-weight: bold;
+  flex-direction: column; /* Stack icon and text */
 }
 
 .sidebar-menu-link:hover {
-  background-color: #8b0000; /* Darker red on hover */
+  background-color: #3a4248;
 }
 
 .sidebar-active-link {
@@ -60,35 +73,33 @@
 }
 
 /* Ensuring text and icons align properly */
-.sidebar-menu-link i {
-  font-size: 18px;
-  min-width: 30px; /* Keeps icons aligned consistently */
-  text-align: center;
+.sidebar-menu-link svg {
+  font-size: 22px;
 }
 
-/* Styling for the Log Out button */
+/* Logout Button */
 .sidebar-logout-btn {
-  background-color: #ff4d4d; /* Red color for the log out button */
+  background-color: #d60000; /* Scarlet red */
   color: #ffffff;
-  padding: 14px 18px;
+  padding: 12px;
   border: none;
-  border-radius: 4px;
-  width: 100%; /* Make it take the full width of the sidebar */
+  border-radius: 6px;
+  width: 100%;
   text-align: center;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
   display: flex;
+  flex-direction: column; /* Keep icon and text stacked */
   align-items: center;
-  gap: 12px;
   justify-content: center;
-  margin-top: auto; /* Pushes logout button to the bottom */
+  margin-top: auto;
 }
 
 .sidebar-logout-btn:hover {
-  background-color: #e43f3f; /* Darker red on hover */
-  transform: scale(1.05); /* Slightly increase size on hover */
+  background-color: #b80000;
+  transform: scale(1.05);
 }
 
 .sidebar-logout-btn:focus {

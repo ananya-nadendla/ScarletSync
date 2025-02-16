@@ -26,63 +26,63 @@ const Sidebar = () => {
     };
 
 
-  return (
-    <div className="sidebar-layout-container">
-      {/* Sidebar */}
-      <nav className="sidebar-side-panel">
-        <h2 className="sidebar-side-panel-logo">ScarletSync</h2>
-        <ul className="sidebar-menu-options">
-          <li>
-            <NavLink to="/dashboard" className="sidebar-menu-link" activeClassName="sidebar-active-link">
-             <FontAwesomeIcon icon={faHome} />
-              Dashboard
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/friends" className="sidebar-menu-link" activeClassName="sidebar-active-link">
-            <FontAwesomeIcon icon={faUsers} />
-              Friends
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/profile" className="sidebar-menu-link" activeClassName="sidebar-active-link">
-            <FontAwesomeIcon icon={faUser} />
-              ‎  Profile
-            </NavLink> {/*LRM Is a blank space*/}
-          </li>
-          <li>
-            <NavLink to="/chatbot" className="sidebar-menu-link" activeClassName="sidebar-active-link">
-            <FontAwesomeIcon icon={faRobot} />
-              AI Advisor
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/groupchat" className="sidebar-menu-link" activeClassName="sidebar-active-link">
-            <FontAwesomeIcon icon={faComment} />
-              Messages
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/settings" className="sidebar-menu-link" activeClassName="sidebar-active-link">
-            <FontAwesomeIcon icon={faCog} />
-              Settings
-            </NavLink>
-          </li>
-          <li>
-            <button onClick={handleLogout} className="sidebar-menu-link sidebar-logout-btn">
+   return (
+      <div className="sidebar-layout-container">
+        {/* Sidebar */}
+        <nav className="sidebar-side-panel">
+          {/* Logo Section */}
+          <div className="sidebar-logo-container">
+            <img src="/logo.png" alt="ScarletSync Logo" className="sidebar-logo" />
+            <h2 className="sidebar-title">ScarletSync</h2>
+          </div>
+
+          {/* Sidebar Menu */}
+          <ul className="sidebar-menu-options">
+            <li>
+              <NavLink to="/profile" className="sidebar-menu-link" activeClassName="sidebar-active-link">
+                <FontAwesomeIcon icon={faUser} />
+                Profile
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/friends" className="sidebar-menu-link" activeClassName="sidebar-active-link">
+                <FontAwesomeIcon icon={faUsers} />
+                Friends
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/chatbot" className="sidebar-menu-link" activeClassName="sidebar-active-link">
+                <FontAwesomeIcon icon={faRobot} />
+                AI Advisor
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/groupchat" className="sidebar-menu-link" activeClassName="sidebar-active-link">
+                <FontAwesomeIcon icon={faComment} />
+                Chats
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/settings" className="sidebar-menu-link" activeClassName="sidebar-active-link">
+                <FontAwesomeIcon icon={faCog} />
+                Settings
+              </NavLink>
+            </li>
+          </ul>
+
+          {/* Logout Button */}
+          <button onClick={handleLogout} className="sidebar-menu-link sidebar-logout-btn">
             <FontAwesomeIcon icon={faSignOutAlt} />
-              Log Out
-            </button>
-          </li>
-        </ul>
-      </nav>
+            Log Out
+          </button>
+        </nav>
 
-      {/* Main content */}
-      <main className="sidebar-main-content">
-        <Outlet /> {/* This renders the content of the current route */}
-      </main>
-    </div>
-  );
-};
+        {/* Main Content */}
+        <main className="sidebar-main-content">
+          <Outlet />
+        </main>
+      </div>
+    );
+  };
 
-export default Sidebar;
+  export default Sidebar;
