@@ -7,6 +7,7 @@ DONE
     - Chatbot.js
     - Popup.js
     - GroupChat.js
+    - Landing.js
   - npm install @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome
     - Used for icons (like in Sidebar)
 
