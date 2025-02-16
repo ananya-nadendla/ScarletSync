@@ -7,7 +7,7 @@ import {
 } from "firebase/auth";
 import { collection, query, where, getDocs, setDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import Popup from "../components/Popup"; // Assuming Popup is in the components folder
+import Popup from "../components/Popup";
 import "../styles/LoginAndSignup.css";
 
 const Signup = () => {
@@ -17,7 +17,7 @@ const Signup = () => {
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
   const [error, setError] = useState("");
-  const [showPopup, setShowPopup] = useState(false); // State for showing the popup
+  const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
 
   const isValidUsername = (username) => {
@@ -55,9 +55,7 @@ const Signup = () => {
 
       await sendEmailVerification(user);
 
-      setShowPopup(true); // Show the popup
-
-      // Log out the user
+      setShowPopup(true);
       await signOut(auth);
     } catch (err) {
       setError(err.message);
@@ -65,79 +63,110 @@ const Signup = () => {
   };
 
   const handlePopupClose = () => {
-    setShowPopup(false); // Close the popup
-    navigate("/login"); // Redirect to login page
+    setShowPopup(false);
+    navigate("/login");
   };
 
   return (
-    <div className="login-container">
-      <form onSubmit={handleSignup} className="login-form">
-        <h1 className="login-heading">Sign Up</h1>
-        {error && <p className="login-error">{error}</p>}
-        <div className="login-input-group">
-          <label className="login-label">First Name:</label>
-          <input
-            type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            className="login-input"
-            required
+    <div className="login-page">
+      {/* Left Side - Branding */}
+      <div className="login-left">
+        <img src="/logo.png" alt="Scarlet Sync Logo" className="login-logo" />
+        <h1 className="login-title">Scarlet Sync</h1>
+        <p className="login-subtitle">Connect, Engage, Succeed.</p>
+      </div>
+
+      {/* Right Side - Signup Form */}
+      <div className="login-right">
+        <form onSubmit={handleSignup} className="login-form">
+          <h1 className="login-heading">Sign Up</h1>
+          {error && <p className="login-error">{error}</p>}
+
+          {/* First Name */}
+          <div className="login-input-group">
+            <label htmlFor="firstName" className="login-label">First Name</label>
+            <input
+              type="text"
+              id="firstName"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              className="login-input"
+              required
+            />
+          </div>
+
+          {/* Last Name */}
+          <div className="login-input-group">
+            <label htmlFor="lastName" className="login-label">Last Name</label>
+            <input
+              type="text"
+              id="lastName"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              className="login-input"
+              required
+            />
+          </div>
+
+          {/* Username */}
+          <div className="login-input-group">
+            <label htmlFor="username" className="login-label">Username</label>
+            <input
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="login-input"
+              required
+            />
+          </div>
+
+          {/* Email */}
+          <div className="login-input-group">
+            <label htmlFor="email" className="login-label">Email</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="login-input"
+              placeholder="Enter your email..."
+              required
+            />
+          </div>
+
+          {/* Password */}
+          <div className="login-input-group">
+            <label htmlFor="password" className="login-label">Password</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="login-input"
+              placeholder="********"
+              required
+            />
+          </div>
+
+          <button type="submit" className="login-button">Sign Up</button>
+
+          <p className="login-text">
+            Already have an account?{" "}
+            <a href="/login" className="login-link">Login</a>
+          </p>
+        </form>
+
+        {/* Popup for Email Verification */}
+        {showPopup && (
+          <Popup
+            title="Email Verification Sent"
+            content="A verification email has been sent to your email address. Please check your inbox and verify your email."
+            onConfirm={handlePopupClose}
+            confirmButtonText="OK"
           />
-        </div>
-        <div className="login-input-group">
-          <label className="login-label">Last Name:</label>
-          <input
-            type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            className="login-input"
-            required
-          />
-        </div>
-        <div className="login-input-group">
-          <label className="login-label">Username:</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="login-input"
-            required
-          />
-        </div>
-        <div className="login-input-group">
-          <label className="login-label">Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="login-input"
-            required
-          />
-        </div>
-        <div className="login-input-group">
-          <label className="login-label">Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="login-input"
-            required
-          />
-        </div>
-        <button type="submit" className="login-button">Sign Up</button>
-        <p className="login-text">
-          Already have an account?{" "}
-          <a href="/login" className="login-link">Login</a>
-        </p>
-      </form>
-      {showPopup && (
-        <Popup
-          title="Email Verification Sent"
-          content="A verification email has been sent to your email address. Please check your inbox and verify your email."
-          onConfirm={handlePopupClose}
-          confirmButtonText="OK"
-        />
-      )}
+        )}
+      </div>
     </div>
   );
 };

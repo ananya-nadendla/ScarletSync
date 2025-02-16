@@ -1,27 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { auth } from "../config/firebase"; // Adjust the path as needed
+import { auth } from "../config/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate for redirection
-import "../styles/LoginAndSignup.css"; // Import the CSS file
+import { Link, useNavigate } from "react-router-dom";
+import "../styles/LoginAndSignup.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [user, setUser] = useState(null);
-  const navigate = useNavigate(); // useNavigate hook
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if the user is already authenticated
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        // If the user is authenticated, check if the email is verified
         if (currentUser.emailVerified) {
-          navigate("/dashboard"); // Redirect to dashboard if email is verified
+          navigate("/dashboard");
         } else {
           setError("Please verify your email before logging in.");
-          auth.signOut(); // Log out the user if their email is not verified
+          auth.signOut();
         }
       }
     });
@@ -36,11 +34,11 @@ const Login = () => {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const currentUser = userCredential.user;
       if (currentUser.emailVerified) {
-        setUser(currentUser); // Set the user state before navigating
-        navigate("/dashboard"); // Navigate to dashboard after successful login
+        setUser(currentUser);
+        navigate("/dashboard");
       } else {
         setError("Please verify your email before logging in.");
-        auth.signOut(); // Log out the user if their email is not verified
+        auth.signOut();
       }
     } catch (err) {
       setError(err.message);
@@ -48,46 +46,64 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      {!user ? (
-        <form onSubmit={handleLogin} className="login-form">
-          <h1 className="login-heading">Login</h1>
-          {error && <p className="login-error">{error}</p>}
-          <div className="login-input-group">
-            <label className="login-label">Email:</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="login-input"
-              required
-            />
+    <div className="login-page">
+      <div className="login-left">
+        <img src="/logo.png" alt="Scarlet Sync Logo" className="login-logo" />
+        <h1 className="login-title">Scarlet Sync</h1>
+        <p className="login-subtitle">Connect, Engage, Succeed.</p>
+      </div>
+
+      <div className="login-right">
+        {!user ? (
+          <form onSubmit={handleLogin} className="login-form">
+            <h1 className="login-heading">Log in</h1>
+            {error && <p className="login-error">{error}</p>}
+
+            {/* Email Field with Visible Label */}
+            <div className="login-input-group">
+              <label htmlFor="email" className="login-label">Email</label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="login-input"
+                placeholder="Enter your email..."
+                required
+              />
+            </div>
+
+            {/* Password Field with Visible Label */}
+            <div className="login-input-group">
+              <label htmlFor="password" className="login-label">Password</label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="login-input"
+                placeholder="********"
+                required
+              />
+            </div>
+
+            <button type="submit" className="login-button">Log in</button>
+
+            <p className="login-text">
+              Forgot your password?{" "}
+              <Link to="/reset-password" className="login-link">Click here to reset it.</Link>
+            </p>
+            <p className="login-text">
+              Don't have an account?{" "}
+              <Link to="/signup" className="login-link">Sign Up!</Link>
+            </p>
+          </form>
+        ) : (
+          <div>
+            <h1>Logging in...</h1>
           </div>
-          <div className="login-input-group">
-            <label className="login-label">Password:</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="login-input"
-              required
-            />
-          </div>
-          <button type="submit" className="login-button">Login</button>
-          <p className="login-text">
-            Forgot your password?{" "}
-            <Link to="/reset-password" className="login-link">Click here to reset it.</Link>
-          </p>
-          <p className="login-text">
-            Don't have an account?{" "}
-            <Link to="/signup" className="login-link">Sign up!</Link>
-          </p>
-        </form>
-      ) : (
-        <div>
-          <h1>Logging in...</h1>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
