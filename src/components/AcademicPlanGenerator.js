@@ -26,8 +26,8 @@ const AcademicPlanGenerator = () => {
     <div className="academic-plan-generator">
       <h1>Academic Plan Generator</h1>
       <p>
-        Generate your personalized academic plan to finish your requirements
-        in as few semesters and courses as possible.
+        Generate your personalized academic plan to finish all your requirements
+        for your majors/minors!
       </p>
       <button onClick={handleGeneratePlan} disabled={loading}>
         {loading ? "Generating Plan..." : "Generate Plan"}
