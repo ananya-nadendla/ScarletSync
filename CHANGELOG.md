@@ -1,4 +1,4 @@
-```2/15```
+```2/16```
 DONE
   - Styling
     - OtherUserProfile.js
@@ -15,6 +15,8 @@ DONE
 
   - Friends.js
     - Added more backend stuff to Recommendations
+
+  - Deleted dashbaord
 
 ```2/9```
 DONE

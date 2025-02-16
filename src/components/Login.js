@@ -16,7 +16,7 @@ const Login = () => {
       setUser(currentUser);
       if (currentUser) {
         if (currentUser.emailVerified) {
-          navigate("/dashboard");
+          navigate("/profile");
         } else {
           setError("Please verify your email before logging in.");
           auth.signOut();
@@ -35,7 +35,7 @@ const Login = () => {
       const currentUser = userCredential.user;
       if (currentUser.emailVerified) {
         setUser(currentUser);
-        navigate("/dashboard");
+        navigate("/profile");
       } else {
         setError("Please verify your email before logging in.");
         auth.signOut();
