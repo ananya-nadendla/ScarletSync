@@ -9,6 +9,7 @@ DONE
     - GroupChat.js
     - Landing / Login / Reset Password / Signup
     - Settings
+    - Notifications / Friends
   - npm install @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome
     - Used for icons (like in Sidebar)
 

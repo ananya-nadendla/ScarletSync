@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { db, auth } from "../config/firebase"; // Import Firestore and Auth
-import { collection, query, where, onSnapshot, doc, getDoc } from "firebase/firestore"; // Firestore functions
-import { acceptFriendRequest, deleteFriendRequest } from "../util/friendUtils"; // Your friend request functions
+import { db, auth } from "../config/firebase";
+import { collection, query, where, onSnapshot, doc, getDoc } from "firebase/firestore";
+import { acceptFriendRequest, deleteFriendRequest } from "../util/friendUtils";
+import "../styles/Notifications.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBell } from "@fortawesome/free-solid-svg-icons"; // Import bell icon
 
 const Notifications = () => {
   const [pendingRequests, setPendingRequests] = useState([]);
   const [error, setError] = useState("");
-  const currentUserUid = auth.currentUser?.uid; // Get current user's UID
+  const currentUserUid = auth.currentUser?.uid;
+  const DEFAULT_PROFILE_IMAGE =
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpPPrc8VMEPWqvFtOIxFZLDCN4JITg01d-KA&s";
 
   useEffect(() => {
     if (!currentUserUid) return;
@@ -30,13 +35,14 @@ const Notifications = () => {
           if (userProfileDoc.exists()) {
             const userProfileData = userProfileDoc.data();
             const senderUsername = userProfileData.username;
+            const senderProfileImage = userProfileData.profileImage || DEFAULT_PROFILE_IMAGE;
 
             if (senderUsername) {
               requests.push({
                 id: docSnapshot.id,
                 from: senderUsername,
                 fromUid: fromUid,
-                to: request.to,
+                profileImage: senderProfileImage,
                 status: request.status,
               });
             }
@@ -47,11 +53,11 @@ const Notifications = () => {
       }
 
       setPendingRequests(requests);
-      if (requests.length === 0) setError("No pending friend requests.");
+      if (requests.length === 0) setError("");
       else setError("");
     });
 
-    return () => unsubscribe(); // Cleanup listener on unmount
+    return () => unsubscribe();
   }, [currentUserUid]);
 
   const handleAcceptRequest = async (requestId, fromUid) => {
@@ -84,26 +90,33 @@ const Notifications = () => {
 
   return (
     <div>
-      <h1>Notifications</h1>
+      <h2 className="notifications-title">
+              {/*<FontAwesomeIcon icon={faBell} className="notif-bell-icon" />*/} Notifications
+            </h2>
       {error && <div className="error-message">{error}</div>}
 
       <div className="friend-requests">
         {pendingRequests.length > 0 ? (
           pendingRequests.map((request) => (
-            <div key={request.id} className="request-item">
-              <p>
-                {request.from} sent you a friend request.{" "}
-                <button onClick={() => handleAcceptRequest(request.id, request.fromUid)}>
-                  Accept
-                </button>
-                <button onClick={() => handleDeclineRequest(request.id)}>
-                  Decline
-                </button>
-              </p>
+            <div key={request.id} className="notification-card">
+              <img src={request.profileImage} alt="Profile" className="notif-profile-picture" />
+              <div className="notification-content">
+                <p>
+                  <strong>{request.from}</strong> sent you a friend request.
+                </p>
+                <div className="notification-actions">
+                  <button className="accept-btn" onClick={() => handleAcceptRequest(request.id, request.fromUid)}>
+                    Accept
+                  </button>
+                  <button className="decline-btn" onClick={() => handleDeclineRequest(request.id)}>
+                    Decline
+                  </button>
+                </div>
+              </div>
             </div>
           ))
         ) : (
-          <p></p>
+          <p className="no-notifications">No new friend requests.</p>
         )}
       </div>
     </div>

@@ -29,9 +29,9 @@
 }
 
 .tab-button.active {
-  background-color: #e63e3e;
+  background-color: #a80000;
   color: #fff;
-  border-color: #e63e3e;
+  border-color: #a80000;
 }
 
 /* Search bar */
