@@ -10,6 +10,9 @@ import Popup from "./Popup"; // Import the Popup component
 import { handleImageUpload, deleteProfilePicture } from '../util/imageUploadUtils';
 import { handleProfileDeletion } from '../util/friendUtils';
 import { StreamChat } from 'stream-chat';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCog } from "@fortawesome/free-solid-svg-icons"; // Import the settings icon
+
 
 const SettingsPage = () => {
   const [profileData, setProfileData] = useState({
@@ -239,7 +242,9 @@ const SettingsPage = () => {
 
   return (
     <div className="settings-container">
-      <h1>Settings</h1>
+      <h1 className="settings-header">
+            <FontAwesomeIcon icon={faCog} className="settings-icon" /> Settings
+          </h1>
 
     {/* Profile Picture Upload */}
       <div>
@@ -308,68 +313,65 @@ const SettingsPage = () => {
       </div>
 
       {/* Major Selection */}
-      <div>
-        <label>Majors:</label>
-        <Select
-          options={options.majors.map((major) => ({ value: major, label: major }))}
-          onChange={(selectedOption) => setSelectedMajor(selectedOption ? selectedOption.value : "")}
-          value={selectedMajor ? { value: selectedMajor, label: selectedMajor } : null}
-          placeholder="Select a Major"
-        />
-        <button onClick={handleAddMajor}>Add Major</button>
-        <ul>
-          {Array.isArray(profileData.major) && profileData.major.map((major, index) => (
-            <li key={index}>
-              {major}
-              <button onClick={() => handleRemoveMajor(major)}>Remove</button>
-            </li>
-          ))}
-        </ul>
-      </div>
+          <div>
+            <label>Majors:</label>
+            <div className="major-container">
+              <Select
+                options={options.majors.map((major) => ({ value: major, label: major }))}
+                onChange={(selectedOption) => setSelectedMajor(selectedOption ? selectedOption.value : "")}
+                value={selectedMajor ? { value: selectedMajor, label: selectedMajor } : null}
+                placeholder="Select a Major"
+              />
+              <button className="dark-grey-btn" onClick={handleAddMajor}>Add Major</button>
+            </div>
+            <ul className="major-list">
+              {profileData.major.map((major, index) => (
+                <li key={index}>
+                  {major}
+                  <button className="dark-grey-btn" onClick={() => handleRemoveMajor(major)}>Remove</button>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-      {/* Minor Selection */}
-      <div>
-        <label>Minors:</label>
-        <Select
-          options={options.minors.map((minor) => ({ value: minor, label: minor }))}
-          onChange={(selectedOption) => setSelectedMinor(selectedOption ? selectedOption.value : "")}
-          value={selectedMinor ? { value: selectedMinor, label: selectedMinor } : null}
-          placeholder="Select a Minor"
-        />
-        <button onClick={handleAddMinor}>Add Minor</button>
-        <ul>
-          {Array.isArray(profileData.minor) && profileData.minor.map((minor, index) => (
-            <li key={index}>
-              {minor}
-              <button onClick={() => handleRemoveMinor(minor)}>Remove</button>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-        <div>
-          <label>Campus Location:</label>
-          <Select
-            options={options.campusLocations.map((location) => ({ value: location, label: location }))}
-            value={profileData.campusLocation ? { value: profileData.campusLocation, label: profileData.campusLocation } : null}
-            onChange={(selectedOption) => setProfileData({ ...profileData, campusLocation: selectedOption ? selectedOption.value : "" })}
-            placeholder="Select Campus Location"
-          />
-        </div>
+          {/* Minor Selection */}
+          <div>
+            <label>Minors:</label>
+            <div className="minor-container">
+              <Select
+                options={options.minors.map((minor) => ({ value: minor, label: minor }))}
+                onChange={(selectedOption) => setSelectedMinor(selectedOption ? selectedOption.value : "")}
+                value={selectedMinor ? { value: selectedMinor, label: selectedMinor } : null}
+                placeholder="Select a Minor"
+              />
+              <button className="dark-grey-btn" onClick={handleAddMinor}>Add Minor</button>
+            </div>
+            <ul className="minor-list">
+              {profileData.minor.map((minor, index) => (
+                <li key={index}>
+                  {minor}
+                  <button className="dark-grey-btn" onClick={() => handleRemoveMinor(minor)}>Remove</button>
+                </li>
+              ))}
+            </ul>
+          </div>
 
       {/* Interests Section */}
       <div>
         <label>Interests:</label>
-        <button onClick={() => setIsPopupOpen(true)}>Choose Interests</button>
+        <button className="dark-grey-btn" onClick={() => setIsPopupOpen(true)}>Choose Interests</button>
         {selectedSubInterests.length > 0 ? (
-          <ul>
+          <div className="interests-chip-container">
             {selectedSubInterests.map((interest, index) => (
-              <li key={index}>{interest}</li>
+              <span key={index} className="interest-chip">
+                {interest}
+              </span>
             ))}
-          </ul>
+          </div>
         ) : (
           <p>No interests selected</p>
         )}
+
       </div>
 
       {isPopupOpen && (
@@ -416,18 +418,22 @@ const SettingsPage = () => {
          )}
 
         {/* Save Button */}
-        <div>
-          <button onClick={handleSave}>Save Changes</button>
+        <div className="save-changes-container">
+          <button className="save-changes-btn" onClick={handleSave}>Save Changes</button>
         </div>
 
+        {/* Divider */}
+        <hr className="divider-line" />
 
-          {/* Delete Account Button */}
+        {/* Delete Account Button */}
+        <div className="delete-account-container">
           <button
             className="delete-account-btn"
             onClick={() => setIsDeletePopupOpen(true)}
           >
             Delete Account
           </button>
+        </div>
 
           {isDeletePopupOpen && (
             <Popup

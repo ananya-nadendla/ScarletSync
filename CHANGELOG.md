@@ -7,8 +7,8 @@ DONE
     - Chatbot.js
     - Popup.js
     - GroupChat.js
-    - Landing.js
-    - Login / Reset Password / Signup
+    - Landing / Login / Reset Password / Signup
+    - Settings
   - npm install @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome
     - Used for icons (like in Sidebar)
 
