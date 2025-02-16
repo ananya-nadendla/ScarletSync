@@ -12,6 +12,9 @@ DONE
   - npm install @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome
     - Used for icons (like in Sidebar)
 
+  - Friends.js
+    - Added more backend stuff to Recommendations
+
 ```2/9```
 DONE
 - Remove NODE MODULES off github from server
