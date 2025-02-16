@@ -196,11 +196,11 @@ const OtherUserProfile = () => {
 
       <div className="profile-details">
         <div className="profile-item">
-          <label>School Year:</label>
+          <label>🎓School Year:</label>
           <p>{profileData.schoolYear || "No school year set"}</p>
         </div>
         <div className="profile-item">
-          <label>Major:</label>
+          <label>🚀Major:</label>
           {major.length > 0 ? (
             <div className="chips-container">
               {major.map((major, index) => (
@@ -213,7 +213,7 @@ const OtherUserProfile = () => {
         </div>
 
         <div className="profile-item">
-          <label>Minor:</label>
+          <label>🚀Minor:</label>
           {minor.length > 0 ? (
             <div className="chips-container">
               {minor.map((minor, index) => (
@@ -226,11 +226,11 @@ const OtherUserProfile = () => {
         </div>
 
         <div className="profile-item">
-          <label>Campus Location:</label>
+          <label>🏠Campus Location:</label>
           <p>{profileData.campusLocation || "No campus location set"}</p>
         </div>
         <div className="profile-item">
-          <label>Interests:</label>
+          <label>🤩Interests:</label>
           {selectedSubInterests.length > 0 ? (
             <div className="chips-container">
               {selectedSubInterests.map((subInterest, index) => (
