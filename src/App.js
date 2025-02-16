@@ -13,6 +13,7 @@ import Sidebar from "./components/Sidebar";
 import OtherUserProfile from "./components/OtherUserProfile";
 import PageNotFound from "./components/PageNotFound";
 import Loading from "./components/Loading";
+import Points from "./components/Points"
 
 import FriendsPage from "./components/FriendsPage";
 import Chatbot from "./components/Chatbot";
@@ -108,6 +109,14 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
+            <Route
+                          path="/points"
+                          element={
+                            <ProtectedRoute user={user}>
+                              <Points  /> {/* Pass userId from the logged-in user */}
+                            </ProtectedRoute>
+                          }
+                        />
           </Route>
 
           {/* Catch-all route */}

@@ -1,0 +1,148 @@
+.points-container {
+  text-align: center;
+  padding: 40px;
+  background-color: #f9f9f9;
+}
+
+.points-icon {
+  color: gold;
+  margin-right: 8px;
+}
+
+.points-value {
+  font-weight: bold;
+  font-size: 24px;
+  color: #e63e3e;
+}
+
+.merch-section {
+  margin-top: 30px;
+}
+
+.merch-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.merch-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+  width: 220px;
+}
+
+.merch-image {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.merch-cost {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin: 10px 0;
+}
+
+.star-icon {
+  color: gold;
+  margin-right: 5px;
+}
+
+.redeem-button {
+  background-color: #e63e3e;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.redeem-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.redeem-button:hover:not(:disabled) {
+  background-color: #c53030;
+}
+
+/* Points Page Styling */
+.points-container {
+  text-align: center;
+  padding: 40px;
+  background-color: #f9f9f9;
+}
+
+/* Top Section Styling */
+.top-section {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Title Styling */
+.page-title {
+  font-size: 28px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+
+/* Description Styling */
+.page-description {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 15px;
+}
+/* Points Display */
+.points-header {
+  font-size: 22px;
+  font-weight: bold;
+  color: #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.points-number {
+  font-size: 26px;
+  color: #d60000;
+  font-weight: bold;
+}
+
+/* Star Icon */
+.star-icon {
+  font-size: 22px;
+  color: gold;
+}
+
+/* Merch Section Title */
+.merch-section h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+.gift-icon {
+  font-size: 26px;
+  color: #d60000;
+}

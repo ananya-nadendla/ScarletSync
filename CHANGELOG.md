@@ -18,6 +18,8 @@ DONE
 
   - Deleted dashbaord
 
+  - Demo Points Page (gamificaiton)
+
 ```2/9```
 DONE
 - Remove NODE MODULES off github from server
