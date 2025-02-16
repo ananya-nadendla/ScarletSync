@@ -1,7 +1,7 @@
 // src/components/AcademicPlanGenerator.js
 
 import React, { useState } from "react";
-import { generateAcademicPlan } from "../utils/academicPlanUtil";
+import { generateAcademicPlan } from "../util/academicPlanUtil";
 import "../styles/AcademicPlanGenerator.css";
 
 const AcademicPlanGenerator = () => {

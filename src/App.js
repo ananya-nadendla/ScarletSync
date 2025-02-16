@@ -31,6 +31,7 @@ const ProtectedRoute = ({ user, children }) => {
 const App = () => {
   const [user, setUser] = useState(null);
   const [loadingAuth, setLoadingAuth] = useState(true); // Add a loading state for authentication
+  const [profileData, setProfileData] = useState(null);
 
   // Listen to authentication state changes
   useEffect(() => {

@@ -24,6 +24,8 @@ npm install @stream-io/stream-chat-css
     (NEW TOOL - 2/4)
 npm install firebase-admin
     (SERVER)
+npm install javascript-lp-solver
+    (NEW TOOL for academic planner - 2/15)
 
 //Run project (everyone - need to do this everytime you want to run project)
 OPEN A TERMINAL 
