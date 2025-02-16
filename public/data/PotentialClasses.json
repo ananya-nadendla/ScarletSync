@@ -1,0 +1,1038 @@
+[
+    {
+      "id": "01:640:104",
+      "name": "Introduction to Probability",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "QQ"
+    },
+    {
+      "id": "01:640:106",
+      "name": "Mathematics of Money",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "QQ,QR"
+    },
+    {
+      "id": "01:640:135",
+      "name": "CALCULUS I FOR THE LIFE AND SOCIAL SCIENCES",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "QQ,QR"
+    },
+    {
+      "id": "01:640:151",
+      "name": "Calculus I for Mathematical and Physical Sciences",
+      "credits": 4,
+      "prerequisites": "",
+      "fulfills": "M151,CC,QQ,QR"
+    },
+    {
+      "id": "01:640:152",
+      "name": "Calculus II for the Mathematical and Physical Sciences",
+      "credits": 4,
+      "prerequisites": "01:640:151",
+      "fulfills": "M152,CC,QQ,QR"
+    },
+    {
+      "id": "01:640:250",
+      "name": "Introductory Linear Algebra",
+      "credits": 3,
+      "prerequisites": "01:640:112/01:640:115",
+      "fulfills": "M250"
+    },
+    {
+      "id": "01:640:251",
+      "name": "Multivariable Calculus",
+      "credits": 4,
+      "prerequisites": "01:640:152",
+      "fulfills": "M251,CC"
+    },
+    {
+      "id": "01:640:252",
+      "name": "Elementary Differential Equations",
+      "credits": 3,
+      "prerequisites": "01:640:250,01:640:251",
+      "fulfills": "M252"
+    },
+    {
+      "id": "01:198:111",
+      "name": "Introduction to Computer Science",
+      "credits": 4,
+      "prerequisites": "",
+      "fulfills": "CS111,QQ,QR"
+    },
+    {
+      "id": "01:640:300",
+      "name": "Introduction to Mathematical Reasoning",
+      "credits": 3,
+      "prerequisites": "01:640:250/01:640:251/01:640:291",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:640:311",
+      "name": "Introduction to Real Analysis I",
+      "credits": 4,
+      "prerequisites": "01:640:252,01:640:300",
+      "fulfills": "M311,UMC"
+    },
+    {
+      "id": "01:640:312",
+      "name": "Introduction to Real Analysis II",
+      "credits": 3,
+      "prerequisites": "01:640:311",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:640:348",
+      "name": "Cryptography",
+      "credits": 3,
+      "prerequisites": "01:640:250,01:640:300/01:640:356/01:640:477",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:640:350",
+      "name": "Linear Algebra",
+      "credits": 3,
+      "prerequisites": "01:640:252,01:640:250,01:640:300",
+      "fulfills": "M350,UMC"
+    },
+    {
+      "id": "01:640:351",
+      "name": "Introduction to Abstract Algebra I",
+      "credits": 4,
+      "prerequisites": "",
+      "fulfills": "M350,UMC"
+    },
+    {
+      "id": "01:640:352",
+      "name": "Introduction to Abstract Algebra II",
+      "credits": 3,
+      "prerequisites": "01:640:252,01:640:250,01:640:300",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:640:354",
+      "name": "Linear Optimization",
+      "credits": 3,
+      "prerequisites": "01:640:250",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:640:356",
+      "name": "Theory of Numbers",
+      "credits": 3,
+      "prerequisites": "01:640:300",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:640:361",
+      "name": "Set Theory",
+      "credits": 3,
+      "prerequisites": "01:640:300,01:640:250/01:640:251",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:640:373",
+      "name": "Numerical Analysis I",
+      "credits": 3,
+      "prerequisites": "01:640:252",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:640:374",
+      "name": "Numerical Analysis II",
+      "credits": 3,
+      "prerequisites": "01:640:373",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:640:403",
+      "name": "Introductory Theory of Functions of a Complex Variable",
+      "credits": 3,
+      "prerequisites": "01:640:252",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:640:411",
+      "name": "Mathematical Analysis I",
+      "credits": 3,
+      "prerequisites": "01:640:311",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:640:412",
+      "name": "Mathematical Analysis II",
+      "credits": 3,
+      "prerequisites": "01:640:411",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:640:421",
+      "name": "Advanced Calculus for Engineering",
+      "credits": 3,
+      "prerequisites": "01:640:252",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:640:423",
+      "name": "Elementary Partial Differential Equations",
+      "credits": 3,
+      "prerequisites": "01:640:252",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:640:428",
+      "name": "Graph Theory",
+      "credits": 3,
+      "prerequisites": "01:640:251,01:640:250",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:640:432",
+      "name": "Introduction to Differential Geometry",
+      "credits": 3,
+      "prerequisites": "01:640:311",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:640:435",
+      "name": "Geometry",
+      "credits": 3,
+      "prerequisites": "01:640:251,01:640:250,01:640:300",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:640:437",
+      "name": "History of Mathematics",
+      "credits": 3,
+      "prerequisites": "01:640:250,01:640:251/01:640:291",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:640:441",
+      "name": "Introductory Topology I",
+      "credits": 3,
+      "prerequisites": "01:640:252,01:640:311",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:640:442",
+      "name": "Introductory Topology II",
+      "credits": 3,
+      "prerequisites": "01:640:441",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:640:451",
+      "name": "Abstract Algebra I",
+      "credits": 3,
+      "prerequisites": "01:640:351",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:640:452",
+      "name": "Abstract Algebra II",
+      "credits": 3,
+      "prerequisites": "01:640:451",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:640:454",
+      "name": "Combinatorics",
+      "credits": 3,
+      "prerequisites": "01:640:252,01:640:250",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:640:461",
+      "name": "Mathematical Logic",
+      "credits": 3,
+      "prerequisites": "01:640:251,01:640:300",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:640:477",
+      "name": "Mathematical Theory of Probability",
+      "credits": 3,
+      "prerequisites": "01:640:251",
+      "fulfills": "UMC,SC"
+    },
+    {
+      "id": "01:640:478",
+      "name": "Introduction to Stochastic Processes",
+      "credits": 3,
+      "prerequisites": "01:640:250,01:640:477",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:640:481",
+      "name": "Mathematical Theory of Statistics",
+      "credits": 3,
+      "prerequisites": "01:640:250,01:640:477",
+      "fulfills": "UMC,SC"
+    },
+    {
+      "id": "01:640:485",
+      "name": "Introduction to Mathematical Finance",
+      "credits": 3,
+      "prerequisites": "01:640:250,01:640:252,01:640:477",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:640:489",
+      "name": "COMPUTATIONAL FINANCE",
+      "credits": 3,
+      "prerequisites": "01:640:485,01:198:111",
+      "fulfills": "UMC"
+    },
+    {
+      "id": "01:960:285",
+      "name": "INTRO STAT FOR BUS",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": ""
+    },
+    {
+      "id": "01:960:211",
+      "name": "Statistics I",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "QQ,QR"
+    },
+    {
+      "id": "01:220:102",
+      "name": "Introduction to Microeconomics",
+      "credits": 3,
+      "prerequisites": "01:640:111/01:640:115",
+      "fulfills": "E102"
+    },
+    {
+      "id": "01:220:103",
+      "name": "Introduction to Macroeconomics",
+      "credits": 3,
+      "prerequisites": "01:640:111/01:640:115",
+      "fulfills": "E103"
+    },
+    {
+      "id": "01:220:320",
+      "name": "Intermediate Microeconomic Analysis",
+      "credits": 3,
+      "prerequisites": "01:220:102",
+      "fulfills": "E320"
+    },
+    {
+      "id": "01:220:321",
+      "name": "Intermediate Macroeconomic Analysis",
+      "credits": 3,
+      "prerequisites": "01:220:103",
+      "fulfills": "E321"
+    },
+    {
+      "id": "01:220:322",
+      "name": "Econometrics",
+      "credits": 3,
+      "prerequisites": "01:220:102,01:220:103,01:640:135/01:960:285/01:640:151",
+      "fulfills": "E322"
+    },
+    {
+      "id": "01:220:120",
+      "name": "Inequality",
+      "credits": 4,
+      "prerequisites": "",
+      "fulfills": "LEC,CCO,SCL"
+    },
+    {
+      "id": "01:220:300",
+      "name": "International Economics",
+      "credits": 3,
+      "prerequisites": "01:220:102,01:220:103",
+      "fulfills": "LEC"
+    },
+    {
+      "id": "01:220:301",
+      "name": "Money, Banking and the Financial System",
+      "credits": 3,
+      "prerequisites": "01:220:102,01:220:103",
+      "fulfills": "LEC"
+    },
+    {
+      "id": "01:220:303",
+      "name": "Labor Institutions and Markets",
+      "credits": 3,
+      "prerequisites": "01:220:102,01:220:103",
+      "fulfills": "LEC"
+    },
+    {
+      "id": "01:220:305",
+      "name": "American Economic History",
+      "credits": 3,
+      "prerequisites": "01:220:102,01:220:103",
+      "fulfills": "LEC"
+    },
+    {
+      "id": "01:220:334",
+      "name": "Energy Economics",
+      "credits": 3,
+      "prerequisites": "01:220:102,01:220:103",
+      "fulfills": "LEC"
+    },
+    {
+      "id": "01:220:395",
+      "name": "Law and Economics",
+      "credits": 3,
+      "prerequisites": "01:220:102,01:220:103",
+      "fulfills": "LEC"
+    },
+    {
+      "id": "01:220:402",
+      "name": "Labor Economics",
+      "credits": 3,
+      "prerequisites": "01:220:320,01:220:322",
+      "fulfills": "UEC"
+    },
+    {
+      "id": "01:220:410",
+      "name": "Advanced Macroeconomic Theory",
+      "credits": 3,
+      "prerequisites": "01:220:320,01:220:321,01:220:322,01:640:135/01:640:152",
+      "fulfills": "UEC"
+    },
+    {
+      "id": "01:220:411",
+      "name": "Global Financial Crises",
+      "credits": 3,
+      "prerequisites": "01:220:320,01:220:321,01:220:322",
+      "fulfills": "UEC"
+    },
+    {
+      "id": "01:220:412",
+      "name": "Monetary Theory and Policy",
+      "credits": 3,
+      "prerequisites": "01:220:321,01:220:322",
+      "fulfills": "UEC"
+    },
+    {
+      "id": "01:220:413",
+      "name": "Financial Economics",
+      "credits": 3,
+      "prerequisites": "01:220:320,01:220:322",
+      "fulfills": "UEC"
+    },
+    {
+      "id": "01:220:414",
+      "name": "Economics of Capital Markets",
+      "credits": 3,
+      "prerequisites": " 01:220:413",
+      "fulfills": "UEC"
+    },
+    {
+      "id": "01:220:415",
+      "name": "Portfolio Theory",
+      "credits": 3,
+      "prerequisites": "01:220:413",
+      "fulfills": "UEC"
+    },
+    {
+      "id": "01:220:420",
+      "name": "Computational Methods for Research in Economics",
+      "credits": 3,
+      "prerequisites": "01:220:320,01:220:321,01:220:322,01:640:135/01:640:152",
+      "fulfills": "UEC"
+    },
+    {
+      "id": "01:220:421",
+      "name": "Economic Forecasting and Big Data",
+      "credits": 3,
+      "prerequisites": "01:220:320,01:220:321,01:220:322",
+      "fulfills": "UEC"
+    },
+    {
+      "id": "01:220:424",
+      "name": "Advanced Analytics for Economics",
+      "credits": 3,
+      "prerequisites": "01:220:322",
+      "fulfills": "UEC"
+    },
+    {
+      "id": "01:220:432",
+      "name": "Environmental Economics",
+      "credits": 3,
+      "prerequisites": "01:220:320,01:220:322",
+      "fulfills": "UEC"
+    },
+    {
+      "id": "01:220:433",
+      "name": "Health Economics",
+      "credits": 3,
+      "prerequisites": "01:220:102,01:220:103",
+      "fulfills": "UEC"
+    },
+    {
+      "id": "01:220:435",
+      "name": "International Trade",
+      "credits": 3,
+      "prerequisites": "01:220:320,01:220:322",
+      "fulfills": "UEC"
+    },
+    {
+      "id": "01:220:439",
+      "name": "Economic Development",
+      "credits": 3,
+      "prerequisites": "01:220:320,01:220:321,01:220:322",
+      "fulfills": "UEC"
+    },
+    {
+      "id": "01:220:440",
+      "name": "Economics of Income Inequality and Discrimination",
+      "credits": 3,
+      "prerequisites": "01:220:320,01:220:322",
+      "fulfills": "UEC"
+    },
+    {
+      "id": "01:220:460",
+      "name": "Public Economics",
+      "credits": 3,
+      "prerequisites": "01:220:320,01:220:322",
+      "fulfills": "UEC"
+    },
+    {
+      "id": "01:220:477",
+      "name": "Economics of Population",
+      "credits": 3,
+      "prerequisites": "01:220:320,01:220:321,01:220:322",
+      "fulfills": "UEC"
+    },
+    {
+      "id": "01:220:480",
+      "name": "Behavioral and Experimental Economics",
+      "credits": 3,
+      "prerequisites": "01:220:320,01:220:322,01:640:135/01:640:152",
+      "fulfills": "UEC"
+    },
+    {
+      "id": "01:220:482",
+      "name": "Game Theory and Economics",
+      "credits": 3,
+      "prerequisites": "01:220:320,01:960:285,01:640:135/01:640:152",
+      "fulfills": "UEC"
+    },
+    {
+      "id": "01:220:485",
+      "name": "Advanced Microeconomic Theory",
+      "credits": 3,
+      "prerequisites": "01:220:320,01:220:321,01:220:322,01:640:135/01:640:152",
+      "fulfills": "UEC"
+    },
+    {
+      "id": "01:220:495",
+      "name": "Seminar in Economics: Markets & Finance",
+      "credits": 3,
+      "prerequisites": "01:220:320,01:220:321,01:220:322",
+      "fulfills": "UEC"
+    },
+    {
+      "id": "01:185:253",
+      "name": "Human Nature and Human Diversity",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "CCO"
+    },
+    {
+      "id": "01:070:111",
+      "name": "Extinction",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "CCO,CCD,NS"
+    },
+    {
+      "id": "01:098:255",
+      "name": "Heroism",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "CCO,AH"
+    },
+    {
+      "id": "01:359:207",
+      "name": "Data and Culture",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "CCO"
+    },
+    {
+      "id": "01:460:111",
+      "name": "SOLVING THE CLIMATE CRISIS",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "CCO"
+    },
+    {
+      "id": "01:506:227",
+      "name": "Health, Culture and Society",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "CCO,CCD"
+    },
+    {
+      "id": "01:595:224",
+      "name": "Immigration and Society",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "CCO"
+    },
+    {
+      "id": "01:830:123",
+      "name": "SOUL BELIEFS: CAUSES AND CONSEQUENCES",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "CCO,HST"
+    },
+    {
+      "id": "01:960:142",
+      "name": "Data 101",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "CCO,QQ,QR"
+    },
+    {
+      "id": "01:988:101",
+      "name": "Introduction to Gender, Race, and Sexuality",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "CCO"
+    },
+    {
+      "id": "11:373:101",
+      "name": "Economics, People, and Environment",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "CCO"
+    },
+    {
+      "id": "11:373:431",
+      "name": "International Trade Policy",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "CCO"
+    },
+    {
+      "id": "11:709:255",
+      "name": "Nutrition and Health",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "CCO,NS"
+    },
+    {
+      "id": "01:013:206",
+      "name": "Banned Books",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "CCD,AH"
+    },
+    {
+      "id": "01:013:285",
+      "name": "Language and Globalization",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "CCD"
+    },
+    {
+      "id": "01:014:203",
+      "name": "The Black Experience in America",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "CCD"
+    },
+    {
+      "id": "01:014:264",
+      "name": "Black Lives Matter",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "CCD"
+    },
+    {
+      "id": "01:014:305",
+      "name": "Race, International Law and Empire",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "CCD"
+    },
+    {
+      "id": "01:050:210",
+      "name": "The American Dream",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "CCD,AH"
+    },
+    {
+      "id": "01:506:216",
+      "name": "Law and History",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "CCD,HST"
+    },
+    {
+      "id": "01:119:101",
+      "name": "General Biology",
+      "credits": 4,
+      "prerequisites": "",
+      "fulfills": "NS"
+    },
+    {
+      "id": "01:119:155",
+      "name": "Human Genetics",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "NS"
+    },
+    {
+      "id": "01:160:161",
+      "name": "General Chemistry",
+      "credits": 4,
+      "prerequisites": "",
+      "fulfills": "NS"
+    },
+    {
+      "id": "01:450:101",
+      "name": "Earth Systems",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "NS"
+    },
+    {
+      "id": "01:460:101",
+      "name": "Introductory Geology",
+      "credits": 4,
+      "prerequisites": "",
+      "fulfills": "NS"
+    },
+    {
+      "id": "01:460:201",
+      "name": "Earthquakes and Volcanoes",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "NS"
+    },
+    {
+      "id": "01:460:202",
+      "name": "Environmental Geology",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "NS"
+    },
+    {
+      "id": "01:460:206",
+      "name": "Dinosaurs",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "NS"
+    },
+    {
+      "id": "01:750:203",
+      "name": "General Physics",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "NS"
+    },
+    {
+      "id": "11:067:142",
+      "name": "Animal Science",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "NS"
+    },
+    {
+      "id": "01:016:222",
+      "name": "Modern Africa",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "HST,SCL"
+    },
+    {
+      "id": "01:070:112",
+      "name": "World Prehistory",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "HST"
+    },
+    {
+      "id": "01:082:105",
+      "name": "Introduction to Art History, Pre-history to 1400",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "HST"
+    },
+    {
+      "id": "01:082:106",
+      "name": "Introduction to Art History, 1400 to the Present",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "HST"
+    },
+    {
+      "id": "01:098:250",
+      "name": "Global East Asia",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "HST,CCO,SCL"
+    },
+    {
+      "id": "01:190:211",
+      "name": "Greek and Roman Religion",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "HST"
+    },
+    {
+      "id": "01:195:282",
+      "name": "Music, Culture, and Memory in the French Speaking World",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "HST"
+    },
+    {
+      "id": "01:506:210",
+      "name": "Sex and Power",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "HST"
+    },
+    {
+      "id": "01:595:369",
+      "name": "Latino History",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "HST,WCd"
+    },
+    {
+      "id": "01:685:226",
+      "name": "Islam",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "HST,AH"
+    },
+    {
+      "id": "01:840:305",
+      "name": "Apocalypse Now? Religious Movements and the End of Time",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "HST,WCd"
+    },
+    {
+      "id": "01:988:260",
+      "name": "The Modern Girl",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "HST"
+    },
+    {
+      "id": "37:575:202",
+      "name": "History of Labor and Work in the U.S. 1880 to 1945",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "HST,WCr"
+    },
+    {
+      "id": "01:450:214",
+      "name": "Conservation",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "SCL"
+    },
+    {
+      "id": "01:830:101",
+      "name": "General Psychology",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "SCL"
+    },
+    {
+      "id": "01:920:222",
+      "name": "Criminology",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "SCL"
+    },
+    {
+      "id": "01:050:259",
+      "name": "Popular Culture",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "AH"
+    },
+    {
+      "id": "01:195:301",
+      "name": "Introduction to Literary Theory",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "AH"
+    },
+    {
+      "id": "01:195:364",
+      "name": "Big Bang: The Literature of Chaos and Order",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "AH"
+    },
+    {
+      "id": "01:560:232",
+      "name": "Italian Culture",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "AH,CCD"
+    },
+    {
+      "id": "01:730:107",
+      "name": "Introduction to Ethics",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "AH"
+    },
+    {
+      "id": "01:730:218",
+      "name": "Introduction to the Philosophy of Mind",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "AH"
+    },
+    {
+      "id": "07:203:102",
+      "name": "History of Broadway Dance",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "AH"
+    },
+    {
+      "id": "01:082:253",
+      "name": "Contemporary Photography",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "AH"
+    },
+    {
+      "id": "01:470:285",
+      "name": "Enchanted Worlds",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "AH"
+    },
+    {
+      "id": "07:700:291",
+      "name": "Jazz Appreciation",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "AH"
+    },
+    {
+      "id": "07:700:292",
+      "name": "Musics of the World",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "AH"
+    },
+    {
+      "id": "07:965:211",
+      "name": "Theater Appreciation: Experiences in Contemporary Theater",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "AH"
+    },
+    {
+      "id": "01:615:201",
+      "name": "Introduction to Linguistic Theory",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "AH"
+    },
+    {
+      "id": "07:700:103",
+      "name": "Introduction to Music Theory",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "AH"
+    },
+    {
+      "id": "01:351:212",
+      "name": "Creative Writing",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "AH"
+    },
+    {
+      "id": "01:355:101",
+      "name": "COLLEGE WRITING",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "WC"
+    },
+    {
+      "id": "01:355:103",
+      "name": "Exposition and Argument",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "WC"
+    },
+    {
+      "id": "01:355:202",
+      "name": "Technical Writing Essentials",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "WCr"
+    },
+    {
+      "id": "01:355:203",
+      "name": "Business Writing Essentials",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "WCr"
+    },
+    {
+      "id": "01:355:342",
+      "name": "Science Writing",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "WCr"
+    },
+    {
+      "id": "04:192:380",
+      "name": "Public Speaking",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "WCr"
+    },
+    {
+      "id": "01:195:246",
+      "name": "Fairy Tales Then and Now",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "WCd"
+    },
+    {
+      "id": "01:830:306",
+      "name": "Cognition Laboratory",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "WCd"
+    },
+    {
+      "id": "10:832:339",
+      "name": "Public Health Literature",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "WCd"
+    },
+    {
+      "id": "37:575:250",
+      "name": "Finance for Personal and Professional Success",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "QQ,QR"
+    },
+    {
+      "id": "01:730:201",
+      "name": "Introduction to Logic",
+      "credits": 3,
+      "prerequisites": "",
+      "fulfills": "QR"
+    }
+   ]
