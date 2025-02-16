@@ -6,6 +6,8 @@ import { collection, getDocs, getDoc, doc } from "firebase/firestore";
 import Notifications from "../components/Notifications";
 import "../styles/FriendsPage.css";
 import { getFriendRecommendations } from "../util/friendRecommendationUtil";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons"; // Import the search icon
 
 const FriendsPage = () => {
   const [activeTab, setActiveTab] = useState("notifications");
@@ -121,54 +123,59 @@ const FriendsPage = () => {
     return reasons.length > 0 ? <div className="recommendation-reason">{reasons}</div> : "Highly Matched!";
   };
 
+return (
+  <div className="friends-page">
+    {/* Tabs Navigation */}
+    <div className="tabs">
+      {["notifications", "recommendations", "search"].map((tab) => (
+        <button
+          key={tab}
+          className={`tab-button ${activeTab === tab ? "active" : ""}`}
+          onClick={() => setActiveTab(tab)}
+        >
+          {tab.charAt(0).toUpperCase() + tab.slice(1)}
+        </button>
+      ))}
+    </div>
 
-  return (
-    <div className="friends-page">
-      <div className="tabs">
-        {["notifications", "recommendations", "search"].map((tab) => (
-          <button
-            key={tab}
-            className={`tab-button ${activeTab === tab ? "active" : ""}`}
-            onClick={() => setActiveTab(tab)}
-          >
-            {tab.charAt(0).toUpperCase() + tab.slice(1)}
-          </button>
-        ))}
-      </div>
+    {/* Notifications Tab */}
+    {activeTab === "notifications" && <Notifications />}
 
-      {activeTab === "notifications" && <Notifications />}
-
-      {activeTab === "recommendations" && (
-        <div className="recommendations-tab">
-          <h3>Friend Recommendations</h3>
-          <div className="recommendations-list">
-            {recommendedFriends.length > 0 ? (
-              recommendedFriends.map((profile) => (
-                <Link
-                  to={`/profile/${profile.username}`}
-                  key={profile.id}
-                  className="profile-card"
-                >
-                  <img
-                    src={profile.profileImage}
-                    alt="Profile"
-                    className="profile-picture"
-                  />
-                  <div className="profile-username">{profile.username}</div>
-                  <div className="recommendation-reason">{getRecommendationReason(profile)}</div>
-                </Link>
-              ))
-            ) : (
-              <p>No friend recommendations available.</p>
-            )}
-          </div>
+    {/* Friend Recommendations Tab */}
+    {activeTab === "recommendations" && (
+      <div className="recommendations-tab">
+        <h3>Friend Recommendations</h3>
+        <div className="recommendations-list">
+          {recommendedFriends.length > 0 ? (
+            recommendedFriends.map((profile) => (
+              <Link
+                to={`/profile/${profile.username}`}
+                key={profile.id}
+                className="profile-card"
+              >
+                <img
+                  src={profile.profileImage}
+                  alt="Profile"
+                  className="profile-picture"
+                />
+                <div className="profile-username">{profile.username}</div>
+                <div className="recommendation-reason">{getRecommendationReason(profile)}</div>
+              </Link>
+            ))
+          ) : (
+            <p>No friend recommendations available.</p>
+          )}
         </div>
-      )}
+      </div>
+    )}
 
-      {activeTab === "search" && (
-        <div className="search-tab">
-          <h3>Search Profiles</h3>
-          <div className="search-bar-container">
+    {/* Search Tab */}
+    {activeTab === "search" && (
+      <div className="search-tab">
+        <h3>Search Profiles</h3>
+        <div className="search-bar-container">
+          <div className="search-input-wrapper">
+            <FontAwesomeIcon icon={faSearch} className="search-icon" />
             <input
               type="text"
               placeholder="Search by username"
@@ -177,34 +184,38 @@ const FriendsPage = () => {
               className="search-input"
             />
           </div>
-          <div className="search-results">
-            {searchResults.length > 0 ? (
-              searchResults.map((profile) => (
-                <Link
-                  to={`/profile/${profile.username}`}
-                  key={profile.id}
-                  className="profile-card"
-                >
-                  <img
-                    src={profile.profileImage}
-                    alt="Profile"
-                    className="profile-picture"
-                  />
-                  <div className="profile-username">{profile.username}</div>
-                </Link>
-              ))
-            ) : (
-              <p>
-                {searchQuery.length > 0
-                  ? "No profiles found"
-                  : "Start typing to search for profiles"}
-              </p>
-            )}
-          </div>
         </div>
-      )}
-    </div>
-  );
+
+        {/* Search Results */}
+        <div className="search-results">
+          {searchResults.length > 0 ? (
+            searchResults.map((profile) => (
+              <Link
+                to={`/profile/${profile.username}`}
+                key={profile.id}
+                className="profile-card"
+              >
+                <img
+                  src={profile.profileImage}
+                  alt="Profile"
+                  className="profile-picture"
+                />
+                <div className="profile-username">{profile.username}</div>
+              </Link>
+            ))
+          ) : (
+            <p>
+              {searchQuery.length > 0
+                ? "No profiles found"
+                : "Start typing to search for profiles"}
+            </p>
+          )}
+        </div>
+      </div>
+    )}
+  </div>
+);
+
 };
 
 export default FriendsPage;

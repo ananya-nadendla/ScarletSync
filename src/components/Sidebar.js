@@ -79,7 +79,7 @@ const Sidebar = () => {
 
           {/* Logout Button */}
           <button onClick={handleLogout} className="sidebar-menu-link sidebar-logout-btn">
-            <FontAwesomeIcon icon={faSignOutAlt} />
+
             Log Out
           </button>
         </nav>

@@ -5,36 +5,53 @@
   background-color: #f9f9f9;
 }
 
-/* Tabs */
+/* Tabs Container */
 .tabs {
   display: flex;
   justify-content: center;
-  gap: 20px;
+  align-items: center;
+  border-bottom: 3px solid #ddd;
   margin-bottom: 20px;
+  width: 100%;
 }
 
+/* Tab Buttons */
 .tab-button {
-  background-color: #fff;
-  border: 2px solid #ddd;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
   padding: 12px 24px;
-  border-radius: 10px;
   font-size: 16px;
-  cursor: pointer;
   font-weight: 600;
-  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-bottom: none;
+  flex: 1;
+  text-align: center;
 }
 
-.tab-button:hover {
-  background-color: #f0f0f0;
+/* Add rounded corners for the first and last tab */
+.tab-button:first-child {
+  border-top-left-radius: 10px;
+}
+.tab-button:last-child {
+  border-top-right-radius: 10px;
 }
 
+/* Active Tab */
 .tab-button.active {
   background-color: #a80000;
-  color: #fff;
-  border-color: #a80000;
+  color: white;
+  border-bottom: 3px solid #a80000;
+  cursor: default;
 }
 
-/* Search bar */
+/* Hover Effect */
+.tab-button:hover {
+  background-color: #ddd;
+}
+
+/* Search bar container */
 .search-bar-container {
   display: flex;
   justify-content: center;
@@ -42,20 +59,40 @@
   margin-bottom: 20px;
 }
 
-.search-input {
-  padding: 15px;
+/* Search Input Wrapper */
+.search-input-wrapper {
+  position: relative;
   width: 60%;
   max-width: 600px;
-  font-size: 18px;
+}
+
+/* Search Input */
+.search-input {
+  width: 100%;
+  padding: 12px 40px; /* Creates space for the icon */
+  font-size: 16px;
   border: 2px solid #ddd;
   border-radius: 8px;
   transition: border-color 0.3s;
 }
 
+/* Change border color on focus */
 .search-input:focus {
-  border-color: #e63e3e;
+  border-color: #a80000;
   outline: none;
 }
+
+/* Magnifying Glass Icon */
+.search-icon {
+  position: absolute;
+  left: 14px; /* Moves it inside the input */
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #888; /* Grayish color */
+  pointer-events: none; /* Prevents interaction */
+}
+
 
 /* Profile Cards */
 .profile-card {

@@ -56,9 +56,12 @@
 
 /* Accept Button */
 .accept-btn {
-  background-color: #28a745;
-  color: white;
+  background-color: white; /* or #ffffff */
+  color: #a80000;
+  outline: 1px solid #a80000; /* Adds a dark red outline */
+  border: 1px solid #a80000;  /* Ensures a dark red border as well */
 }
+
 
 .accept-btn:hover {
   background-color: #218838;
