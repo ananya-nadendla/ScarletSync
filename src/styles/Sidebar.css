@@ -7,7 +7,7 @@
 
 /* Sidebar Panel */
 .sidebar-side-panel {
-  background-color: #4a5259; /* Dark gray background */
+  background-color: #a80000; /* Dark gray background */
   color: #ffffff;
   width: 220px;
   padding: 20px;
@@ -63,7 +63,7 @@
 }
 
 .sidebar-menu-link:hover {
-  background-color: #3a4248;
+  background-color: #c93434;
 }
 
 .sidebar-active-link {
@@ -79,7 +79,7 @@
 
 /* Logout Button */
 .sidebar-logout-btn {
-  background-color: #d60000; /* Scarlet red */
+  background-color: #c93434; /* Scarlet red */
   color: #ffffff;
   padding: 12px;
   border: none;
