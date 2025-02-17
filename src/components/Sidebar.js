@@ -6,7 +6,7 @@ import "../styles/Sidebar.css"; // Dedicated CSS for the layout and side panel
 import { useStreamChat } from "../context/StreamChatContext";
 // Import FontAwesome icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faHome, faCog, faComment, faRobot, faSignOutAlt, faBell, faUsers, faStar } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faHome, faCog, faComment, faRobot, faSignOutAlt, faBell, faUsers, faStar, faCalendarDays } from "@fortawesome/free-solid-svg-icons";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -51,23 +51,33 @@ const Sidebar = () => {
               </NavLink>
             </li>
             <li>
+                          <NavLink to="/groupchat" className="sidebar-menu-link" activeClassName="sidebar-active-link">
+                            <FontAwesomeIcon icon={faComment} />
+                            Chats
+                          </NavLink>
+                        </li>
+
+            <li>
+              <NavLink to="/academic-plan" className="sidebar-menu-link" activeClassName="sidebar-active-link">
+                <FontAwesomeIcon icon={faCalendarDays} />
+                Academic Planner
+              </NavLink>
+            </li>
+            <li>
               <NavLink to="/chatbot" className="sidebar-menu-link" activeClassName="sidebar-active-link">
                 <FontAwesomeIcon icon={faRobot} />
                 AI Advisor
               </NavLink>
             </li>
-            <li>
-              <NavLink to="/groupchat" className="sidebar-menu-link" activeClassName="sidebar-active-link">
-                <FontAwesomeIcon icon={faComment} />
-                Chats
-              </NavLink>
-            </li>
+
             <li>
                                       <NavLink to="/points" className="sidebar-menu-link" activeClassName="sidebar-active-link">
                                         <FontAwesomeIcon icon={faStar} />
                                         Points
                                       </NavLink>
                                     </li>
+
+
             <li>
               <NavLink to="/settings" className="sidebar-menu-link" activeClassName="sidebar-active-link">
                 <FontAwesomeIcon icon={faCog} />
