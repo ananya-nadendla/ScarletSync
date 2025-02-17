@@ -1,81 +1,120 @@
-/*Used for: Login.js, Signup.js, ResetPassword.js*/
-
-/* General container for the forms */
-.login-container {
-  font-family: Arial, sans-serif;
-  background-color: #f9f9f9;
+/* General Layout */
+.login-page {
   display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
-  margin: 0;
-  padding: 0;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-/* Form styles */
-.login-form {
-  background-color: #ffffff;
-  padding: 20px 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
-  width: 100%;
-}
-
-/* Headings */
-.login-heading {
+/* Left Side - ScarletSync Branding */
+.login-left {
+  flex: 1;
+  background-color: #a80000;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  color: #333333;
-  margin-bottom: 20px;
+  padding: 20px;
 }
 
-/* Input group styles */
-.login-input-group {
+.login-logo {
+  width: 300px;
+  height: 300px;
+  object-fit: contain; /* Ensures it scales without distortion */
   margin-bottom: 15px;
 }
 
-.login-label {
-  display: block;
-  font-size: 14px;
-  color: #555555;
-  margin-bottom: 5px;
+.login-title {
+  font-size: 54px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 5px; /* Reduce space between title and subtitle */
+}
+
+.login-subtitle {
+  font-size: 20px;
+  color: white;
+  margin-top: 0px; /* Reduce space above the subtitle */
+}
+
+/* Right Side - Login Form */
+.login-right {
+  flex: 1;
+  background-color: white;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Login Form */
+.login-form {
+  width: 60%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.login-heading {
+  font-size: 25px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: black;
+}
+
+/* Input Fields */
+.login-input-group {
+  width: 100%;
+  margin-bottom: 15px;
 }
 
 .login-input {
   width: 100%;
-  padding: 10px;
-  font-size: 14px;
-  border: 1px solid #cccccc;
-  border-radius: 4px;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
   box-sizing: border-box;
+  text-align: center;
 }
 
-/* Button styles */
+.login-input:focus {
+  border-color: #a80000;
+  outline: none;
+}
+
+/* Login Button */
 .login-button {
   width: 100%;
-  padding: 10px;
-  background-color: #007bff;
+  padding: 12px;
+  background-color: #a80000;
   color: white;
   font-size: 16px;
   border: none;
-  border-radius: 4px;
+  border-radius: 20px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  font-weight: bold;
+  transition: background-color 0.3s;
 }
 
 .login-button:hover {
-  background-color: #0056b3;
+  background-color: #8b0000;
 }
 
-/* Text and link styles */
+/* Links */
 .login-text {
-  font-size: 14px;
-  text-align: center;
-  color: #333333;
+  font-size: 16px;
+  color: black;
 }
 
 .login-link {
-  color: #007bff;
+  color: #a80000;
+  font-weight: bold;
   text-decoration: none;
 }
 
@@ -83,10 +122,51 @@
   text-decoration: underline;
 }
 
-/* Error message */
+/* Error Message */
 .login-error {
   font-size: 14px;
-  color: #ff4d4d;
+  color: red;
   text-align: center;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .login-page {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .login-left {
+    padding: 40px;
+  }
+
+  .login-right {
+    padding: 40px;
+  }
+
+  .login-form {
+    width: 80%;
+  }
+}
+
+/* Ensure Labels are Visible */
+.login-label {
+  display: block;
+  font-size: 16px;
+  color: black;
+  margin-bottom: 5px;
+  text-align: left;
+  width: 100%;
+}
+
+/* Style input fields */
+.login-input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  box-sizing: border-box;
+  text-align: left;
 }

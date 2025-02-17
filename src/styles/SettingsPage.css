@@ -1,71 +1,243 @@
+/* General Settings Page Styling */
 .settings-container {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
 }
 
+/* Labels */
 .settings-container label {
   font-weight: bold;
+  display: block;
+  margin-top: 15px;
 }
 
-.settings-container input, .settings-container select, .settings-container textarea {
+/* Input Fields */
+.settings-container input,
+.settings-container select,
+.settings-container textarea {
   width: 100%;
-  padding: 8px;
-  margin: 5px 0 15px 0;
+  padding: 10px;
+  margin-top: 5px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 6px;
+  font-size: 16px;
 }
 
-.settings-container p {
-  margin: 5px 0;
-  color: #555;
+.settings-container textarea {
+  resize: vertical;
+  min-height: 80px;
 }
 
-.settings-container button {
-  padding: 10px 20px;
-  background-color: #1da1f2; /* Twitter blue */
-  color: white;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.settings-container button:hover {
-  background-color: #0d95e8;
-}.popup {
-   position: fixed;
-   top: 50%;
-   left: 50%;
-   transform: translate(-50%, -50%);
-   background-color: white;
-   padding: 20px;
-   border-radius: 8px;
-   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-   max-width: 500px;
-   width: 100%;
-   z-index: 1000;
-   overflow-y: auto;
- }
-
-
- .error-message {
-   color: red;
-   font-size: 14px;
-   margin-bottom: 10px;
- }
-
+/* Read-only fields */
 .settings-uneditable-field {
   background-color: #f5f5f5;
   cursor: not-allowed;
 }
 
+/* Profile Image */
 .settings-profile-image {
-  width: 100px; /* Set a consistent width */
-  height: 100px; /* Set a consistent height to make it a square */
-  border-radius: 50%; /* Make it a circle */
-  object-fit: cover; /* Ensure the image scales proportionally while filling the area */
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
   display: block;
-  margin: 10px auto; /* Center the image */
+  margin: 10px 0;
 }
+
+/* Major & Minor Lists */
+.major-list,
+.minor-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.major-list li,
+.minor-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin: 5px 0;
+  background: #f9f9f9;
+}
+
+/* Buttons */
+.settings-container button {
+  padding: 10px 18px;
+  background-color: #a80000; /* Scarlet Red */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.2s;
+  margin-top: 10px;
+}
+
+.settings-container button:hover {
+  background-color: #8b0000;
+  transform: scale(1.05);
+}
+
+/* Delete Account Button */
+.delete-account-btn {
+  background-color: #ff4d4d;
+  width: 100%;
+}
+
+.delete-account-btn:hover {
+  background-color: #cc0000;
+}
+
+/* Interests Section */
+.interests-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.interest-chip {
+  padding: 8px 12px;
+  background-color: #f1f1f1;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.interest-chip.selected {
+  background-color: #a80000;
+  color: white;
+}
+
+/* Align Buttons Properly */
+.settings-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-start;
+  margin-top: 20px;
+}
+
+/* Popup Styling */
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+/* Interest Chips Container */
+.interests-chip-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Individual Interest Chip */
+.interest-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 15px;
+  background-color: #e0e0e0; /* Light grey */
+  color: #333;
+  font-size: 14px;
+  border-radius: 20px; /* Fully rounded */
+  cursor: default;
+  transition: background-color 0.3s;
+}
+
+/* On Hover (Optional) */
+.interest-chip:hover {
+  background-color: #d6d6d6;
+}
+
+/* Center Save Changes Button with More Spacing */
+.save-changes-container {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  margin-top: 30px; /* Space from above elements */
+  margin-bottom: 30px; /* Space before divider */
+}
+
+/* Style for Save Changes Button */
+.save-changes-btn {
+  padding: 12px 24px;
+  font-size: 18px;
+  background-color: #a80000; /* Scarlet Red */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.save-changes-btn:hover {
+  background-color: #8b0000;
+  transform: scale(1.05);
+}
+
+/* Divider Line */
+.divider-line {
+  border: none;
+  height: 1px;
+  background-color: #ccc;
+  margin: 30px auto;
+  width: 80%;
+}
+
+/* Center Delete Account Button */
+.delete-account-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.delete-account-btn {
+  background-color: #ff4d4d;
+  padding: 12px 24px;
+  font-size: 18px;
+  border-radius: 8px;
+}
+
+.delete-account-btn:hover {
+  background-color: #cc0000;
+}
+
+/* Sleeker Dark Grey Buttons */
+.dark-grey-btn {
+  background-color: #9a9b9c !important; /* Dark grey */
+  color: white !important;
+  border: none;
+  border-radius: 20px; /* More rounded for a modern look */
+  padding: 6px 14px !important;  /* Reduce padding to make it hug text better */
+  cursor: pointer;
+  font-size: 14px; /* Slightly smaller font for sleekness */
+  font-weight: 500;
+  transition: background-color 0.3s, transform 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-width: unset; /* Allow natural width based on content */
+}
+
+/* On Hover */
+.dark-grey-btn:hover {
+  background-color: #868585 !important; /* Slightly darker grey */
+  transform: scale(1.05);
+}
+
 

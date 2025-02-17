@@ -1,0 +1,110 @@
+/* General Layout */
+.landing-container {
+  display: flex;
+  height: 100vh;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Left Side - ScarletSync Branding */
+.landing-left {
+  flex: 1;
+  background-color: #a80000;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.landing-logo {
+   width: 300px;
+   height: 300px;
+   object-fit: contain; /* Ensures it scales without distortion */
+  margin-bottom: 15px;
+}
+
+.landing-title {
+  font-size: 54px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 5px; /* Reduce space between title and subtitle */
+}
+
+.landing-subtitle {
+  font-size: 20px;
+  color: white;
+  margin-top: 0px; /* Reduce space above the subtitle */
+}
+
+
+/* Right Side - Login/Signup Section */
+.landing-right {
+  flex: 1;
+  background-color: white;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.rutgers-logo {
+  width: 100px;
+  margin-bottom: 10px;
+}
+
+.landing-text {
+  font-size: 25px;
+  max-width: 70%;
+  margin-bottom: 20px;
+}
+
+.landing-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 60%;
+}
+
+.landing-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #a80000;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.landing-btn:hover {
+  background-color: #8b0000;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .landing-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .landing-left {
+    padding: 40px;
+  }
+
+  .landing-right {
+    padding: 40px;
+  }
+
+  .landing-buttons {
+    width: 80%;
+  }
+}

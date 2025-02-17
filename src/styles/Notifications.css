@@ -1,0 +1,85 @@
+/* Notifications Title */
+.notifications-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/* Notification Card - No More Outer Box */
+.notification-card {
+  display: flex;
+  align-items: center;
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+  margin-bottom: 10px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.notification-card:hover {
+  transform: scale(1.02);
+}
+
+/* Profile Picture */
+.notif-profile-picture {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+/* Notification Content */
+.notification-content {
+  flex-grow: 1;
+}
+
+/* Buttons */
+.notification-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.accept-btn, .decline-btn {
+  border: none;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+/* Accept Button */
+.accept-btn {
+  background-color: white; /* or #ffffff */
+  color: #a80000;
+  outline: 1px solid #a80000; /* Adds a dark red outline */
+  border: 1px solid #a80000;  /* Ensures a dark red border as well */
+}
+
+
+.accept-btn:hover {
+  background-color: #218838;
+}
+
+/* Decline Button */
+.decline-btn {
+  background-color: #a80000;
+  color: white;
+}
+
+.decline-btn:hover {
+  background-color: #c82333;
+}
+
+/* No Notifications */
+.no-notifications {
+  text-align: center;
+  font-size: 16px;
+  color: #777;
+}

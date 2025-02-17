@@ -139,7 +139,7 @@ const ProfilePage = () => {
       {error && <div className="error-message">{error}</div>} {/* Display error if exists */}
 
       <div className="profile-header">
-        <div className="profile-picture">
+        <div className="profile-profile-picture">
           {/* Display the profile image or a default image if not available */}
           <img
             src={profileData.profileImage || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpPPrc8VMEPWqvFtOIxFZLDCN4JITg01d-KA&s"}
@@ -160,11 +160,11 @@ const ProfilePage = () => {
 
       <div className="profile-details">
         <div className="profile-item">
-          <label>School Year:</label>
+          <label>🎓School Year:</label>
           <p>{profileData.schoolYear || "No school year set"}</p>
         </div>
         <div className="profile-item">
-          <label>Major:</label>
+          <label>🚀Major:</label>
           {profileData.major.length > 0 ? (
             <div className="chips-container">
               {profileData.major.map((major, index) => (
@@ -177,7 +177,7 @@ const ProfilePage = () => {
         </div>
 
         <div className="profile-item">
-          <label>Minor:</label>
+          <label>🚀Minor:</label>
           {profileData.minor.length > 0 ? (
             <div className="chips-container">
               {profileData.minor.map((minor, index) => (
@@ -190,11 +190,11 @@ const ProfilePage = () => {
         </div>
 
         <div className="profile-item">
-          <label>Campus Location:</label>
+          <label>🏠Campus Location:</label>
           <p>{profileData.campusLocation || "No campus location set"}</p>
         </div>
         <div className="profile-item">
-          <label>Interests:</label>
+          <label>🤩Interests:</label>
           {profileData.selectedSubInterests.length > 0 ? (
             <div className="chips-container">
               {profileData.selectedSubInterests.map((subInterest, index) => (

@@ -1,3 +1,26 @@
+```2/16```
+DONE
+  - Styling
+    - OtherUserProfile.js
+    - ProfilePage.js
+    - Sidebar.js
+    - Chatbot.js
+    - Popup.js
+    - GroupChat.js
+    - Landing / Login / Reset Password / Signup
+    - Settings
+    - Notifications / Friends
+
+  - npm install @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome
+    - Used for icons (like in Sidebar)
+
+  - Friends.js
+    - Added more backend stuff to Recommendations
+
+  - Deleted dashbaord
+
+  - Demo Points Page (gamificaiton)
+
 ```2/9```
 DONE
 - Remove NODE MODULES off github from server

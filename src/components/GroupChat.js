@@ -9,6 +9,10 @@ import "stream-chat-react/dist/css/v2/index.css";
 import Loading from "./Loading";
 import { v4 as uuidv4 } from "uuid"; // Import UUID for unique ID generation
 import Popup from "./Popup";
+// ✅ Import FontAwesome icons
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUsers, faCog } from "@fortawesome/free-solid-svg-icons";
+
 
 // Function to fetch the Stream token from the backend
 const fetchStreamToken = async (userId) => {
@@ -405,7 +409,7 @@ useEffect(() => {
 
           // Send a default welcome message
           await defaultChannel.sendMessage({
-            text: "👋 Welcome to your Chats! This is your space to start conversations. Add people to this chat or search up users to DM!",
+            text: "👋 Welcome to your Messages! This is your space to start conversations. Add people to this chat or search up users to DM!",
             user_id: userId, // Ensure the message appears as sent by the user
           });
 
@@ -435,7 +439,7 @@ useEffect(() => {
 return (
     <div className="groupchat-container">
       <div className="groupchat-sidebar">
-        <h2>Chats</h2>
+        <h2>Messages</h2>
 
         <div className="dm-section">
                   <input
@@ -478,8 +482,8 @@ return (
             <div className="groupchat-channel">
               {/* Settings button at the top of the chat */}
               <div className="groupchat-header">
-                <button className="groupchat-settings-btn" onClick={() => setShowSettings(true)}>⚙</button>
-                <button className="groupchat-settings-btn" onClick={() => setShowMembers(true)}>👥</button>
+                <button className="groupchat-settings-btn" onClick={() => setShowSettings(true)}><FontAwesomeIcon icon={faCog} size="sm" /></button>
+                <button className="groupchat-settings-btn" onClick={() => setShowMembers(true)}><FontAwesomeIcon icon={faUsers} size="sm" /></button>
               </div>
 
               <MessageList className="groupchat-message-list" />

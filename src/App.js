@@ -8,12 +8,15 @@ import Signup from "./components/Signup";
 import ResetPassword from "./components/ResetPassword";
 import LandingPage from "./components/LandingPage";
 import ProfilePage from "./components/ProfilePage";
-import Dashboard from "./components/Dashboard";
 import SettingsPage from "./components/SettingsPage";
 import Sidebar from "./components/Sidebar";
 import OtherUserProfile from "./components/OtherUserProfile";
 import PageNotFound from "./components/PageNotFound";
 import Loading from "./components/Loading";
+
+import Points from "./components/Points"
+
+
 import FriendsPage from "./components/FriendsPage";
 import Chatbot from "./components/Chatbot";
 import GroupChat from "./components/GroupChat";
@@ -22,7 +25,7 @@ import AcademicPlanGenerator from "./components/AcademicPlanGenerator";
 import HardcodedAcademicPlanGenerator from "./HardcodedAcademicPlanGenerator";
 
 
-// If user is not logged in and tries to access dashboard, profile, etc, REDIRECT to login
+// If user is not logged in and tries to access profile, etc, REDIRECT to login
 const ProtectedRoute = ({ user, children }) => {
   if (!user) {
     return <Navigate to="/login" replace />;
@@ -63,14 +66,7 @@ const App = () => {
 
           {/* Protected routes --> User must be logged in to access these pages*/}
           <Route element={<Sidebar />}>
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute user={user}>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
+
             <Route
               path="/profile"
               element={
@@ -120,6 +116,7 @@ const App = () => {
               }
             />
             <Route
+
               path="/academic-plan"
               element={
                 <ProtectedRoute user={user}>
@@ -128,6 +125,15 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
+
+                          path="/points"
+                          element={
+                            <ProtectedRoute user={user}>
+                              <Points  /> {/* Pass userId from the logged-in user */}
+                            </ProtectedRoute>
+                          }
+                        />
+
           </Route>
 
           {/* Catch-all route */}

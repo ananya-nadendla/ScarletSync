@@ -177,7 +177,8 @@
 }
 
 .dm-section button {
-  background-color: #007bff;
+
+  background-color: #a80000;
   color: white;
   border: none;
   padding: 8px 12px;
@@ -211,10 +212,13 @@
 
 .channel-list button {
   padding: 10px;
-  border: none;
   background-color: white;
+  border: 2px solid #f0f0f0; /* Added subtle border around chats */
+  border-radius: 5px;
   cursor: pointer;
-  transition: background 0.3s;
+  text-align: center;
+  width: 100%;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .channel-list button:hover {
@@ -224,4 +228,15 @@
 .channel-list button.active-channel {
   background-color: #d3d3d3; /* Light grey for selected channel */
   font-weight: bold;
+}
+
+/*TEMPORARY, REMOVE LATER*/
+.str-chat__message--deleted {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 8px 16px;
+  width: fit-content;
+  color: #888;
+  margin-left: 25px; /* Remove extra space */
 }
