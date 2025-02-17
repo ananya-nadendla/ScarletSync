@@ -13,12 +13,17 @@ import Sidebar from "./components/Sidebar";
 import OtherUserProfile from "./components/OtherUserProfile";
 import PageNotFound from "./components/PageNotFound";
 import Loading from "./components/Loading";
+
 import Points from "./components/Points"
+
 
 import FriendsPage from "./components/FriendsPage";
 import Chatbot from "./components/Chatbot";
 import GroupChat from "./components/GroupChat";
 import { StreamChatProvider } from "./context/StreamChatContext"; // Import the StreamChatProvider
+import AcademicPlanGenerator from "./components/AcademicPlanGenerator";
+import HardcodedAcademicPlanGenerator from "./HardcodedAcademicPlanGenerator";
+
 
 // If user is not logged in and tries to access profile, etc, REDIRECT to login
 const ProtectedRoute = ({ user, children }) => {
@@ -31,6 +36,7 @@ const ProtectedRoute = ({ user, children }) => {
 const App = () => {
   const [user, setUser] = useState(null);
   const [loadingAuth, setLoadingAuth] = useState(true); // Add a loading state for authentication
+  const [profileData, setProfileData] = useState(null);
 
   // Listen to authentication state changes
   useEffect(() => {
@@ -110,6 +116,16 @@ const App = () => {
               }
             />
             <Route
+
+              path="/academic-plan"
+              element={
+                <ProtectedRoute user={user}>
+                  {/* Pass the studentProfile. For example, profileData obtained from Firebase */}
+                  <HardcodedAcademicPlanGenerator studentProfile={profileData}/>
+                </ProtectedRoute>
+              }
+            />
+
                           path="/points"
                           element={
                             <ProtectedRoute user={user}>
@@ -117,6 +133,7 @@ const App = () => {
                             </ProtectedRoute>
                           }
                         />
+
           </Route>
 
           {/* Catch-all route */}

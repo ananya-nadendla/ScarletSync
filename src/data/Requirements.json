@@ -1,0 +1,147 @@
+[
+    {
+      "requirement": "M151",
+      "total": 1,
+      "completed": 1
+    },
+    {
+      "requirement": "M152",
+      "total": 1,
+      "completed": 1
+    },
+    {
+      "requirement": "M250",
+      "total": 1,
+      "completed": 1
+    },
+    {
+      "requirement": "M251",
+      "total": 1,
+      "completed": 1
+    },
+    {
+      "requirement": "M252",
+      "total": 1,
+      "completed": 0
+    },
+    {
+      "requirement": "M311",
+      "total": 1,
+      "completed": 0
+    },
+    {
+      "requirement": "M350",
+      "total": 1,
+      "completed": 0
+    },
+    {
+      "requirement": "UMC",
+      "total": 8,
+      "completed": 1
+    },
+    {
+      "requirement": "E102",
+      "total": 1,
+      "completed": 1
+    },
+    {
+      "requirement": "E103",
+      "total": 1,
+      "completed": 0
+    },
+    {
+      "requirement": "E320",
+      "total": 1,
+      "completed": 0
+    },
+    {
+      "requirement": "E321",
+      "total": 1,
+      "completed": 0
+    },
+    {
+      "requirement": "E322",
+      "total": 1,
+      "completed": 0
+    },
+    {
+      "requirement": "UEC",
+      "total": 4,
+      "completed": 0
+    },
+    {
+      "requirement": "LEC",
+      "total": 3,
+      "completed": 0
+    },
+    {
+      "requirement": "CS111",
+      "total": 1,
+      "completed": 1
+    },
+    {
+      "requirement": "SC",
+      "total": 1,
+      "completed": 1
+    },
+    {
+      "requirement": "CC",
+      "total": 1,
+      "completed": 1
+    },
+    {
+      "requirement": "CCO",
+      "total": 1,
+      "completed": 0
+    },
+    {
+      "requirement": "CCD",
+      "total": 1,
+      "completed": 0
+    },
+    {
+      "requirement": "NS",
+      "total": 2,
+      "completed": 2
+    },
+    {
+      "requirement": "HST",
+      "total": 1,
+      "completed": 0
+    },
+    {
+      "requirement": "SCL",
+      "total": 1,
+      "completed": 0
+    },
+    {
+      "requirement": "AH",
+      "total": 2,
+      "completed": 2
+    },
+    {
+      "requirement": "WC",
+      "total": 1,
+      "completed": 1
+    },
+    {
+      "requirement": "WCr",
+      "total": 1,
+      "completed": 0
+    },
+    {
+      "requirement": "WCd",
+      "total": 1,
+      "completed": 1
+    },
+    {
+      "requirement": "QQ",
+      "total": 1,
+      "completed": 1
+    },
+    {
+      "requirement": "QR",
+      "total": 1,
+      "completed": 1
+    }
+   ]

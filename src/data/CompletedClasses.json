@@ -1,0 +1,98 @@
+[
+  {
+    "id": "01:640:151",
+    "name": "Calculus I for Mathematical and Physical Sciences",
+    "credits": 4,
+    "semester": 0
+  },
+  {
+    "id": "01:640:152",
+    "name": "Calculus II for the Mathematical and Physical Sciences",
+    "credits": 4,
+    "semester": 0
+  },
+  {
+    "id": "01:750:203",
+    "name": "General Physics",
+    "credits": 3,
+    "semester": 0
+  },
+  {
+    "id": "01:198:111",
+    "name": "Introduction to Computer Science",
+    "credits": 4,
+    "semester": 0
+  },
+  {
+    "id": "01:960:211",
+    "name": "Statistics I",
+    "credits": 3,
+    "semester": 0
+  },
+  {
+    "id": "01:640:250",
+    "name": "Introductory Linear Algebra",
+    "credits": 3,
+    "semester": 1
+  },
+  {
+    "id": "01:830:321",
+    "name": "SOCIAL PSYCHOLOGY",
+    "credits": 3,
+    "semester": 1
+  },
+  {
+    "id": "01:940:132",
+    "name": "Intermediate Spanish",
+    "credits": 4,
+    "semester": 1
+  },
+  {
+    "id": "01:090:125",
+    "name": "Honors College Forum",
+    "credits": 3,
+    "semester": 1
+  },
+  {
+    "id": "01:090:103",
+    "name": "CROSS-CULTURAL COMPETENCY",
+    "credits": 1,
+    "semester": 1
+  },
+  {
+    "id": "07:965:211",
+    "name": "Theater Appreciation: Experiences in Contemporary Theater",
+    "credits": 3,
+    "semester": 2
+  },
+  {
+    "id": "01:830:340",
+    "name": "PSYCHOPATHOLOGY",
+    "credits": 3,
+    "semester": 2
+  },
+  {
+    "id": "01:730:104",
+    "name": "Introduction to Philosophy - Writing Intensive",
+    "credits": 4,
+    "semester": 2
+  },
+  {
+    "id": "01:640:300",
+    "name": "Introduction to Mathematical Reasoning",
+    "credits": 3,
+    "semester": 2
+  },
+  {
+    "id": "01:640:251",
+    "name": "Multivariable Calculus",
+    "credits": 4,
+    "semester": 2
+  },
+  {
+    "id": "01:220:102",
+    "name": "Introduction to Microeconomics",
+    "credits": 3,
+    "semester": 2
+  }
+ ]

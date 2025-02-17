@@ -11,12 +11,14 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@craco/craco": "^7.1.0",
     "@google/generative-ai": "^0.21.0",
     "@supabase/supabase-js": "^2.48.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "firebase-admin": "^13.1.0",
+    "javascript-lp-solver": "^0.4.24",
     "stream-chat": "^8.55.0"
   }
 }

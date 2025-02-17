@@ -1,0 +1,71 @@
+/* src/styles/AcademicPlanGenerator.css */
+
+.academic-plan-generator {
+  padding: 30px;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+.academic-plan-generator h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #e63e3e;
+}
+
+.academic-plan-generator p {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.academic-plan-generator button {
+  background-color: #e63e3e;
+  color: #fff;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-bottom: 20px;
+}
+
+.academic-plan-generator button:hover {
+  background-color: #d02c2c;
+}
+
+.error-message {
+  color: #ff0000;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.plan-display {
+  margin-top: 30px;
+  text-align: left;
+  display: inline-block;
+  max-width: 800px;
+  width: 100%;
+}
+
+.semester-block {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.semester-block h3 {
+  color: #e63e3e;
+  margin-bottom: 10px;
+}
+
+.semester-block ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.semester-block li {
+  font-size: 1rem;
+  margin-bottom: 5px;
+}

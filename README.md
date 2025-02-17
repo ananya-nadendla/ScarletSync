@@ -24,6 +24,9 @@ npm install @stream-io/stream-chat-css
     (NEW TOOL - 2/4)
 npm install firebase-admin
     (SERVER)
+
+npm install javascript-lp-solver
+    (NEW TOOL for academic planner - 2/15)
 npm install @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome
 
 
