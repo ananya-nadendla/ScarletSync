@@ -125,14 +125,14 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-
-                          path="/points"
-                          element={
-                            <ProtectedRoute user={user}>
-                              <Points  /> {/* Pass userId from the logged-in user */}
-                            </ProtectedRoute>
-                          }
-                        />
+            <Route
+              path="/points"
+              element={
+                <ProtectedRoute user={user}>
+                  <Points  /> {/* Pass userId from the logged-in user */}
+                </ProtectedRoute>
+              }
+            />
 
           </Route>
 
