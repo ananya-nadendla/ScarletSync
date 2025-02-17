@@ -19,6 +19,8 @@ import Chatbot from "./components/Chatbot";
 import GroupChat from "./components/GroupChat";
 import { StreamChatProvider } from "./context/StreamChatContext"; // Import the StreamChatProvider
 import AcademicPlanGenerator from "./components/AcademicPlanGenerator";
+import HardcodedAcademicPlanGenerator from "./HardcodedAcademicPlanGenerator";
+
 
 // If user is not logged in and tries to access dashboard, profile, etc, REDIRECT to login
 const ProtectedRoute = ({ user, children }) => {
@@ -122,7 +124,7 @@ const App = () => {
               element={
                 <ProtectedRoute user={user}>
                   {/* Pass the studentProfile. For example, profileData obtained from Firebase */}
-                  <AcademicPlanGenerator studentProfile={profileData}/>
+                  <HardcodedAcademicPlanGenerator studentProfile={profileData}/>
                 </ProtectedRoute>
               }
             />

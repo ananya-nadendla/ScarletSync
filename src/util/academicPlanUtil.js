@@ -1,14 +1,28 @@
 /********************************************************************
  * academicPlanUtil.js
+ *
+ * This code builds a linear (mixed-integer) program for scheduling
+ * courses, but initially *all constraints* are commented out. 
+ * 
+ * HOW TO USE:
+ *  1) Leave everything commented => no constraints => should be feasible.
+ *  2) Uncomment each major block of constraints one by one to see 
+ *     which block forces "infeasible."
+ * 
+ * Import paths and naming follow your original usage.
  ********************************************************************/
 import Solver from "javascript-lp-solver";
-// If your JSON data is in the same folder or different folder, 
-// adjust these paths accordingly.
+
+// import your JSON data 
 import potentialClassesData from "../data/PotentialClasses.json";
 import requirementsData from "../data/Requirements.json";
 import completedClassesData from "../data/CompletedClasses.json";
 
-// Utility: build a map of requirement -> total needed
+/************************************************************
+ * 1. Utility Functions
+ ************************************************************/
+
+/** Build a map: requirement -> total needed (from Requirements.json) */
 function buildTotalRequirementsMap(requirementsList) {
   const map = {};
   requirementsList.forEach((r) => {
@@ -17,7 +31,7 @@ function buildTotalRequirementsMap(requirementsList) {
   return map;
 }
 
-// Utility: build a map of requirement -> how many are already completed
+/** Build a map: requirement -> how many are *already completed* */
 function buildCompletedRequirementsMap(requirementsList) {
   const map = {};
   requirementsList.forEach((r) => {
@@ -26,12 +40,7 @@ function buildCompletedRequirementsMap(requirementsList) {
   return map;
 }
 
-/**
- * This function is only used if you rely on completed classes 
- * for prereq logic. If you do NOT need them for fulfilling 
- * requirements (since you already updated them in Requirements.json), 
- * you can skip searching for 'fulfills' in completed classes.
- */
+/** Gather a set of IDs for all completed classes (for skipping re-scheduling) */
 function buildCompletedClassesSet(completedClasses) {
   const s = new Set();
   completedClasses.forEach((c) => {
@@ -40,44 +49,31 @@ function buildCompletedClassesSet(completedClasses) {
   return s;
 }
 
-/**
- * Build a map of courseId -> { ...courseObject with arrays }
- * We remove leading/trailing spaces from the 'prerequisites' field 
- * and parse them as an array. We'll also fix slashes.
+/** 
+ * Build a map: courseId -> courseData 
+ * Also parse "prerequisites" (split on commas, slash replaced by comma).
  */
 function buildCourseMap(potentialClasses) {
   const courseMap = {};
-
   potentialClasses.forEach((course) => {
     let rawPrereqs = course.prerequisites || "";
-    // Replace slashes with commas
+    // replace slashes with commas
     rawPrereqs = rawPrereqs.replace(/\//g, ",");
+    // split on commas
+    const parts = rawPrereqs
+      .split(",")
+      .map((p) => p.trim())
+      .filter(Boolean);
 
-    // Split on commas
-    const splitted = rawPrereqs.split(",").map((p) => p.trim()).filter(Boolean);
-
-    // Now we handle "01:640:135/01:960:285/01:640:151" type combos 
-    // that might remain. But we've replaced slashes so it's probably 
-    // just splitted. If some remain with '/', you can do a second pass.
-
-    // Convert "leadingSpaceCourse" => "leadingSpaceCourse" remove leading/trailing spaces
-    const prereqArray = splitted.map((p) => p.replace(/^\s+|\s+$/g, ""));
-
-    // Build the final course object
     courseMap[course.id] = {
       ...course,
-      prerequisites: prereqArray
+      prerequisites: parts
     };
   });
-
   return courseMap;
 }
 
-/**
- * Build a map of requirement -> list of course IDs that fulfill it.
- * Since you rely on Requirements.json for completed classes, 
- * you only do this for potential classes (not completed).
- */
+/** Build a map: requirement -> array of course IDs that fulfill it */
 function buildRequirementToCoursesMap(potentialClasses) {
   const map = {};
   potentialClasses.forEach((course) => {
@@ -91,78 +87,105 @@ function buildRequirementToCoursesMap(potentialClasses) {
   return map;
 }
 
+/************************************************************
+ * 2. Main LP-Solver Function
+ ************************************************************/
 export async function generateAcademicPlan() {
   try {
+    /********************************************************
+     * A) Load JSON data 
+     ********************************************************/
     const potentialClasses = potentialClassesData;
     const requirementsList = requirementsData;
     const completedClasses = completedClassesData;
 
-    // Build needed data structures
+    /********************************************************
+     * B) Build data structures
+     ********************************************************/
     const totalReqsMap = buildTotalRequirementsMap(requirementsList);
     const completedReqsMap = buildCompletedRequirementsMap(requirementsList);
     const completedSet = buildCompletedClassesSet(completedClasses);
     const courseMap = buildCourseMap(potentialClasses);
     const reqToCoursesMap = buildRequirementToCoursesMap(potentialClasses);
 
-    // We'll allow up to 9 semesters
+    // We'll allow up to 9 semesters: 1..9
     const semesterIndices = Array.from({ length: 9 }, (_, i) => i + 1);
 
-    // Create the LP model
+    // We'll define a special var to track 9th semester usage, if you want that
+    const useSem9 = "UseSem9";
+
+    /********************************************************
+     * C) Build the LP model (NO CONSTRAINTS by default)
+     ********************************************************/
     const model = {
       optimize: "totalPenalty",
       opType: "min",
-      constraints: {},
+      constraints: {},    // We'll add constraints below (commented)
       variables: {},
       ints: {}
     };
 
-    // 1) Decision vars: X_{courseId, sem} (binary)
+    /********************************************************
+     * 1) Decision Variables: X_{course, s}
+     ********************************************************/
     potentialClasses.forEach((course) => {
-      if (completedSet.has(course.id)) {
-        // skip if it's completed
-        return;
-      }
+      // skip if already completed
+      if (completedSet.has(course.id)) return;
+
       semesterIndices.forEach((s) => {
         const varName = `X_${course.id}_${s}`;
-        model.variables[varName] = { totalPenalty: 0 };
-        model.ints[varName] = 1;
+        model.variables[varName] = {
+          // no direct penalty for picking a course
+          totalPenalty: 0
+        };
+        model.ints[varName] = 1; // binary variable
       });
     });
 
-    // 2) Over/Under for each sem + "UseSem9"
+    /********************************************************
+     * 2) Over/Under credit variables and useSem9
+     ********************************************************/
+    // We'll define them, but *not* add constraints referencing them
     semesterIndices.forEach((s) => {
-      // over_s, under_s
       const overVar = `over_${s}`;
       const underVar = `under_${s}`;
-      model.variables[overVar] = { totalPenalty: 1 };
-      model.variables[underVar] = { totalPenalty: 1 };
+      model.variables[overVar] = {
+        totalPenalty: 1
+      };
+      model.variables[underVar] = {
+        totalPenalty: 1
+      };
     });
-    const useSem9 = "UseSem9";
     model.variables[useSem9] = { totalPenalty: 100 };
     model.ints[useSem9] = 1;
 
-    /****************************************************************
-     * 3) Constraints
-     ****************************************************************/
+    /********************************************************
+     * ********** COMMENTED-OUT CONSTRAINT BLOCKS ***********
+     *
+     * Uncomment them one by one to see which causes infeasibility.
+     ********************************************************/
 
-    // 3.1 Requirements: sum(X) >= needed
+    /*
+    //-------------------------------------------------------
+    // A) Requirements: sum(X) >= needed
+    //-------------------------------------------------------
     Object.keys(totalReqsMap).forEach((reqName) => {
       const totalNeeded = totalReqsMap[reqName];
       const alreadyDone = completedReqsMap[reqName] || 0;
       if (alreadyDone >= totalNeeded) {
-        // no constraint needed; you already meet or exceed
+        // already satisfied or over-satisfied
         return;
       }
       const neededFromFuture = totalNeeded - alreadyDone;
 
-      // gather all X_{course, s} for courses that can fulfill this req
+      // gather courses that can fulfill
       const coursesThatFulfill = reqToCoursesMap[reqName] || [];
       if (coursesThatFulfill.length === 0 && neededFromFuture > 0) {
         console.warn(`Requirement ${reqName} needs ${neededFromFuture} more but no course can fulfill it!`);
       }
+
       let expr = {};
       coursesThatFulfill.forEach((cId) => {
-        // skip if completed
         if (completedSet.has(cId)) return;
         semesterIndices.forEach((s) => {
           const varName = `X_${cId}_${s}`;
@@ -175,39 +198,32 @@ export async function generateAcademicPlan() {
         ...expr
       };
     });
+*/    
 
-    // 3.2 Prerequisites: X_{c,s} <= sum_{prereqs}(X_{p,t < s} + 1_if_p_completed)
+    
+    //-------------------------------------------------------
+    // B) Prerequisites
+    //-------------------------------------------------------
     Object.entries(courseMap).forEach(([cId, courseObj]) => {
-      if (completedSet.has(cId)) return; // skip completed
-      const prereqs = courseObj.prerequisites;
-      if (!prereqs || prereqs.length === 0) return;
+      if (completedSet.has(cId)) return;
+      const prereqs = courseObj.prerequisites || [];
+      if (!prereqs.length) return;
 
       const numPrereqs = prereqs.length;
 
       semesterIndices.forEach((s) => {
-        // left side: X_{cId,s} * numPrereqs => we do -numPrereqs * X_{cId,s} in expression
+        // left side is X_{cId,s} * numPrereqs => in linear form we do -numPrereqs * X_{cId,s}
         const varName = `X_${cId}_${s}`;
         let expr = { [varName]: -numPrereqs };
 
-        // For each prerequisite p
         prereqs.forEach((p) => {
-          // Trim leading/trailing spaces from p in case
-          const cleanP = p.trim();
-
-          // If the p is not in courseMap and not in completedSet, 
-          // that means there's a potential data error
-          if (!courseMap[cleanP] && !completedSet.has(cleanP)) {
-            console.warn(`Prerequisite mismatch: course '${cleanP}' not found in PotentialClasses or CompletedSet. (prereq of ${cId})`);
-          }
-
-          if (completedSet.has(cleanP)) {
-            // That prereq is effectively always satisfied => +1
+          // if p is completed, we effectively add 1
+          if (completedSet.has(p)) {
             expr["__CONST__"] = (expr["__CONST__"] || 0) + 1;
           } else {
             // sum_{t < s} X_{p,t}
             for (let t = 1; t < s; t++) {
-              const pVar = `X_${cleanP}_${t}`;
-              // Only add if that pVar actually exists in model.variables
+              const pVar = `X_${p}_${t}`;
               if (model.variables[pVar]) {
                 expr[pVar] = (expr[pVar] || 0) + 1;
               }
@@ -222,8 +238,12 @@ export async function generateAcademicPlan() {
         };
       });
     });
+    
 
-    // 3.3 Credit constraints per semester
+    /*
+    //-------------------------------------------------------
+    // C) Credit Load Constraints
+    //-------------------------------------------------------
     semesterIndices.forEach((s) => {
       let sumCreditsExpr = {};
       potentialClasses.forEach((c) => {
@@ -232,14 +252,13 @@ export async function generateAcademicPlan() {
         sumCreditsExpr[varName] = (sumCreditsExpr[varName] || 0) + c.credits;
       });
 
-      // Hard min: >= 12
+      // Hard min: 12, Hard max: 19
       model.constraints[`minCredits_sem${s}`] = {
-        min: 3,
+        min: 12,
         ...sumCreditsExpr
       };
-      // Hard max: <= 19
       model.constraints[`maxCredits_sem${s}`] = {
-        max: 30,
+        max: 19,
         ...sumCreditsExpr
       };
 
@@ -253,6 +272,7 @@ export async function generateAcademicPlan() {
           ...expr
         };
       }
+
       // UnderVar => sumCredits + under_s >= 14 => -sumCredits + under_s >= -14
       const underVar = `under_${s}`;
       {
@@ -267,8 +287,12 @@ export async function generateAcademicPlan() {
         };
       }
     });
+    */
 
-    // 3.4 If X_{c,9} = 1 => useSem9 = 1
+    
+    //-------------------------------------------------------
+    // D) If X_{c,9} = 1 => useSem9 = 1
+    //-------------------------------------------------------
     potentialClasses.forEach((c) => {
       if (completedSet.has(c.id)) return;
       const varName = `X_${c.id}_9`;
@@ -278,8 +302,12 @@ export async function generateAcademicPlan() {
         [useSem9]: -1
       };
     });
+    
 
-    // 3.5 Each course can only be taken once => sum_{s=1..9} X_{c,s} <= 1
+    
+    //-------------------------------------------------------
+    // E) Single-Semester: sum_{s=1..9} X_{c,s} <= 1
+    //-------------------------------------------------------
     potentialClasses.forEach((c) => {
       if (completedSet.has(c.id)) return;
       let expr = {};
@@ -291,39 +319,36 @@ export async function generateAcademicPlan() {
         ...expr
       };
     });
-
-    /****************************************************************
-     * 4) Solve
-     ****************************************************************/
-    console.log("=== MODEL DUMP ===", JSON.stringify(model, null, 2));
-    console.log("PotentialClasses", potentialClasses);
-    console.log("Requirements", requirementsList);
-    console.log("CompletedClasses", completedClasses);
     
+
+    /********************************************************
+     * 4) Solve the Model
+     ********************************************************/
+    console.log("==== MODEL (no constraints) DUMP ====", JSON.stringify(model, null, 2));
+
     const results = Solver.Solve(model);
+    console.log("==== SOLVE RESULTS (no constraints) ====", results);
 
     if (!results.feasible) {
-      throw new Error("No feasible solution found. The LP model is infeasible.");
+      throw new Error("No feasible solution found (with constraints commented out).");
     }
 
-    /****************************************************************
-     * 5) Build the plan to return
-     ****************************************************************/
+    /********************************************************
+     * 5) Build a Plan (though it's not very meaningful 
+     *    without constraints)
+     ********************************************************/
     const plan = {};
     semesterIndices.forEach((s) => {
       plan[`Semester ${s}`] = [];
     });
 
-    // gather all X_{course, s} = 1
+    // gather all X_{course, s} = 1 if the solver sets them
     Object.keys(results).forEach((varName) => {
       if (varName.startsWith("X_") && results[varName] === 1) {
-        // parse out the course
-        // varName looks like "X_01:640:252_3"
-        const parts = varName.split("_");
-        // parts[1] = "01:640:252", parts[2] = "3"
-        const cId = parts[1];
+        const parts = varName.split("_"); // e.g. ["X","01:640:252","2"]
+        const courseId = parts[1];
         const sem = parseInt(parts[2], 10);
-        const cObj = courseMap[cId];
+        const cObj = courseMap[courseId];
         if (cObj) {
           plan[`Semester ${sem}`].push(cObj);
         }
@@ -337,20 +362,26 @@ export async function generateAcademicPlan() {
   }
 }
 
-const model = {
-  optimize: "someObj",
-  opType: "min",
-  constraints: {},
-  variables: {
-    "X_course1_sem1": { someObj: 0 },
-    "X_course2_sem1": { someObj: 0 }
-  },
-  ints: {
-    "X_course1_sem1": 1,
-    "X_course2_sem1": 1
-  }
-};
+/************************************************************
+ * 3. A Mini Test for reference
+ ************************************************************/
+function miniTest() {
+  const model = {
+    optimize: "dummyObj",
+    opType: "min",
+    constraints: {},
+    variables: {
+      "X_course1_sem1": { dummyObj: 0 },
+      "X_course2_sem1": { dummyObj: 0 }
+    },
+    ints: {
+      "X_course1_sem1": 1,
+      "X_course2_sem1": 1
+    }
+  };
+  const result = Solver.Solve(model);
+  console.log("miniTest results =>", result);
+}
 
-const results = Solver.Solve(model);
-console.log("miniTest results", results);
-
+// Automatically run the miniTest at import time (optional)
+miniTest();
