@@ -66,7 +66,7 @@
     "id": "01:640:300",
     "name": "Introduction to Mathematical Reasoning",
     "credits": 3,
-    "prerequisites": "01:640:250/01:640:251/01:640:291",
+    "prerequisites": "01:640:250/01:640:251",
     "fulfills": "UMC"
   },
   {
@@ -178,7 +178,7 @@
     "id": "01:640:423",
     "name": "Elementary Partial Differential Equations",
     "credits": 3,
-    "prerequisites": "01:640:253",
+    "prerequisites": "01:640:252",
     "fulfills": "UMC"
   },
   {
@@ -206,7 +206,7 @@
     "id": "01:640:437",
     "name": "History of Mathematics",
     "credits": 3,
-    "prerequisites": "01:640:250,01:640:251/01:640:291",
+    "prerequisites": "01:640:250,01:640:251",
     "fulfills": "UMC"
   },
   {
@@ -269,7 +269,7 @@
     "id": "01:640:481",
     "name": "Mathematical Theory of Statistics",
     "credits": 3,
-    "prerequisites": "01:440:250,01:640:477",
+    "prerequisites": "01:640:250,01:640:477",
     "fulfills": "UMC,SC"
   },
   {
@@ -332,7 +332,7 @@
     "id": "01:220:322",
     "name": "Econometrics",
     "credits": 3,
-    "prerequisites": "01:220:102,01:220:103,01:640:135/01:960:285/01:640:151",
+    "prerequisites": "",
     "fulfills": "E322"
   },
   {
@@ -346,14 +346,14 @@
     "id": "01:220:300",
     "name": "International Economics",
     "credits": 3,
-    "prerequisites": "01:220:102,01:220:103",
+    "prerequisites": "",
     "fulfills": "LEC"
   },
   {
     "id": "01:220:301",
     "name": "Money, Banking and the Financial System",
     "credits": 3,
-    "prerequisites": "01:220:102,01:220:103",
+    "prerequisites": "",
     "fulfills": "LEC"
   },
   {
@@ -381,21 +381,21 @@
     "id": "01:220:395",
     "name": "Law and Economics",
     "credits": 3,
-    "prerequisites": "01:220:102,01:220:103",
+    "prerequisites": "",
     "fulfills": "LEC"
   },
   {
     "id": "01:220:402",
     "name": "Labor Economics",
     "credits": 3,
-    "prerequisites": "01:220:320,01:220:322",
+    "prerequisites": "",
     "fulfills": "UEC"
   },
   {
     "id": "01:220:410",
     "name": "Advanced Macroeconomic Theory",
     "credits": 3,
-    "prerequisites": "01:220:320,01:220:321,01:220:322,01:640:135/01:640:152",
+    "prerequisites": "",
     "fulfills": "UEC"
   },
   {
@@ -423,7 +423,7 @@
     "id": "01:220:414",
     "name": "Economics of Capital Markets",
     "credits": 3,
-    "prerequisites": " 01:220:413",
+    "prerequisites": "01:220:413",
     "fulfills": "UEC"
   },
   {

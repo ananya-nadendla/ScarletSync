@@ -1,8 +1,5 @@
-// src/components/AcademicPlanGenerator.js
-
 import React, { useState } from "react";
 import { generateAcademicPlan } from "../util/academicPlanUtil";
-import "../styles/AcademicPlanGenerator.css";
 
 const AcademicPlanGenerator = () => {
   const [plan, setPlan] = useState(null);
@@ -13,6 +10,8 @@ const AcademicPlanGenerator = () => {
     setLoading(true);
     setError("");
     try {
+      // generateAcademicPlan no longer needs arguments
+      // because we import the data inside it
       const generatedPlan = await generateAcademicPlan();
       setPlan(generatedPlan);
     } catch (err) {
@@ -23,33 +22,30 @@ const AcademicPlanGenerator = () => {
   };
 
   return (
-    <div className="academic-plan-generator">
-      <h1>Academic Plan Generator</h1>
-      <p>
-        Generate your personalized academic plan for all your semesters!
-        (Semesters 1 &amp; 2 show your completed courses.)
-      </p>
+    <div>
       <button onClick={handleGeneratePlan} disabled={loading}>
         {loading ? "Generating Plan..." : "Generate Plan"}
       </button>
-      {error && <div className="error-message">{error}</div>}
+
+      {error && <div style={{ color: "red" }}>{error}</div>}
+
       {plan && (
-        <div className="plan-display">
-          <h2>Your Academic Plan</h2>
+        <div>
           {Object.keys(plan)
             .sort((a, b) => {
+              // optional numeric sort of "Semester 1", "Semester 2", ...
               const semA = parseInt(a.split(" ")[1], 10);
               const semB = parseInt(b.split(" ")[1], 10);
               return semA - semB;
             })
             .map((semesterKey) => (
-              <div key={semesterKey} className="semester-block">
+              <div key={semesterKey}>
                 <h3>{semesterKey}</h3>
                 {plan[semesterKey].length > 0 ? (
                   <ul>
                     {plan[semesterKey].map((course) => (
                       <li key={course.id}>
-                        {course.name} ({course.id})
+                        {course.id} - {course.name} ({course.credits} credits)
                       </li>
                     ))}
                   </ul>

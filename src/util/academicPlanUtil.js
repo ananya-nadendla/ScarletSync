@@ -1,284 +1,356 @@
-// src/util/academicPlanUtil.js
+/********************************************************************
+ * academicPlanUtil.js
+ ********************************************************************/
+import Solver from "javascript-lp-solver";
+// If your JSON data is in the same folder or different folder, 
+// adjust these paths accordingly.
+import potentialClassesData from "../data/PotentialClasses.json";
+import requirementsData from "../data/Requirements.json";
+import completedClassesData from "../data/CompletedClasses.json";
 
-import solver from "javascript-lp-solver";
+// Utility: build a map of requirement -> total needed
+function buildTotalRequirementsMap(requirementsList) {
+  const map = {};
+  requirementsList.forEach((r) => {
+    map[r.requirement] = r.total || 0;
+  });
+  return map;
+}
 
-/*
-  This file builds a linear programming (LP) model to generate an academic plan
-  based on three sets of data:
-  
-  1. PotentialClasses.json: Lists all available courses. Each course includes:
-     - id: Course identifier.
-     - name: Course title.
-     - credits: Number of credits.
-     - prerequisites: A string listing prerequisites (groups separated by commas;
-       alternatives in a group are separated by a slash). No concurrent enrollment allowed.
-     - fulfills: A comma-separated list of requirement codes that the course can satisfy.
-  
-  2. Requirements.json: Lists the requirements with:
-     - requirement: The code of the requirement.
-     - total: Total number of courses required.
-     - completed: Number of courses already taken that fulfill this requirement.
-  
-  3. CompletedClasses.json: Lists courses already completed (with the semester taken).
-  
-  The goal is to schedule the remaining (pending) courses in the upcoming semesters.
-  - Semesters 1 & 2 are already completed.
-  - We plan for semesters 3–8 (6 semesters) ideally, with semester 9 allowed only as a fallback.
-  - Each planned semester must have between 12 and 19 credits (aiming for 15–17 if possible).
-  - Prerequisite constraints enforce that if a course is scheduled in semester S,
-    at least one of its prerequisite alternatives must be scheduled in a semester strictly less than S.
-*/
+// Utility: build a map of requirement -> how many are already completed
+function buildCompletedRequirementsMap(requirementsList) {
+  const map = {};
+  requirementsList.forEach((r) => {
+    map[r.requirement] = r.completed || 0;
+  });
+  return map;
+}
 
-// ---------------------------------------------------------------------
-// 1. Data Fetching: Retrieve JSON data from the public folder.
-export const fetchAcademicPlanData = async () => {
-  // Fetch all three JSON files concurrently.
-  const [potentialRes, requirementsRes, completedRes] = await Promise.all([
-    fetch("/data/PotentialClasses.json"),
-    fetch("/data/Requirements.json"),
-    fetch("/data/CompletedClasses.json"),
-  ]);
+/**
+ * This function is only used if you rely on completed classes 
+ * for prereq logic. If you do NOT need them for fulfilling 
+ * requirements (since you already updated them in Requirements.json), 
+ * you can skip searching for 'fulfills' in completed classes.
+ */
+function buildCompletedClassesSet(completedClasses) {
+  const s = new Set();
+  completedClasses.forEach((c) => {
+    s.add(c.id);
+  });
+  return s;
+}
 
-  // Check if all fetches were successful.
-  if (!potentialRes.ok || !requirementsRes.ok || !completedRes.ok) {
-    throw new Error("Failed to fetch one or more academic plan data files.");
-  }
+/**
+ * Build a map of courseId -> { ...courseObject with arrays }
+ * We remove leading/trailing spaces from the 'prerequisites' field 
+ * and parse them as an array. We'll also fix slashes.
+ */
+function buildCourseMap(potentialClasses) {
+  const courseMap = {};
 
-  // Parse the JSON responses.
-  const potentialClasses = await potentialRes.json();
-  const requirements = await requirementsRes.json();
-  const completedClasses = await completedRes.json();
+  potentialClasses.forEach((course) => {
+    let rawPrereqs = course.prerequisites || "";
+    // Replace slashes with commas
+    rawPrereqs = rawPrereqs.replace(/\//g, ",");
 
-  // Global constraints: maximum credits per semester.
-  const globalConstraints = { maxCreditsPerSemester: 19 , minCreditsPerSemester: 12 };
+    // Split on commas
+    const splitted = rawPrereqs.split(",").map((p) => p.trim()).filter(Boolean);
 
+    // Now we handle "01:640:135/01:960:285/01:640:151" type combos 
+    // that might remain. But we've replaced slashes so it's probably 
+    // just splitted. If some remain with '/', you can do a second pass.
 
-  return { potentialClasses, requirements, completedClasses, globalConstraints };
-};
+    // Convert "leadingSpaceCourse" => "leadingSpaceCourse" remove leading/trailing spaces
+    const prereqArray = splitted.map((p) => p.replace(/^\s+|\s+$/g, ""));
 
-// ---------------------------------------------------------------------
-// Helper: Convert a comma-separated string into an array (with trimming).
-const toArray = (str) => {
-  return str && str.trim() !== "" ? str.split(",").map(s => s.trim()) : [];
-};
-
-// ---------------------------------------------------------------------
-// 2. Build the LP Model.
-// This function builds an LP model based on the academic data.
-export const buildAcademicPlanModel = (academicData) => {
-  const { potentialClasses, requirements, completedClasses, globalConstraints } = academicData;
-
-  // We plan pending courses only in semesters 3 to 8.
-  // (Semester 9 is allowed as a fallback with a heavy penalty.)
-  const planningSemesters = [3, 4, 5, 6, 7, 8, 9];
-
-  // Set the hard maximum and minimum credits per semester.
-  const maxCredits = globalConstraints.maxCreditsPerSemester; // 19 credits max.
-  const minCredits = globalConstraints.mminCreditsPerSemester; // 12 credits minimum per semester (for planning semesters 3-8).
-
-  // Get IDs of already completed courses.
-  const completedIds = completedClasses.map(c => c.id);
-
-  // Filter out courses that have already been taken.
-  const pendingClasses = potentialClasses.filter(course => !completedIds.includes(course.id));
-
-  // Build a lookup map for pending courses.
-  const pendingMap = {};
-  pendingClasses.forEach(course => {
-    pendingMap[course.id] = course;
-    // Convert the 'fulfills' string into an array.
-    course.fulfillArray = toArray(course.fulfills);
+    // Build the final course object
+    courseMap[course.id] = {
+      ...course,
+      prerequisites: prereqArray
+    };
   });
 
-  // Initialize the LP model.
-  let model = {
-    optimize: "penalty",  // We minimize the total penalty.
-    opType: "min",
-    constraints: {},
-    variables: {},
-    ints: {}  // Decision variables are binary.
-  };
+  return courseMap;
+}
 
-  // -------------------------------------------------------------------
-  // 3. Create Decision Variables.
-  // For each pending course and each planning semester, create a binary variable:
-  // x_{course.id}_{semester} = 1 if the course is scheduled in that semester.
-  pendingClasses.forEach(course => {
-    planningSemesters.forEach(semester => {
-      const varName = `x_${course.id}_${semester}`;
-      let cost;
-      // Impose a heavy penalty for scheduling in semester 9.
-      if (semester === 9) {
-        cost = 9 + 100;
-      } else {
-        // Otherwise, cost equals the semester number (lower is better).
-        cost = semester;
-      }
-      // Define the variable with its cost and credit contribution.
-      model.variables[varName] = {
-        penalty: cost,
-        [`credits_sem_${semester}`]: course.credits
-      };
-      model.ints[varName] = 1;
+/**
+ * Build a map of requirement -> list of course IDs that fulfill it.
+ * Since you rely on Requirements.json for completed classes, 
+ * you only do this for potential classes (not completed).
+ */
+function buildRequirementToCoursesMap(potentialClasses) {
+  const map = {};
+  potentialClasses.forEach((course) => {
+    if (!course.fulfills) return;
+    const fulfillArr = course.fulfills.split(",").map((f) => f.trim()).filter(Boolean);
+    fulfillArr.forEach((req) => {
+      if (!map[req]) map[req] = [];
+      map[req].push(course.id);
     });
   });
+  return map;
+}
 
-  // -------------------------------------------------------------------
-  // 4. Requirement Constraints.
-  // For each requirement, ensure that the sum of decision variables for courses that fulfill it
-  // is at least the additional number needed (total - completed).
-  requirements.forEach(req => {
-    const reqName = req.requirement;
-    // Calculate how many more courses are needed for this requirement.
-    const needed = Math.max(0, req.total - req.completed);
-    let reqConstraint = {};
-    pendingClasses.forEach(course => {
-      // If the course fulfills the requirement...
-      if (course.fulfillArray.includes(reqName)) {
-        planningSemesters.forEach(semester => {
-          const varName = `x_${course.id}_${semester}`;
-          if (model.variables[varName]) {
-            reqConstraint[varName] = 1;
-          }
-        });
-      }
-    });
-    // Add a constraint: sum of decision variables >= needed.
-    model.constraints[`req_count_${reqName}`] = { min: needed, ...reqConstraint };
-  });
-
-  // -------------------------------------------------------------------
-  // 5. Credit Load Constraints.
-  // (a) Upper Bound: For each planning semester, total scheduled credits must not exceed maxCredits.
-  planningSemesters.forEach(semester => {
-    let creditConstraint = {};
-    pendingClasses.forEach(course => {
-      const varName = `x_${course.id}_${semester}`;
-      if (model.variables[varName]) {
-        creditConstraint[varName] = course.credits;
-      }
-    });
-    model.constraints[`credits_sem_${semester}`] = { max: maxCredits, ...creditConstraint };
-  });
-  
-  // (b) Lower Bound: For each planning semester (3-8), ensure at least minCredits are scheduled.
-  planningSemesters.forEach(semester => {
-    if (semester < 9) {  // Only enforce on semesters 3 through 8.
-      let creditMinConstraint = {};
-      pendingClasses.forEach(course => {
-        const varName = `x_${course.id}_${semester}`;
-        if (model.variables[varName]) {
-          creditMinConstraint[varName] = course.credits;
-        }
-      });
-      model.constraints[`credits_sem_${semester}_min`] = { min: minCredits, ...creditMinConstraint };
-    }
-  });
-
-  // -------------------------------------------------------------------
-  // 6. Prerequisite Constraints (No Concurrent Enrollment).
-  // For each pending course that has prerequisites, enforce that for each group of alternatives:
-  // If the course is scheduled in semester S, then at least one alternative must be scheduled in a semester strictly less than S.
-  pendingClasses.forEach(course => {
-    if (course.prerequisites && course.prerequisites.trim() !== "") {
-      // Split prerequisites by commas into groups.
-      const prereqGroups = course.prerequisites.split(",").map(group => group.trim());
-      prereqGroups.forEach((group, groupIndex) => {
-        // Within a group, alternatives are separated by slashes.
-        const alternatives = group.split("/").map(s => s.trim());
-        planningSemesters.forEach(semester => {
-          const courseVar = `x_${course.id}_${semester}`;
-          if (model.variables[courseVar]) {
-            let altConstraint = {};
-            // Consider only those semesters strictly less than the current semester.
-            for (let s of planningSemesters.filter(s => s < semester)) {
-              alternatives.forEach(alt => {
-                const altVar = `x_${alt}_${s}`;
-                if (model.variables[altVar]) {
-                  altConstraint[altVar] = 1;
-                }
-              });
-            }
-            if (Object.keys(altConstraint).length > 0) {
-              // Constraint: x_{course}_{semester} - (sum of alternative variables from earlier semesters) <= 0.
-              model.constraints[`prereq_${course.id}_group${groupIndex}_sem${semester}`] = {
-                max: 0,
-                [courseVar]: 1,
-                ...Object.keys(altConstraint).reduce((acc, key) => {
-                  acc[key] = -1;
-                  return acc;
-                }, {})
-              };
-            }
-          }
-        });
-      });
-    }
-  });
-
-  // Uncomment the following line to log the built LP model for debugging.
-  // console.log("LP Model:", JSON.stringify(model, null, 2));
-
-  // Return the LP model, the list of planning semesters, and the pendingMap.
-  return { model, semesters: planningSemesters, pendingMap };
-};
-
-// -------------------------------------------------------------------
-// 7. Solve the LP Model.
-// This function runs the solver on the built model.
-export const solveAcademicPlanModel = (model) => {
-  return solver.Solve(model);
-};
-
-// -------------------------------------------------------------------
-// 8. Generate the Academic Plan.
-// This function fetches the data, builds the model, solves it, and processes the solution
-// into a plan that maps each semester to an array of courses (each with id and name).
-export const generateAcademicPlan = async () => {
+export async function generateAcademicPlan() {
   try {
-    // Fetch all academic plan data.
-    const academicData = await fetchAcademicPlanData();
-    // Build the LP model from the data.
-    const { model, semesters, pendingMap } = buildAcademicPlanModel(academicData);
-    // Solve the model.
-    const solution = solveAcademicPlanModel(model);
-    console.log("LP Solution:", solution);
+    const potentialClasses = potentialClassesData;
+    const requirementsList = requirementsData;
+    const completedClasses = completedClassesData;
 
-    // Initialize a plan object for each planning semester.
-    let plan = {};
-    semesters.forEach(semester => {
-      plan[`Semester ${semester}`] = [];
+    // Build needed data structures
+    const totalReqsMap = buildTotalRequirementsMap(requirementsList);
+    const completedReqsMap = buildCompletedRequirementsMap(requirementsList);
+    const completedSet = buildCompletedClassesSet(completedClasses);
+    const courseMap = buildCourseMap(potentialClasses);
+    const reqToCoursesMap = buildRequirementToCoursesMap(potentialClasses);
+
+    // We'll allow up to 9 semesters
+    const semesterIndices = Array.from({ length: 9 }, (_, i) => i + 1);
+
+    // Create the LP model
+    const model = {
+      optimize: "totalPenalty",
+      opType: "min",
+      constraints: {},
+      variables: {},
+      ints: {}
+    };
+
+    // 1) Decision vars: X_{courseId, sem} (binary)
+    potentialClasses.forEach((course) => {
+      if (completedSet.has(course.id)) {
+        // skip if it's completed
+        return;
+      }
+      semesterIndices.forEach((s) => {
+        const varName = `X_${course.id}_${s}`;
+        model.variables[varName] = { totalPenalty: 0 };
+        model.ints[varName] = 1;
+      });
     });
-    // Process each decision variable in the solution.
-    // If a variable is set to 1, add that course to its corresponding semester.
-    Object.keys(solution).forEach(variable => {
-      if (variable.startsWith("x_") && Math.abs(solution[variable] - 1) < 1e-6) {
-        const parts = variable.split("_");
-        const courseId = parts[1];
-        const semester = parts[2];
-        plan[`Semester ${semester}`].push({
-          id: pendingMap[courseId].id,
-          name: pendingMap[courseId].name
+
+    // 2) Over/Under for each sem + "UseSem9"
+    semesterIndices.forEach((s) => {
+      // over_s, under_s
+      const overVar = `over_${s}`;
+      const underVar = `under_${s}`;
+      model.variables[overVar] = { totalPenalty: 1 };
+      model.variables[underVar] = { totalPenalty: 1 };
+    });
+    const useSem9 = "UseSem9";
+    model.variables[useSem9] = { totalPenalty: 100 };
+    model.ints[useSem9] = 1;
+
+    /****************************************************************
+     * 3) Constraints
+     ****************************************************************/
+
+    // 3.1 Requirements: sum(X) >= needed
+    Object.keys(totalReqsMap).forEach((reqName) => {
+      const totalNeeded = totalReqsMap[reqName];
+      const alreadyDone = completedReqsMap[reqName] || 0;
+      if (alreadyDone >= totalNeeded) {
+        // no constraint needed; you already meet or exceed
+        return;
+      }
+      const neededFromFuture = totalNeeded - alreadyDone;
+
+      // gather all X_{course, s} for courses that can fulfill this req
+      const coursesThatFulfill = reqToCoursesMap[reqName] || [];
+      if (coursesThatFulfill.length === 0 && neededFromFuture > 0) {
+        console.warn(`Requirement ${reqName} needs ${neededFromFuture} more but no course can fulfill it!`);
+      }
+      let expr = {};
+      coursesThatFulfill.forEach((cId) => {
+        // skip if completed
+        if (completedSet.has(cId)) return;
+        semesterIndices.forEach((s) => {
+          const varName = `X_${cId}_${s}`;
+          expr[varName] = (expr[varName] || 0) + 1;
         });
+      });
+
+      model.constraints[`req_${reqName}`] = {
+        min: neededFromFuture,
+        ...expr
+      };
+    });
+
+    // 3.2 Prerequisites: X_{c,s} <= sum_{prereqs}(X_{p,t < s} + 1_if_p_completed)
+    Object.entries(courseMap).forEach(([cId, courseObj]) => {
+      if (completedSet.has(cId)) return; // skip completed
+      const prereqs = courseObj.prerequisites;
+      if (!prereqs || prereqs.length === 0) return;
+
+      const numPrereqs = prereqs.length;
+
+      semesterIndices.forEach((s) => {
+        // left side: X_{cId,s} * numPrereqs => we do -numPrereqs * X_{cId,s} in expression
+        const varName = `X_${cId}_${s}`;
+        let expr = { [varName]: -numPrereqs };
+
+        // For each prerequisite p
+        prereqs.forEach((p) => {
+          // Trim leading/trailing spaces from p in case
+          const cleanP = p.trim();
+
+          // If the p is not in courseMap and not in completedSet, 
+          // that means there's a potential data error
+          if (!courseMap[cleanP] && !completedSet.has(cleanP)) {
+            console.warn(`Prerequisite mismatch: course '${cleanP}' not found in PotentialClasses or CompletedSet. (prereq of ${cId})`);
+          }
+
+          if (completedSet.has(cleanP)) {
+            // That prereq is effectively always satisfied => +1
+            expr["__CONST__"] = (expr["__CONST__"] || 0) + 1;
+          } else {
+            // sum_{t < s} X_{p,t}
+            for (let t = 1; t < s; t++) {
+              const pVar = `X_${cleanP}_${t}`;
+              // Only add if that pVar actually exists in model.variables
+              if (model.variables[pVar]) {
+                expr[pVar] = (expr[pVar] || 0) + 1;
+              }
+            }
+          }
+        });
+
+        // sum(...) >= 0
+        model.constraints[`prereq_${cId}_${s}`] = {
+          min: 0,
+          ...expr
+        };
+      });
+    });
+
+    // 3.3 Credit constraints per semester
+    semesterIndices.forEach((s) => {
+      let sumCreditsExpr = {};
+      potentialClasses.forEach((c) => {
+        if (completedSet.has(c.id)) return;
+        const varName = `X_${c.id}_${s}`;
+        sumCreditsExpr[varName] = (sumCreditsExpr[varName] || 0) + c.credits;
+      });
+
+      // Hard min: >= 12
+      model.constraints[`minCredits_sem${s}`] = {
+        min: 3,
+        ...sumCreditsExpr
+      };
+      // Hard max: <= 19
+      model.constraints[`maxCredits_sem${s}`] = {
+        max: 30,
+        ...sumCreditsExpr
+      };
+
+      // OverVar => sumCredits - over_s <= 17
+      const overVar = `over_${s}`;
+      {
+        let expr = { ...sumCreditsExpr };
+        expr[overVar] = -1;
+        model.constraints[`overConstraint_sem${s}`] = {
+          max: 17,
+          ...expr
+        };
+      }
+      // UnderVar => sumCredits + under_s >= 14 => -sumCredits + under_s >= -14
+      const underVar = `under_${s}`;
+      {
+        let expr = {};
+        Object.entries(sumCreditsExpr).forEach(([k, v]) => {
+          expr[k] = -v;
+        });
+        expr[underVar] = 1;
+        model.constraints[`underConstraint_sem${s}`] = {
+          min: -14,
+          ...expr
+        };
       }
     });
 
-    // Add completed courses (from CompletedClasses.json) to semesters 1 and 2.
-    academicData.completedClasses.forEach(course => {
-      const sem = course.semester;
-      if (sem === 1 || sem === 2) {
-        if (!plan[`Semester ${sem}`]) {
-          plan[`Semester ${sem}`] = [];
+    // 3.4 If X_{c,9} = 1 => useSem9 = 1
+    potentialClasses.forEach((c) => {
+      if (completedSet.has(c.id)) return;
+      const varName = `X_${c.id}_9`;
+      model.constraints[`useSem9_${c.id}`] = {
+        max: 0,
+        [varName]: 1,
+        [useSem9]: -1
+      };
+    });
+
+    // 3.5 Each course can only be taken once => sum_{s=1..9} X_{c,s} <= 1
+    potentialClasses.forEach((c) => {
+      if (completedSet.has(c.id)) return;
+      let expr = {};
+      semesterIndices.forEach((s) => {
+        expr[`X_${c.id}_${s}`] = 1;
+      });
+      model.constraints[`singleSemester_${c.id}`] = {
+        max: 1,
+        ...expr
+      };
+    });
+
+    /****************************************************************
+     * 4) Solve
+     ****************************************************************/
+    console.log("=== MODEL DUMP ===", JSON.stringify(model, null, 2));
+    console.log("PotentialClasses", potentialClasses);
+    console.log("Requirements", requirementsList);
+    console.log("CompletedClasses", completedClasses);
+    
+    const results = Solver.Solve(model);
+
+    if (!results.feasible) {
+      throw new Error("No feasible solution found. The LP model is infeasible.");
+    }
+
+    /****************************************************************
+     * 5) Build the plan to return
+     ****************************************************************/
+    const plan = {};
+    semesterIndices.forEach((s) => {
+      plan[`Semester ${s}`] = [];
+    });
+
+    // gather all X_{course, s} = 1
+    Object.keys(results).forEach((varName) => {
+      if (varName.startsWith("X_") && results[varName] === 1) {
+        // parse out the course
+        // varName looks like "X_01:640:252_3"
+        const parts = varName.split("_");
+        // parts[1] = "01:640:252", parts[2] = "3"
+        const cId = parts[1];
+        const sem = parseInt(parts[2], 10);
+        const cObj = courseMap[cId];
+        if (cObj) {
+          plan[`Semester ${sem}`].push(cObj);
         }
-        plan[`Semester ${sem}`].push({
-          id: course.id,
-          name: course.name
-        });
       }
     });
 
     return plan;
   } catch (err) {
-    throw new Error("Error generating academic plan: " + err.message);
+    console.error(err);
+    throw err;
+  }
+}
+
+const model = {
+  optimize: "someObj",
+  opType: "min",
+  constraints: {},
+  variables: {
+    "X_course1_sem1": { someObj: 0 },
+    "X_course2_sem1": { someObj: 0 }
+  },
+  ints: {
+    "X_course1_sem1": 1,
+    "X_course2_sem1": 1
   }
 };
+
+const results = Solver.Solve(model);
+console.log("miniTest results", results);
+
