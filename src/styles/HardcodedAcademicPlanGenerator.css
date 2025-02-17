@@ -1,0 +1,97 @@
+/* src/styles/HardcodedAcademicPlanGenerator.css */
+
+/* Mimic a Rutgers-like red-and-white scheme */
+.hardcoded-plan-generator {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    color: #333333;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    padding: 1rem;
+  }
+  
+  .generate-plan-section {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  /* Heading style */
+  .generate-plan-section h1 {
+    color: #cc0033; /* Rutgers scarlet */
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Paragraph style */
+  .generate-plan-section p {
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+  
+  /* "Generate Plan" button */
+  .generate-button {
+    background-color: #cc0033;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-bottom: 1rem;
+  }
+  
+  .generate-button:hover {
+    background-color: #b8002e;
+  }
+  
+  .generate-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  /* The placeholder text if no plan is generated yet */
+  .no-plan {
+    margin-top: 1rem;
+    font-style: italic;
+    color: #555;
+  }
+  
+  /* Container for the plan display */
+  .plan-display {
+    margin-top: 2rem;
+    text-align: left; /* ensure course lists are left-aligned */
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    border-radius: 4px;
+  }
+  
+  /* Each semester block */
+  .semester-block {
+    margin-bottom: 1.5rem;
+  }
+  
+  .semester-block h3 {
+    color: #cc0033;
+    margin-bottom: 0.3rem;
+  }
+  
+  .semester-block ul {
+    list-style-type: none;
+    padding-left: 1rem;
+  }
+  
+  .semester-block li {
+    margin-bottom: 0.2rem;
+    padding-left: 0.5rem;
+    position: relative;
+  }
+  
+  .semester-block li:before {
+    content: "•";
+    color: #cc0033;
+    position: absolute;
+    left: 0;
+  }
+  
