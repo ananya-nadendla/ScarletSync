@@ -28,5 +28,5 @@ ScarletSync is a centralized web application designed to enhance academic suppor
 - **Profile Picture Uploads:** Cloudinary
 - **UI/UX Design:** Uizard  
 
-[🎥 Watch the Demo](public/scarletsync-demo.mp4)
+[🎥 Watch the Demo](assets/scarletsync-demo.mp4)
 (This project is a Work in Progress)
