@@ -9,14 +9,15 @@ ScarletSync is a centralized web application designed to enhance academic suppor
 - **Customizable Profiles** – Personalize your profile and connect with other students.
 - **Course Group Chats** – Collaborate with classmates using Stream’s Group Chat SDK.
 - **Friend Suggestions** – Meet new people with intelligent social recommendations.
-- **Gamification & Rewards** – Earn points for making friends, generating schedules, and engaging with the platform. Points are redeemable for Rutgers game tickets, merchandise, and more!
+- **Gamification & Rewards** – (WIP) Earn points for making engaging with the platform. Points are redeemable for Rutgers game tickets, merchandise, and more!
+- **Academic Plan** - (WIP) Save time by generating optimized class schedules that minimize conflicts while considering major requirements, prerequisites, and past coursework.
 
 ## 🎯 Impact
 
-- Simplifies access to campus resources.
-- Enhances time management and academic planning.
-- Builds a stronger sense of community.
-- Provides better academic support and scheduling optimization.
+- **Campus Connections Made Easy:** ScarletSync simplifies student life at Rutgers by centralizing essential resources in one platform.
+- **Instant Answers with AI:** The built-in chatbot provides quick responses to Rutgers FAQs on academics, campus services, and student life.
+- **Stronger Student Networks:** Personalized profiles and friend recommendations help a vast student body of 69,000 students feel more connected.
+- **Unified Course Chats:** Students currently rely on many platforms like Discord and GroupMe. ScarletSync centralizes these conversations into one dedicated space.
 
 ## 🛠️ Tech Stack
 
